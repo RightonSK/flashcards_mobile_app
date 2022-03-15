@@ -12,13 +12,14 @@ class FlashCaredRepository {
 
   Future<List<Flashcard>> fetchAllFlashcards() async {
     final flashcardsSnapshot = await _flashCardRef.get();
+    print('fetch');
     return flashcardsSnapshot.docs
         .map(
           (doc) => Flashcard(
               id: doc['id'],
               title: doc['title'],
               createdAt: (doc['createdAt'] as Timestamp).toDate(),
-              updatedAt: (doc['updateAt'] as Timestamp).toDate()),
+              updatedAt: (doc['updatedAt'] as Timestamp).toDate()),
         )
         .toList();
   }

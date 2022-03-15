@@ -11,9 +11,10 @@ class _SplashScreenPage extends ConsumerState<SplashScreenPage> {
   @override
   void initState() {
     Future(() async {
-      await ref.read(topProvider.notifier).fetchFlashcardList();
       await Future.delayed(Duration(seconds: 5));
+      await ref.read(topProvider.notifier).fetchFlashcardList();
     });
+    print('init 終了');
     super.initState();
   }
 
