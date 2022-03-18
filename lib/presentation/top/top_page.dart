@@ -36,7 +36,7 @@ class TopPage extends ConsumerWidget {
               ),
             );
             // flashcardsを更新
-            topNotifier.fetchFlashcardList();
+            await topNotifier.fetchFlashcardList();
           },
           child: const Icon(Icons.add),
         ),
@@ -98,7 +98,7 @@ class TopPageBody extends ConsumerWidget {
                       );
                     }
                     // flashcardsを更新
-                    //topNotifier.fetchFlashcardList();
+                    //await topNotifier.fetchFlashcardList();
                   },
                   child: Card(
                     child: Center(
