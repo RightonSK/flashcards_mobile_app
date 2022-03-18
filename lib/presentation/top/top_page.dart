@@ -1,5 +1,6 @@
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/custom_widgets/colored_status_bar.dart';
+import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_page.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_page.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
@@ -13,6 +14,7 @@ class TopPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topState = ref.watch(topProvider);
+    final topNotifier = ref.watch(topProvider.notifier);
 
     return ColoredStatusBar(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -20,7 +22,10 @@ class TopPage extends ConsumerWidget {
         appBar: AppBar(
           title: const Text('単語メモカード'),
         ),
-        body: TopPageBody(topState: topState),
+        body: TopPageBody(
+          topState: topState,
+          topNotifier: topNotifier,
+        ),
         //body: _createGridView(context, model),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -30,7 +35,8 @@ class TopPage extends ConsumerWidget {
                 builder: (context) => const FlashCardAddAndUpdatePage(),
               ),
             );
-            //model.init();
+            // flashcardsを更新
+            topNotifier.fetchFlashcardList();
           },
           child: const Icon(Icons.add),
         ),
@@ -40,8 +46,11 @@ class TopPage extends ConsumerWidget {
 }
 
 class TopPageBody extends ConsumerWidget {
-  const TopPageBody({Key? key, required this.topState}) : super(key: key);
+  const TopPageBody(
+      {Key? key, required this.topState, required this.topNotifier})
+      : super(key: key);
   final TopState topState;
+  final TopNotifier topNotifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,19 +82,27 @@ class TopPageBody extends ConsumerWidget {
           childAspectRatio: 2.0,
           children: topState.flashcardList
               .map(
-                (Flashcard flashCard) => InkWell(
+                (Flashcard flashcard) => InkWell(
                   onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FlashcardPage(),
-                      ),
-                    );
-                    //model.init();
+                    // flashcard pageのstateにflashcardを渡し、その後flashcardが
+                    // nullじゃないならページ遷移
+                    await ref
+                        .read(flashcardProvider.notifier)
+                        .init(flashcard: flashcard);
+                    if (ref.read(flashcardProvider).flashcard != null) {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FlashcardPage(),
+                        ),
+                      );
+                    }
+                    // flashcardsを更新
+                    //topNotifier.fetchFlashcardList();
                   },
                   child: Card(
                     child: Center(
-                      child: Text(flashCard.title),
+                      child: Text(flashcard.title),
                     ),
                   ),
                 ),

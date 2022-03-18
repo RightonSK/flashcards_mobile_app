@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
-import 'package:flashcards_mobile_app/splash_screen/splash_screen_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

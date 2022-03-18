@@ -1,14 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @immutable
 class Flashcard {
-  final String id;
-  final String title;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-
   const Flashcard({
     required this.id,
     required this.title,
@@ -16,10 +12,15 @@ class Flashcard {
     required this.updatedAt,
   });
 
+  final String id;
+  final String title;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
   Flashcard.fromJson(Map<String, Object?> json)
       : this(
           id: json['id']! as String,
-          title: json['userName']! as String,
+          title: json['title']! as String,
           createdAt: (json['createdAt']! as Timestamp).toDate(),
           updatedAt: (json['updatedAt']! as Timestamp).toDate(),
         );
