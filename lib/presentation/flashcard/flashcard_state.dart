@@ -6,9 +6,13 @@ part 'flashcard_state.freezed.dart';
 
 @freezed
 class FlashcardState with _$FlashcardState {
-  @JsonSerializable(explicitToJson: true)
   factory FlashcardState({
     Flashcard? flashcard,
     @Default(<Word>[]) List<Word> words,
+    @Default(<String, Word>{}) Map<String, Word> wordIdToSelectedWord,
+    //@Default(<Word>[]) List<Word> selectedWords,
+    @Default(false) appBarIsStacked,
+    @Default(false) bool isActionMode,
+    @Default(<String, bool>{}) wordIdToIsFlipped,
   }) = _FlashcardState;
 }

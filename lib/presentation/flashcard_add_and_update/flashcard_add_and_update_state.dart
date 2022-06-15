@@ -6,9 +6,8 @@ part 'flashcard_add_and_update_state.freezed.dart';
 
 @freezed
 class FlashcardAddAndUpdateState with _$FlashcardAddAndUpdateState {
-  @JsonSerializable(explicitToJson: true)
   factory FlashcardAddAndUpdateState({
-    @Default('1') String mode,
-    required Flashcard flashcard,
+    @Default(false) bool isUpdateMode,
+    Flashcard? flashcard,
   }) = _FlashcardAddAndUpdateState;
 }

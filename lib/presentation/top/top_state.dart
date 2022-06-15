@@ -5,8 +5,10 @@ part 'top_state.freezed.dart';
 
 @freezed
 class TopState with _$TopState {
-  @JsonSerializable(explicitToJson: true)
   factory TopState({
     @Default(<Flashcard>[]) List<Flashcard> flashcardList,
+    Flashcard? selectedFlashcard,
+    @Default(false) bool appBarIsStacked,
+    @Default(false) bool isActionMode,
   }) = _TopState;
 }

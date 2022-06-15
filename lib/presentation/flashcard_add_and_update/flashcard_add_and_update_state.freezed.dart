@@ -19,9 +19,9 @@ class _$FlashcardAddAndUpdateStateTearOff {
   const _$FlashcardAddAndUpdateStateTearOff();
 
   _FlashcardAddAndUpdateState call(
-      {String mode = '1', required Flashcard flashcard}) {
+      {bool isUpdateMode = false, Flashcard? flashcard}) {
     return _FlashcardAddAndUpdateState(
-      mode: mode,
+      isUpdateMode: isUpdateMode,
       flashcard: flashcard,
     );
   }
@@ -32,8 +32,8 @@ const $FlashcardAddAndUpdateState = _$FlashcardAddAndUpdateStateTearOff();
 
 /// @nodoc
 mixin _$FlashcardAddAndUpdateState {
-  String get mode => throw _privateConstructorUsedError;
-  Flashcard get flashcard => throw _privateConstructorUsedError;
+  bool get isUpdateMode => throw _privateConstructorUsedError;
+  Flashcard? get flashcard => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FlashcardAddAndUpdateStateCopyWith<FlashcardAddAndUpdateState>
@@ -45,7 +45,7 @@ abstract class $FlashcardAddAndUpdateStateCopyWith<$Res> {
   factory $FlashcardAddAndUpdateStateCopyWith(FlashcardAddAndUpdateState value,
           $Res Function(FlashcardAddAndUpdateState) then) =
       _$FlashcardAddAndUpdateStateCopyWithImpl<$Res>;
-  $Res call({String mode, Flashcard flashcard});
+  $Res call({bool isUpdateMode, Flashcard? flashcard});
 }
 
 /// @nodoc
@@ -59,18 +59,18 @@ class _$FlashcardAddAndUpdateStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? mode = freezed,
+    Object? isUpdateMode = freezed,
     Object? flashcard = freezed,
   }) {
     return _then(_value.copyWith(
-      mode: mode == freezed
-          ? _value.mode
-          : mode // ignore: cast_nullable_to_non_nullable
-              as String,
+      isUpdateMode: isUpdateMode == freezed
+          ? _value.isUpdateMode
+          : isUpdateMode // ignore: cast_nullable_to_non_nullable
+              as bool,
       flashcard: flashcard == freezed
           ? _value.flashcard
           : flashcard // ignore: cast_nullable_to_non_nullable
-              as Flashcard,
+              as Flashcard?,
     ));
   }
 }
@@ -83,7 +83,7 @@ abstract class _$FlashcardAddAndUpdateStateCopyWith<$Res>
           $Res Function(_FlashcardAddAndUpdateState) then) =
       __$FlashcardAddAndUpdateStateCopyWithImpl<$Res>;
   @override
-  $Res call({String mode, Flashcard flashcard});
+  $Res call({bool isUpdateMode, Flashcard? flashcard});
 }
 
 /// @nodoc
@@ -100,39 +100,38 @@ class __$FlashcardAddAndUpdateStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? mode = freezed,
+    Object? isUpdateMode = freezed,
     Object? flashcard = freezed,
   }) {
     return _then(_FlashcardAddAndUpdateState(
-      mode: mode == freezed
-          ? _value.mode
-          : mode // ignore: cast_nullable_to_non_nullable
-              as String,
+      isUpdateMode: isUpdateMode == freezed
+          ? _value.isUpdateMode
+          : isUpdateMode // ignore: cast_nullable_to_non_nullable
+              as bool,
       flashcard: flashcard == freezed
           ? _value.flashcard
           : flashcard // ignore: cast_nullable_to_non_nullable
-              as Flashcard,
+              as Flashcard?,
     ));
   }
 }
 
 /// @nodoc
 
-@JsonSerializable(explicitToJson: true)
 class _$_FlashcardAddAndUpdateState
     with DiagnosticableTreeMixin
     implements _FlashcardAddAndUpdateState {
-  _$_FlashcardAddAndUpdateState({this.mode = '1', required this.flashcard});
+  _$_FlashcardAddAndUpdateState({this.isUpdateMode = false, this.flashcard});
 
   @JsonKey()
   @override
-  final String mode;
+  final bool isUpdateMode;
   @override
-  final Flashcard flashcard;
+  final Flashcard? flashcard;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FlashcardAddAndUpdateState(mode: $mode, flashcard: $flashcard)';
+    return 'FlashcardAddAndUpdateState(isUpdateMode: $isUpdateMode, flashcard: $flashcard)';
   }
 
   @override
@@ -140,7 +139,7 @@ class _$_FlashcardAddAndUpdateState
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'FlashcardAddAndUpdateState'))
-      ..add(DiagnosticsProperty('mode', mode))
+      ..add(DiagnosticsProperty('isUpdateMode', isUpdateMode))
       ..add(DiagnosticsProperty('flashcard', flashcard));
   }
 
@@ -149,14 +148,15 @@ class _$_FlashcardAddAndUpdateState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _FlashcardAddAndUpdateState &&
-            const DeepCollectionEquality().equals(other.mode, mode) &&
+            const DeepCollectionEquality()
+                .equals(other.isUpdateMode, isUpdateMode) &&
             const DeepCollectionEquality().equals(other.flashcard, flashcard));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(mode),
+      const DeepCollectionEquality().hash(isUpdateMode),
       const DeepCollectionEquality().hash(flashcard));
 
   @JsonKey(ignore: true)
@@ -169,13 +169,13 @@ class _$_FlashcardAddAndUpdateState
 abstract class _FlashcardAddAndUpdateState
     implements FlashcardAddAndUpdateState {
   factory _FlashcardAddAndUpdateState(
-      {String mode,
-      required Flashcard flashcard}) = _$_FlashcardAddAndUpdateState;
+      {bool isUpdateMode,
+      Flashcard? flashcard}) = _$_FlashcardAddAndUpdateState;
 
   @override
-  String get mode;
+  bool get isUpdateMode;
   @override
-  Flashcard get flashcard;
+  Flashcard? get flashcard;
   @override
   @JsonKey(ignore: true)
   _$FlashcardAddAndUpdateStateCopyWith<_FlashcardAddAndUpdateState>

@@ -18,10 +18,12 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$WordAddAndUpdateStateTearOff {
   const _$WordAddAndUpdateStateTearOff();
 
-  _WordAddAndUpdateState call({Flashcard? parentFlashcard, Word? word}) {
+  _WordAddAndUpdateState call(
+      {Flashcard? parentFlashcard, Word? word, bool isUpdateMode = false}) {
     return _WordAddAndUpdateState(
       parentFlashcard: parentFlashcard,
       word: word,
+      isUpdateMode: isUpdateMode,
     );
   }
 }
@@ -33,6 +35,7 @@ const $WordAddAndUpdateState = _$WordAddAndUpdateStateTearOff();
 mixin _$WordAddAndUpdateState {
   Flashcard? get parentFlashcard => throw _privateConstructorUsedError;
   Word? get word => throw _privateConstructorUsedError;
+  bool get isUpdateMode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WordAddAndUpdateStateCopyWith<WordAddAndUpdateState> get copyWith =>
@@ -44,7 +47,7 @@ abstract class $WordAddAndUpdateStateCopyWith<$Res> {
   factory $WordAddAndUpdateStateCopyWith(WordAddAndUpdateState value,
           $Res Function(WordAddAndUpdateState) then) =
       _$WordAddAndUpdateStateCopyWithImpl<$Res>;
-  $Res call({Flashcard? parentFlashcard, Word? word});
+  $Res call({Flashcard? parentFlashcard, Word? word, bool isUpdateMode});
 }
 
 /// @nodoc
@@ -60,6 +63,7 @@ class _$WordAddAndUpdateStateCopyWithImpl<$Res>
   $Res call({
     Object? parentFlashcard = freezed,
     Object? word = freezed,
+    Object? isUpdateMode = freezed,
   }) {
     return _then(_value.copyWith(
       parentFlashcard: parentFlashcard == freezed
@@ -70,6 +74,10 @@ class _$WordAddAndUpdateStateCopyWithImpl<$Res>
           ? _value.word
           : word // ignore: cast_nullable_to_non_nullable
               as Word?,
+      isUpdateMode: isUpdateMode == freezed
+          ? _value.isUpdateMode
+          : isUpdateMode // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -81,7 +89,7 @@ abstract class _$WordAddAndUpdateStateCopyWith<$Res>
           $Res Function(_WordAddAndUpdateState) then) =
       __$WordAddAndUpdateStateCopyWithImpl<$Res>;
   @override
-  $Res call({Flashcard? parentFlashcard, Word? word});
+  $Res call({Flashcard? parentFlashcard, Word? word, bool isUpdateMode});
 }
 
 /// @nodoc
@@ -99,6 +107,7 @@ class __$WordAddAndUpdateStateCopyWithImpl<$Res>
   $Res call({
     Object? parentFlashcard = freezed,
     Object? word = freezed,
+    Object? isUpdateMode = freezed,
   }) {
     return _then(_WordAddAndUpdateState(
       parentFlashcard: parentFlashcard == freezed
@@ -109,24 +118,31 @@ class __$WordAddAndUpdateStateCopyWithImpl<$Res>
           ? _value.word
           : word // ignore: cast_nullable_to_non_nullable
               as Word?,
+      isUpdateMode: isUpdateMode == freezed
+          ? _value.isUpdateMode
+          : isUpdateMode // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
 
-@JsonSerializable(explicitToJson: true)
 class _$_WordAddAndUpdateState implements _WordAddAndUpdateState {
-  _$_WordAddAndUpdateState({this.parentFlashcard, this.word});
+  _$_WordAddAndUpdateState(
+      {this.parentFlashcard, this.word, this.isUpdateMode = false});
 
   @override
   final Flashcard? parentFlashcard;
   @override
   final Word? word;
+  @JsonKey()
+  @override
+  final bool isUpdateMode;
 
   @override
   String toString() {
-    return 'WordAddAndUpdateState(parentFlashcard: $parentFlashcard, word: $word)';
+    return 'WordAddAndUpdateState(parentFlashcard: $parentFlashcard, word: $word, isUpdateMode: $isUpdateMode)';
   }
 
   @override
@@ -136,14 +152,17 @@ class _$_WordAddAndUpdateState implements _WordAddAndUpdateState {
             other is _WordAddAndUpdateState &&
             const DeepCollectionEquality()
                 .equals(other.parentFlashcard, parentFlashcard) &&
-            const DeepCollectionEquality().equals(other.word, word));
+            const DeepCollectionEquality().equals(other.word, word) &&
+            const DeepCollectionEquality()
+                .equals(other.isUpdateMode, isUpdateMode));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(parentFlashcard),
-      const DeepCollectionEquality().hash(word));
+      const DeepCollectionEquality().hash(word),
+      const DeepCollectionEquality().hash(isUpdateMode));
 
   @JsonKey(ignore: true)
   @override
@@ -153,13 +172,17 @@ class _$_WordAddAndUpdateState implements _WordAddAndUpdateState {
 }
 
 abstract class _WordAddAndUpdateState implements WordAddAndUpdateState {
-  factory _WordAddAndUpdateState({Flashcard? parentFlashcard, Word? word}) =
-      _$_WordAddAndUpdateState;
+  factory _WordAddAndUpdateState(
+      {Flashcard? parentFlashcard,
+      Word? word,
+      bool isUpdateMode}) = _$_WordAddAndUpdateState;
 
   @override
   Flashcard? get parentFlashcard;
   @override
   Word? get word;
+  @override
+  bool get isUpdateMode;
   @override
   @JsonKey(ignore: true)
   _$WordAddAndUpdateStateCopyWith<_WordAddAndUpdateState> get copyWith =>

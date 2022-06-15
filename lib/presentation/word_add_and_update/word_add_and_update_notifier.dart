@@ -12,20 +12,40 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
   WordAddAndUpdateNotifier(WordAddAndUpdateState state) : super(state);
   final _wordRepository = WordRepository();
 
-  Future setWord({required String name, required String description}) async {
-    String newId =
-        _wordRepository.getNewId(flashcardId: state.parentFlashcard!.id);
-    Word word = Word(
-        id: newId,
-        name: name,
-        description: description,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now());
-    await _wordRepository.setWord(
-        word: word, parentFlashcard: state.parentFlashcard!);
+  // flashcardを渡し、stateに保存
+  void passFlashcard({required Flashcard flashcard}) async {
+    state = state.copyWith(parentFlashcard: flashcard);
   }
 
-  Future passFlashcard({required Flashcard flashcard}) async {
-    state = state.copyWith(parentFlashcard: flashcard);
+  // wordをstateに渡すためのメソッド
+  void passWord({required Word word}) {
+    state = state.copyWith(word: word);
+  }
+
+  // isUpdateModeのbool値を変更
+  void switchIsUpdateMode({required bool isUpdateMode}) {
+    state = state.copyWith(isUpdateMode: isUpdateMode);
+  }
+
+  ///
+  /// 追加または、更新されたwordをrepositoryに渡す
+  ///
+  Future addOrUpdateWord(
+      {required String title, required String description}) async {
+    late final Word word;
+    if (state.isUpdateMode) {
+      word = state.word!.copyWith(
+          title: title, description: description, updatedAt: DateTime.now());
+    } else {
+      final String newId = _wordRepository.getNewId();
+      word = Word(
+          id: newId,
+          flashcardId: state.parentFlashcard!.id,
+          title: title,
+          description: description,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now());
+    }
+    await _wordRepository.addUpdate(word: word);
   }
 }

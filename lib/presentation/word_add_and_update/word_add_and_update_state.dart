@@ -6,9 +6,9 @@ part 'word_add_and_update_state.freezed.dart';
 
 @freezed
 class WordAddAndUpdateState with _$WordAddAndUpdateState {
-  @JsonSerializable(explicitToJson: true)
   factory WordAddAndUpdateState({
     Flashcard? parentFlashcard,
     Word? word,
+    @Default(false) bool isUpdateMode,
   }) = _WordAddAndUpdateState;
 }

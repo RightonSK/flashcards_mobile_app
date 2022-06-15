@@ -19,7 +19,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // initialize(DBからデータ取得)
     Future(() async {
-      await ref.read(topProvider.notifier).fetchFlashcardList();
+      await ref.read(topProvider.notifier).fetchFlashcards();
       FlutterNativeSplash.remove();
     });
     return MaterialApp(

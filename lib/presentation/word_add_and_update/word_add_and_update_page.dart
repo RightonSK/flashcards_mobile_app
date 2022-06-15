@@ -11,17 +11,26 @@ class WordAddAndUpdatePage extends ConsumerWidget {
     final wordAddAndUpdateState = ref.watch(wordAddAndUpdateProvider);
     final wordAddAndUpdateNotifier =
         ref.watch(wordAddAndUpdateProvider.notifier);
+    late final String _appBarTitle;
+    late final String _buttonTitle;
     final TextEditingController _nameController = TextEditingController();
     final TextEditingController _descriptionController =
         TextEditingController();
-    if (wordAddAndUpdateState.word != null) {
-      _nameController.text = wordAddAndUpdateState.word!.name;
+
+    //詳細ページの初期化処理
+    if (wordAddAndUpdateState.isUpdateMode) {
+      _appBarTitle = '更新';
+      _buttonTitle = '更新';
+      _nameController.text = wordAddAndUpdateState.word!.title;
       _descriptionController.text = wordAddAndUpdateState.word!.description;
+    } else {
+      _appBarTitle = '新規作成';
+      _buttonTitle = '追加';
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: Text(_appBarTitle),
       ),
       body: SingleChildScrollView(
         child: Card(
@@ -98,12 +107,12 @@ class WordAddAndUpdatePage extends ConsumerWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    await wordAddAndUpdateNotifier.setWord(
-                        name: _nameController.text,
+                    await wordAddAndUpdateNotifier.addOrUpdateWord(
+                        title: _nameController.text,
                         description: _descriptionController.text);
                     Navigator.pop(context);
                   },
-                  child: const Text('追加'),
+                  child: Text(_buttonTitle),
                 ),
               ),
             ],
