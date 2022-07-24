@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 @immutable
 class Flashcard {
@@ -44,19 +42,3 @@ class Flashcard {
     );
   }
 }
-
-// part 'flashcard.freezed.dart';
-// part 'flashcard.g.dart';
-//
-// @freezed
-// class Flashcard with _$Flashcard {
-//   factory Flashcard({
-//     required String id,
-//     required String title,
-//     required DateTime createdAt,
-//     required DateTime updateAt,
-//   }) = _Flashcard;
-//
-//   factory Flashcard.fromJson(Map<String, dynamic> json) =>
-//       _$FlashcardFromJson(json);
-// }

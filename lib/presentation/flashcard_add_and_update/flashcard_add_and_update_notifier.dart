@@ -42,16 +42,15 @@ class FlashCardAddAndUpdateNotifier
     state = state.copyWith(flashcard: flashcard);
     //条件分岐
     if (state.isUpdateMode) {
-      await _flashCaredRepository.updateFlashcard(flashcard: state.flashcard!);
+      await _flashCaredRepository.update(flashcard: state.flashcard!);
     } else {
-      await _flashCaredRepository.addFlashcard(flashCard: state.flashcard!);
+      await _flashCaredRepository.add(flashCard: state.flashcard!);
     }
   }
 
   // flashcardをflashcardとwordのrepositoryそれぞれに渡す
   Future deleteFlashcard() async {
     await _wordRepository.deleteAll(flashcardId: state.flashcard!.id);
-    await _flashCaredRepository.deleteFlashcard(
-        flashcardId: state.flashcard!.id);
+    await _flashCaredRepository.delete(flashcardId: state.flashcard!.id);
   }
 }

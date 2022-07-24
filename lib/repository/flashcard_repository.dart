@@ -22,14 +22,14 @@ class FlashCaredRepository {
   ///
   /// flashcardを新規で追加する
   ///
-  Future addFlashcard({required Flashcard flashCard}) async {
+  Future add({required Flashcard flashCard}) async {
     await _flashcardsRefWithConverter.doc(flashCard.id).set(flashCard);
   }
 
   ///
   /// flashcardを更新
   ///
-  Future updateFlashcard({required Flashcard flashcard}) async {
+  Future update({required Flashcard flashcard}) async {
     await _flashcardsRef
         .doc(flashcard.id)
         .update({'title': flashcard.title, 'updatedAt': flashcard.updatedAt});
@@ -38,7 +38,7 @@ class FlashCaredRepository {
   ///
   /// flashcardを削除
   ///
-  Future deleteFlashcard({required String flashcardId}) async {
+  Future delete({required String flashcardId}) async {
     await _flashcardsRef.doc(flashcardId).delete();
   }
 

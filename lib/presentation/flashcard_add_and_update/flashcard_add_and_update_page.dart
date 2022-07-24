@@ -1,9 +1,10 @@
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class FlashCardAddAndUpdatePage extends ConsumerWidget {
+class FlashCardAddAndUpdatePage extends HookConsumerWidget {
   const FlashCardAddAndUpdatePage({Key? key}) : super(key: key);
 
   @override
@@ -11,7 +12,7 @@ class FlashCardAddAndUpdatePage extends ConsumerWidget {
     final flashcardAddAndUpdateState = ref.watch(flashcardAddAndUpdateProvider);
     final flashcardAddAndUpdateNotifier =
         ref.watch(flashcardAddAndUpdateProvider.notifier);
-    final TextEditingController _titleController = TextEditingController();
+    final TextEditingController _titleController = useTextEditingController();
     //詳細ページの初期化処理
     late final String _appBarTitle;
     late final String _buttonTitle;
@@ -19,11 +20,16 @@ class FlashCardAddAndUpdatePage extends ConsumerWidget {
     if (flashcardAddAndUpdateState.isUpdateMode) {
       _appBarTitle = '更新';
       _buttonTitle = '更新';
-      _titleController.text = flashcardAddAndUpdateState.flashcard!.title;
     } else {
       _appBarTitle = '新規作成';
       _buttonTitle = '追加';
     }
+
+    useEffect(() {
+      if (flashcardAddAndUpdateState.isUpdateMode) {
+        _titleController.text = flashcardAddAndUpdateState.flashcard!.title;
+      }
+    }, const []);
 
     return Scaffold(
       appBar: AppBar(

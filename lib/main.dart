@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TopPage(),
+      home: const LoginAndRegisterPage(),
     );
   }
 }
