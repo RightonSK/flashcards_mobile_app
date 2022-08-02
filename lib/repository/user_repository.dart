@@ -15,52 +15,43 @@ class UserRepository {
           toFirestore: (user, _) => user.toJson());
 
   ///
-  /// userを新規で追加する
+  /// userを取得
   ///
-  Future add({required String email, required String password}) async {
-    //await _usersRefWithConverter.doc(flashCard.id).set(flashCard);
+  Future<domain.User> find({required String uid}) async {
+    final documentSnapshot = await _usersRefWithConverter.doc(uid).get();
+    return (documentSnapshot.data()!);
+  }
 
+  ///
+  /// userを新規で追加する。users collectionにもそのuser情報を追加する。
+  ///
+  Future<domain.User> add(
+      {required String email, required String password}) async {
+    //authに新規アカウントを追加
     final credential =
         await auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
-
-    await _usersRefWithConverter.add(domain.User(
+    // users collectionに新規追加
+    await _usersRefWithConverter.doc(credential.user!.uid).set(domain.User(
         uid: credential.user!.uid,
         email: credential.user!.email!,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now()));
+
+    final user = await find(uid: credential.user!.uid);
+    return user;
   }
 
   ///
-  /// ログイン
+  /// ログイン。取得したUserデータからUserクラスを生成、return
   ///
-  Future logIn({required String email, required String password}) async {
+  Future<domain.User> logIn(
+      {required String email, required String password}) async {
     final credential = await auth.FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-  }
-
-  ///
-  /// flashcardを更新
-  ///
-  Future updateFlashcard({required Flashcard flashcard}) async {
-    await _usersRef
-        .doc(flashcard.id)
-        .update({'title': flashcard.title, 'updatedAt': flashcard.updatedAt});
-  }
-
-  ///
-  /// flashcardを削除
-  ///
-  Future deleteFlashcard({required String flashcardId}) async {
-    await _usersRef.doc(flashcardId).delete();
-  }
-
-  ///
-  /// 新規で追加する際に新規のidを発行
-  ///
-  String getNewId() {
-    return _usersRef.doc().id;
+    final user = await find(uid: credential.user!.uid);
+    return user;
   }
 }

@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flashcards_mobile_app/app_model.dart';
+import 'package:flashcards_mobile_app/domain/user.dart' as domain;
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_regsiter_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
+import 'package:flashcards_mobile_app/utils/convert_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/convert_to_user_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -111,19 +116,36 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (loginAndRegisterState.isLoginMode) {
-                      await loginAndRegisterNotifier.login(
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text.trim());
-                    } else {
-                      print('email: ${_emailController.text}');
-                      print('password: ${_passwordController.text}');
-                      await loginAndRegisterNotifier.signUp(
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text.trim());
+                    final domain.User user;
+                    //ログインorアカウント登録
+                    try {
+                      if (loginAndRegisterState.isLoginMode) {
+                        user = await loginAndRegisterNotifier.login(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim());
+                      } else {
+                        user = await loginAndRegisterNotifier.signUp(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim());
+                      }
+                    } on auth.FirebaseAuthException catch (e, stacktrace) {
+                      //print(stacktrace);
+                      if (loginAndRegisterState.isLoginMode) {
+                        _showTextDialog(
+                            context,
+                            ConvertErrorMessageUtil.convertErrorMessageForLogin(
+                                e.code));
+                      } else {
+                        _showTextDialog(
+                            context,
+                            ConvertErrorMessageUtil
+                                .convertErrorMessageForSignup(e.code));
+                      }
+                      return;
                     }
-                    //本来ならflashcardsを取得してtop pageへ遷移
-
+                    // user情報を保存
+                    ref.read(userProvider.notifier).setUser(user);
+                    //top pageへ遷移
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const TopPage()));
                   },
@@ -143,4 +165,23 @@ class LoginAndRegisterPage extends HookConsumerWidget {
       ),
     );
   }
+}
+
+_showTextDialog(context, message) async {
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

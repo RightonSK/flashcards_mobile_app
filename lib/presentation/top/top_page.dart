@@ -5,6 +5,7 @@ import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_notifier.
 import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_page.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_page.dart';
+import 'package:flashcards_mobile_app/presentation/settings/settings_page.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_state.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,14 @@ class TopPage extends ConsumerWidget {
 
     final defaultAppBar = AppBar(
       title: const Text('単語'),
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SettingsPage()));
+            },
+            icon: const Icon(Icons.settings)),
+      ],
     );
     final contextualActionBar = AppBar(
       title: const Text('Action Bar'),
