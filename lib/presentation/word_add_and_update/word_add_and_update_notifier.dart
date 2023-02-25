@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/app_model.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/word_add_and_update/word_add_and_update_state.dart';
@@ -6,11 +7,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final wordAddAndUpdateProvider =
     StateNotifierProvider<WordAddAndUpdateNotifier, WordAddAndUpdateState>(
-        (ref) => WordAddAndUpdateNotifier(WordAddAndUpdateState()));
+        (ref) => WordAddAndUpdateNotifier(ref, WordAddAndUpdateState()));
 
 class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
-  WordAddAndUpdateNotifier(WordAddAndUpdateState state) : super(state);
+  WordAddAndUpdateNotifier(this._ref, WordAddAndUpdateState state)
+      : super(state);
   final _wordRepository = WordRepository();
+  final Ref _ref;
 
   // flashcardを渡し、stateに保存
   void passFlashcard({required Flashcard flashcard}) async {
@@ -32,7 +35,8 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
   ///
   Future addOrUpdateWord(
       {required String title, required String description}) async {
-    late final Word word;
+    final user = _ref.read(userProvider);
+    final Word word;
     if (state.isUpdateMode) {
       word = state.word!.copyWith(
           title: title, description: description, updatedAt: DateTime.now());
@@ -41,11 +45,18 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
       word = Word(
           id: newId,
           flashcardId: state.parentFlashcard!.id,
+          uid: user!.uid,
           title: title,
           description: description,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now());
     }
-    await _wordRepository.addUpdate(word: word);
+    state = state.copyWith(word: word);
+    // add or update分岐
+    if (state.isUpdateMode) {
+      await _wordRepository.update(uid: user!.uid, word: state.word!);
+    } else {
+      await _wordRepository.add(word: state.word!);
+    }
   }
 }

@@ -10,31 +10,70 @@ class WordRepository {
           fromFirestore: (snapshot, _) => Word.fromJson(snapshot.data()!),
           toFirestore: (word, _) => word.toJson());
 
-  Future<List<Word>> findAll(Flashcard flashcard) async {
+  Future<List<Word>> findAll(
+      {required String uid, required Flashcard flashcard}) async {
     final wordsSnapshot = await _wordsRefWithConverter
+        .where('uid', isEqualTo: uid)
         .where('flashcardId', isEqualTo: flashcard.id)
         .get();
     return wordsSnapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  Future addUpdate({required Word word}) async {
+  ///
+  /// wordを新規で追加する
+  ///
+  Future add({required Word word}) async {
     await _wordsRefWithConverter.doc(word.id).set(word);
   }
 
   ///
-  /// wordを削除
+  /// wordを更新
   ///
-  Future delete({required List<String> wordIds}) async {
+  Future update({required String uid, required Word word}) async {
+    final wordsSnapshot = await _wordsRef
+        .where('uid', isEqualTo: uid)
+        .where('flashcardId', isEqualTo: word.flashcardId)
+        .where('id', isEqualTo: word.id)
+        .get();
+    if (wordsSnapshot.size == 1) {
+      print('update in word repository: id = ${word.id}');
+      print('update in word repository: size = ${wordsSnapshot.size}');
+      await wordsSnapshot.docs[0].reference.update({
+        'title': word.title,
+        'description': word.description,
+        'updatedAt': word.updatedAt
+      });
+    }
+  }
+
+  ///
+  /// 単一又は複数のwordを削除
+  ///
+  Future delete(
+      {required String uid,
+      required String flashcardId,
+      required List<String> wordIds}) async {
+    final wordsQuery = _wordsRef
+        .where('uid', isEqualTo: uid)
+        .where('flashcardId', isEqualTo: flashcardId);
+
     for (final String wordId in wordIds) {
-      await _wordsRef.doc(wordId).delete();
+      final wordsSnapshot =
+          await wordsQuery.where('id', isEqualTo: wordId).get();
+      if (wordsSnapshot.size == 1) {
+        print('update in word repository: id = ${wordId}');
+        print('update in word repository: size = ${wordsSnapshot.size}');
+        await wordsSnapshot.docs[0].reference.delete();
+      }
     }
   }
 
   ///
   /// Flashcardの全てのwordを削除
   ///
-  Future deleteAll({required String flashcardId}) async {
+  Future deleteAll({required String uid, required String flashcardId}) async {
     final wordsSnapshot = await _wordsRefWithConverter
+        .where('uid', isEqualTo: uid)
         .where('flashcardId', isEqualTo: flashcardId)
         .get();
     for (QueryDocumentSnapshot doc in wordsSnapshot.docs) {

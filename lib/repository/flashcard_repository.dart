@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcards_mobile_app/app_model.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FlashCaredRepository {
   final CollectionReference _flashcardsRef =
@@ -14,8 +16,10 @@ class FlashCaredRepository {
   ///
   /// flashcardを全て取得
   ///
-  Future<List<Flashcard>> findAll() async {
-    final flashcardsSnapshot = await _flashcardsRefWithConverter.get();
+  Future<List<Flashcard>> findAll({required String uid}) async {
+    //uidを取得
+    final flashcardsSnapshot =
+        await _flashcardsRefWithConverter.where('uid', isEqualTo: uid).get();
     return flashcardsSnapshot.docs.map((doc) => doc.data()).toList();
   }
 
@@ -29,17 +33,32 @@ class FlashCaredRepository {
   ///
   /// flashcardを更新
   ///
-  Future update({required Flashcard flashcard}) async {
-    await _flashcardsRef
-        .doc(flashcard.id)
-        .update({'title': flashcard.title, 'updatedAt': flashcard.updatedAt});
+  Future update({required String uid, required Flashcard flashcard}) async {
+    final flashcardsSnapshot = await _flashcardsRef
+        .where('uid', isEqualTo: uid)
+        .where('id', isEqualTo: flashcard.id)
+        .get();
+    if (flashcardsSnapshot.size == 1) {
+      print(
+          'update in flashcard repository: size = ${flashcardsSnapshot.size}');
+      await flashcardsSnapshot.docs[0].reference
+          .update({'title': flashcard.title, 'updatedAt': flashcard.updatedAt});
+    }
   }
 
   ///
   /// flashcardを削除
   ///
-  Future delete({required String flashcardId}) async {
-    await _flashcardsRef.doc(flashcardId).delete();
+  Future delete({required String uid, required String flashcardId}) async {
+    final flashcardsSnapshot = await _flashcardsRef
+        .where('uid', isEqualTo: uid)
+        .where('id', isEqualTo: flashcardId)
+        .get();
+    if (flashcardsSnapshot.size == 1) {
+      print(
+          'delete in flashcard repository: size = ${flashcardsSnapshot.size}');
+      await flashcardsSnapshot.docs[0].reference.delete();
+    }
   }
 
   ///

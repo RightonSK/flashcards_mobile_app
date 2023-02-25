@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/app_model.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_state.dart';
 import 'package:flashcards_mobile_app/repository/flashcard_repository.dart';
@@ -6,14 +7,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final flashcardAddAndUpdateProvider = StateNotifierProvider<
         FlashCardAddAndUpdateNotifier, FlashcardAddAndUpdateState>(
-    (ref) => FlashCardAddAndUpdateNotifier(FlashcardAddAndUpdateState()));
+    (ref) => FlashCardAddAndUpdateNotifier(ref, FlashcardAddAndUpdateState()));
 
 class FlashCardAddAndUpdateNotifier
     extends StateNotifier<FlashcardAddAndUpdateState> {
-  FlashCardAddAndUpdateNotifier(FlashcardAddAndUpdateState state)
+  FlashCardAddAndUpdateNotifier(this._ref, FlashcardAddAndUpdateState state)
       : super(state);
   final _flashCaredRepository = FlashCaredRepository();
   final _wordRepository = WordRepository();
+  final Ref _ref;
 
   // flashcardを渡し、stateに保存
   void passFlashcard({required Flashcard flashcard}) {
@@ -27,7 +29,8 @@ class FlashCardAddAndUpdateNotifier
 
   // flashcardの中身を更新して、それをrepositoryに渡す
   Future addOrUpdateFlashcard({required String title}) async {
-    late final Flashcard flashcard;
+    final user = _ref.read(userProvider);
+    final Flashcard flashcard;
     if (state.isUpdateMode) {
       flashcard =
           state.flashcard!.copyWith(title: title, updatedAt: DateTime.now());
@@ -35,14 +38,16 @@ class FlashCardAddAndUpdateNotifier
       final newId = _flashCaredRepository.getNewId();
       flashcard = Flashcard(
           id: newId,
+          uid: user!.uid,
           title: title,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now());
     }
     state = state.copyWith(flashcard: flashcard);
-    //条件分岐
+    // add or update分岐
     if (state.isUpdateMode) {
-      await _flashCaredRepository.update(flashcard: state.flashcard!);
+      await _flashCaredRepository.update(
+          uid: user!.uid, flashcard: state.flashcard!);
     } else {
       await _flashCaredRepository.add(flashCard: state.flashcard!);
     }
@@ -50,7 +55,10 @@ class FlashCardAddAndUpdateNotifier
 
   // flashcardをflashcardとwordのrepositoryそれぞれに渡す
   Future deleteFlashcard() async {
-    await _wordRepository.deleteAll(flashcardId: state.flashcard!.id);
-    await _flashCaredRepository.delete(flashcardId: state.flashcard!.id);
+    final user = _ref.read(userProvider);
+    await _wordRepository.deleteAll(
+        uid: user!.uid, flashcardId: state.flashcard!.id);
+    await _flashCaredRepository.delete(
+        uid: user.uid, flashcardId: state.flashcard!.id);
   }
 }

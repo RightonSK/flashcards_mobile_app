@@ -5,11 +5,22 @@ import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_notifier.
 import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_page.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_page.dart';
+import 'package:flashcards_mobile_app/presentation/flashcard_play/flashcard_play_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/settings_page.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_state.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+///
+/// 画面遷移時にAction modeをoffにして、遷移。
+///
+Future pushPage(BuildContext context, WidgetRef ref, Widget page) async {
+  ref.read(topProvider.notifier).falseActionMode();
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    return page;
+  }));
+}
 
 class TopPage extends ConsumerWidget {
   const TopPage({Key? key}) : super(key: key);
@@ -23,9 +34,8 @@ class TopPage extends ConsumerWidget {
       title: const Text('単語'),
       actions: [
         IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SettingsPage()));
+            onPressed: () async {
+              await pushPage(context, ref, const SettingsPage());
             },
             icon: const Icon(Icons.settings)),
       ],
@@ -45,7 +55,8 @@ class TopPage extends ConsumerWidget {
                 context: context,
                 builder: (_) {
                   return AlertDialogSample(
-                    flashcardTitle: topState.selectedFlashcard!.title,
+                    flashcard: topState.selectedFlashcard!,
+                    ref: ref,
                   );
                 },
               );
@@ -64,12 +75,7 @@ class TopPage extends ConsumerWidget {
               } else {
                 return;
               }
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const FlashCardAddAndUpdatePage(),
-                ),
-              );
+              await pushPage(context, ref, const FlashCardAddAndUpdatePage());
               // stateの初期化
               await topNotifier.init();
             },
@@ -81,31 +87,29 @@ class TopPage extends ConsumerWidget {
       color: topState.appBarIsStacked
           ? Colors.indigoAccent
           : Theme.of(context).scaffoldBackgroundColor,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: StackedAppBar(
-            defaultAppBar: defaultAppBar,
-            contextualActionBar: contextualActionBar,
-            isStacked: topState.appBarIsStacked,
-            child: _TopPageBody(
-              topState: topState,
-              topNotifier: topNotifier,
+      child: GestureDetector(
+        //　単語帳やボタンを押された時以外、アクションモード終了
+        onTap: () {
+          topNotifier.falseActionMode();
+        },
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: StackedAppBar(
+              defaultAppBar: defaultAppBar,
+              contextualActionBar: contextualActionBar,
+              isStacked: topState.appBarIsStacked,
+              child: const _TopPageBody(),
             ),
           ),
-        ),
-        //body: _createGridView(context, model),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const FlashCardAddAndUpdatePage(),
-              ),
-            );
-            // stateの初期化
-            await topNotifier.init();
-          },
-          child: const Icon(Icons.add),
+          //body: _createGridView(context, model),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              await pushPage(context, ref, const FlashCardAddAndUpdatePage());
+              // 追加処理後のstateの初期化
+              await topNotifier.init();
+            },
+            child: const Icon(Icons.add),
+          ),
         ),
       ),
     );
@@ -113,14 +117,13 @@ class TopPage extends ConsumerWidget {
 }
 
 class _TopPageBody extends ConsumerWidget {
-  const _TopPageBody(
-      {Key? key, required this.topState, required this.topNotifier})
-      : super(key: key);
-  final TopState topState;
-  final TopNotifier topNotifier;
+  const _TopPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final topState = ref.watch(topProvider);
+    final topNotifier = ref.watch(topProvider.notifier);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -150,10 +153,8 @@ class _TopPageBody extends ConsumerWidget {
           children: () {
             return topState.flashcardList.reversed
                 .map(
-                  (Flashcard flashcard) => InkWell(
+                  (flashcard) => InkWell(
                     onTap: () async {
-                      /// flashcard pageのstateにflashcardを渡し、その後flashcardが
-                      /// nullじゃないならページ遷移
                       /// action modeの場合、同一のflashcardならaction modeをfalse
                       ///  そうではない場合、選択されたものをselectedFlashcardにセット。
                       if (topState.isActionMode) {
@@ -165,18 +166,8 @@ class _TopPageBody extends ConsumerWidget {
                               selectedFlashcard: flashcard);
                         }
                       } else {
-                        //flashcard pageのinit
-                        await ref
-                            .read(flashcardProvider.notifier)
-                            .init(flashcard: flashcard);
-                        if (ref.read(flashcardProvider).flashcard != null) {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const FlashcardPage(),
-                            ),
-                          );
-                        }
+                        await pushPage(
+                            context, ref, FlashcardPage(flashcard: flashcard));
                         // stateの初期化
                         await topNotifier.init();
                       }
@@ -226,14 +217,16 @@ class _TopPageBody extends ConsumerWidget {
 }
 
 class AlertDialogSample extends StatelessWidget {
-  const AlertDialogSample({required this.flashcardTitle, Key? key})
+  const AlertDialogSample(
+      {required this.flashcard, required this.ref, Key? key})
       : super(key: key);
-  final String flashcardTitle;
+  final Flashcard flashcard;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('${flashcardTitle}の再生ボタンが押されました。'),
+      title: Text('${flashcard.title}の再生ボタンが押されました。'),
       //content: Text('こうかいしませんね？'),
       actions: <Widget>[
         GestureDetector(
@@ -244,7 +237,9 @@ class AlertDialogSample extends StatelessWidget {
         ),
         GestureDetector(
           child: Text('はい'),
-          onTap: () {},
+          onTap: () {
+            pushPage(context, ref, FlashcardPlayPage(flashcard: flashcard));
+          },
         )
       ],
     );

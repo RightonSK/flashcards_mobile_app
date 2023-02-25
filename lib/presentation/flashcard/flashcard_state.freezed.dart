@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'flashcard_state.dart';
 
@@ -12,32 +12,7 @@ part of 'flashcard_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$FlashcardStateTearOff {
-  const _$FlashcardStateTearOff();
-
-  _FlashcardState call(
-      {Flashcard? flashcard,
-      List<Word> words = const <Word>[],
-      Map<String, Word> wordIdToSelectedWord = const <String, Word>{},
-      dynamic appBarIsStacked = false,
-      bool isActionMode = false,
-      dynamic wordIdToIsFlipped = const <String, bool>{}}) {
-    return _FlashcardState(
-      flashcard: flashcard,
-      words: words,
-      wordIdToSelectedWord: wordIdToSelectedWord,
-      appBarIsStacked: appBarIsStacked,
-      isActionMode: isActionMode,
-      wordIdToIsFlipped: wordIdToIsFlipped,
-    );
-  }
-}
-
-/// @nodoc
-const $FlashcardState = _$FlashcardStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$FlashcardState {
@@ -58,7 +33,8 @@ mixin _$FlashcardState {
 abstract class $FlashcardStateCopyWith<$Res> {
   factory $FlashcardStateCopyWith(
           FlashcardState value, $Res Function(FlashcardState) then) =
-      _$FlashcardStateCopyWithImpl<$Res>;
+      _$FlashcardStateCopyWithImpl<$Res, FlashcardState>;
+  @useResult
   $Res call(
       {Flashcard? flashcard,
       List<Word> words,
@@ -69,59 +45,62 @@ abstract class $FlashcardStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FlashcardStateCopyWithImpl<$Res>
+class _$FlashcardStateCopyWithImpl<$Res, $Val extends FlashcardState>
     implements $FlashcardStateCopyWith<$Res> {
   _$FlashcardStateCopyWithImpl(this._value, this._then);
 
-  final FlashcardState _value;
   // ignore: unused_field
-  final $Res Function(FlashcardState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? flashcard = freezed,
-    Object? words = freezed,
-    Object? wordIdToSelectedWord = freezed,
+    Object? words = null,
+    Object? wordIdToSelectedWord = null,
     Object? appBarIsStacked = freezed,
-    Object? isActionMode = freezed,
+    Object? isActionMode = null,
     Object? wordIdToIsFlipped = freezed,
   }) {
     return _then(_value.copyWith(
-      flashcard: flashcard == freezed
+      flashcard: freezed == flashcard
           ? _value.flashcard
           : flashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      words: words == freezed
+      words: null == words
           ? _value.words
           : words // ignore: cast_nullable_to_non_nullable
               as List<Word>,
-      wordIdToSelectedWord: wordIdToSelectedWord == freezed
+      wordIdToSelectedWord: null == wordIdToSelectedWord
           ? _value.wordIdToSelectedWord
           : wordIdToSelectedWord // ignore: cast_nullable_to_non_nullable
               as Map<String, Word>,
-      appBarIsStacked: appBarIsStacked == freezed
+      appBarIsStacked: freezed == appBarIsStacked
           ? _value.appBarIsStacked
           : appBarIsStacked // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      isActionMode: isActionMode == freezed
+      isActionMode: null == isActionMode
           ? _value.isActionMode
           : isActionMode // ignore: cast_nullable_to_non_nullable
               as bool,
-      wordIdToIsFlipped: wordIdToIsFlipped == freezed
+      wordIdToIsFlipped: freezed == wordIdToIsFlipped
           ? _value.wordIdToIsFlipped
           : wordIdToIsFlipped // ignore: cast_nullable_to_non_nullable
               as dynamic,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$FlashcardStateCopyWith<$Res>
+abstract class _$$_FlashcardStateCopyWith<$Res>
     implements $FlashcardStateCopyWith<$Res> {
-  factory _$FlashcardStateCopyWith(
-          _FlashcardState value, $Res Function(_FlashcardState) then) =
-      __$FlashcardStateCopyWithImpl<$Res>;
+  factory _$$_FlashcardStateCopyWith(
+          _$_FlashcardState value, $Res Function(_$_FlashcardState) then) =
+      __$$_FlashcardStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {Flashcard? flashcard,
       List<Word> words,
@@ -132,46 +111,45 @@ abstract class _$FlashcardStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$FlashcardStateCopyWithImpl<$Res>
-    extends _$FlashcardStateCopyWithImpl<$Res>
-    implements _$FlashcardStateCopyWith<$Res> {
-  __$FlashcardStateCopyWithImpl(
-      _FlashcardState _value, $Res Function(_FlashcardState) _then)
-      : super(_value, (v) => _then(v as _FlashcardState));
+class __$$_FlashcardStateCopyWithImpl<$Res>
+    extends _$FlashcardStateCopyWithImpl<$Res, _$_FlashcardState>
+    implements _$$_FlashcardStateCopyWith<$Res> {
+  __$$_FlashcardStateCopyWithImpl(
+      _$_FlashcardState _value, $Res Function(_$_FlashcardState) _then)
+      : super(_value, _then);
 
-  @override
-  _FlashcardState get _value => super._value as _FlashcardState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? flashcard = freezed,
-    Object? words = freezed,
-    Object? wordIdToSelectedWord = freezed,
+    Object? words = null,
+    Object? wordIdToSelectedWord = null,
     Object? appBarIsStacked = freezed,
-    Object? isActionMode = freezed,
+    Object? isActionMode = null,
     Object? wordIdToIsFlipped = freezed,
   }) {
-    return _then(_FlashcardState(
-      flashcard: flashcard == freezed
+    return _then(_$_FlashcardState(
+      flashcard: freezed == flashcard
           ? _value.flashcard
           : flashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      words: words == freezed
-          ? _value.words
+      words: null == words
+          ? _value._words
           : words // ignore: cast_nullable_to_non_nullable
               as List<Word>,
-      wordIdToSelectedWord: wordIdToSelectedWord == freezed
-          ? _value.wordIdToSelectedWord
+      wordIdToSelectedWord: null == wordIdToSelectedWord
+          ? _value._wordIdToSelectedWord
           : wordIdToSelectedWord // ignore: cast_nullable_to_non_nullable
               as Map<String, Word>,
-      appBarIsStacked:
-          appBarIsStacked == freezed ? _value.appBarIsStacked : appBarIsStacked,
-      isActionMode: isActionMode == freezed
+      appBarIsStacked: freezed == appBarIsStacked
+          ? _value.appBarIsStacked!
+          : appBarIsStacked,
+      isActionMode: null == isActionMode
           ? _value.isActionMode
           : isActionMode // ignore: cast_nullable_to_non_nullable
               as bool,
-      wordIdToIsFlipped: wordIdToIsFlipped == freezed
-          ? _value.wordIdToIsFlipped
+      wordIdToIsFlipped: freezed == wordIdToIsFlipped
+          ? _value.wordIdToIsFlipped!
           : wordIdToIsFlipped,
     ));
   }
@@ -182,28 +160,44 @@ class __$FlashcardStateCopyWithImpl<$Res>
 class _$_FlashcardState implements _FlashcardState {
   _$_FlashcardState(
       {this.flashcard,
-      this.words = const <Word>[],
-      this.wordIdToSelectedWord = const <String, Word>{},
+      final List<Word> words = const <Word>[],
+      final Map<String, Word> wordIdToSelectedWord = const <String, Word>{},
       this.appBarIsStacked = false,
       this.isActionMode = false,
-      this.wordIdToIsFlipped = const <String, bool>{}});
+      this.wordIdToIsFlipped = const <String, bool>{}})
+      : _words = words,
+        _wordIdToSelectedWord = wordIdToSelectedWord;
 
   @override
   final Flashcard? flashcard;
-  @JsonKey()
+  final List<Word> _words;
   @override
-  final List<Word> words;
   @JsonKey()
+  List<Word> get words {
+    if (_words is EqualUnmodifiableListView) return _words;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_words);
+  }
+
+  final Map<String, Word> _wordIdToSelectedWord;
   @override
-  final Map<String, Word> wordIdToSelectedWord;
   @JsonKey()
-  @override //@Default(<Word>[]) List<Word> selectedWords,
+  Map<String, Word> get wordIdToSelectedWord {
+    if (_wordIdToSelectedWord is EqualUnmodifiableMapView)
+      return _wordIdToSelectedWord;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_wordIdToSelectedWord);
+  }
+
+//@Default(<Word>[]) List<Word> selectedWords,
+  @override
+  @JsonKey()
   final dynamic appBarIsStacked;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isActionMode;
-  @JsonKey()
   @override
+  @JsonKey()
   final dynamic wordIdToIsFlipped;
 
   @override
@@ -215,15 +209,16 @@ class _$_FlashcardState implements _FlashcardState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FlashcardState &&
-            const DeepCollectionEquality().equals(other.flashcard, flashcard) &&
-            const DeepCollectionEquality().equals(other.words, words) &&
+            other is _$_FlashcardState &&
+            (identical(other.flashcard, flashcard) ||
+                other.flashcard == flashcard) &&
+            const DeepCollectionEquality().equals(other._words, _words) &&
             const DeepCollectionEquality()
-                .equals(other.wordIdToSelectedWord, wordIdToSelectedWord) &&
+                .equals(other._wordIdToSelectedWord, _wordIdToSelectedWord) &&
             const DeepCollectionEquality()
                 .equals(other.appBarIsStacked, appBarIsStacked) &&
-            const DeepCollectionEquality()
-                .equals(other.isActionMode, isActionMode) &&
+            (identical(other.isActionMode, isActionMode) ||
+                other.isActionMode == isActionMode) &&
             const DeepCollectionEquality()
                 .equals(other.wordIdToIsFlipped, wordIdToIsFlipped));
   }
@@ -231,27 +226,28 @@ class _$_FlashcardState implements _FlashcardState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(flashcard),
-      const DeepCollectionEquality().hash(words),
-      const DeepCollectionEquality().hash(wordIdToSelectedWord),
+      flashcard,
+      const DeepCollectionEquality().hash(_words),
+      const DeepCollectionEquality().hash(_wordIdToSelectedWord),
       const DeepCollectionEquality().hash(appBarIsStacked),
-      const DeepCollectionEquality().hash(isActionMode),
+      isActionMode,
       const DeepCollectionEquality().hash(wordIdToIsFlipped));
 
   @JsonKey(ignore: true)
   @override
-  _$FlashcardStateCopyWith<_FlashcardState> get copyWith =>
-      __$FlashcardStateCopyWithImpl<_FlashcardState>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_FlashcardStateCopyWith<_$_FlashcardState> get copyWith =>
+      __$$_FlashcardStateCopyWithImpl<_$_FlashcardState>(this, _$identity);
 }
 
 abstract class _FlashcardState implements FlashcardState {
   factory _FlashcardState(
-      {Flashcard? flashcard,
-      List<Word> words,
-      Map<String, Word> wordIdToSelectedWord,
-      dynamic appBarIsStacked,
-      bool isActionMode,
-      dynamic wordIdToIsFlipped}) = _$_FlashcardState;
+      {final Flashcard? flashcard,
+      final List<Word> words,
+      final Map<String, Word> wordIdToSelectedWord,
+      final dynamic appBarIsStacked,
+      final bool isActionMode,
+      final dynamic wordIdToIsFlipped}) = _$_FlashcardState;
 
   @override
   Flashcard? get flashcard;
@@ -267,6 +263,6 @@ abstract class _FlashcardState implements FlashcardState {
   dynamic get wordIdToIsFlipped;
   @override
   @JsonKey(ignore: true)
-  _$FlashcardStateCopyWith<_FlashcardState> get copyWith =>
+  _$$_FlashcardStateCopyWith<_$_FlashcardState> get copyWith =>
       throw _privateConstructorUsedError;
 }

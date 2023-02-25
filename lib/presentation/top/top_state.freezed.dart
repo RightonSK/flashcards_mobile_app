@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'top_state.dart';
 
@@ -12,28 +12,7 @@ part of 'top_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$TopStateTearOff {
-  const _$TopStateTearOff();
-
-  _TopState call(
-      {List<Flashcard> flashcardList = const <Flashcard>[],
-      Flashcard? selectedFlashcard,
-      bool appBarIsStacked = false,
-      bool isActionMode = false}) {
-    return _TopState(
-      flashcardList: flashcardList,
-      selectedFlashcard: selectedFlashcard,
-      appBarIsStacked: appBarIsStacked,
-      isActionMode: isActionMode,
-    );
-  }
-}
-
-/// @nodoc
-const $TopState = _$TopStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$TopState {
@@ -50,7 +29,8 @@ mixin _$TopState {
 /// @nodoc
 abstract class $TopStateCopyWith<$Res> {
   factory $TopStateCopyWith(TopState value, $Res Function(TopState) then) =
-      _$TopStateCopyWithImpl<$Res>;
+      _$TopStateCopyWithImpl<$Res, TopState>;
+  @useResult
   $Res call(
       {List<Flashcard> flashcardList,
       Flashcard? selectedFlashcard,
@@ -59,46 +39,51 @@ abstract class $TopStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TopStateCopyWithImpl<$Res> implements $TopStateCopyWith<$Res> {
+class _$TopStateCopyWithImpl<$Res, $Val extends TopState>
+    implements $TopStateCopyWith<$Res> {
   _$TopStateCopyWithImpl(this._value, this._then);
 
-  final TopState _value;
   // ignore: unused_field
-  final $Res Function(TopState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? flashcardList = freezed,
+    Object? flashcardList = null,
     Object? selectedFlashcard = freezed,
-    Object? appBarIsStacked = freezed,
-    Object? isActionMode = freezed,
+    Object? appBarIsStacked = null,
+    Object? isActionMode = null,
   }) {
     return _then(_value.copyWith(
-      flashcardList: flashcardList == freezed
+      flashcardList: null == flashcardList
           ? _value.flashcardList
           : flashcardList // ignore: cast_nullable_to_non_nullable
               as List<Flashcard>,
-      selectedFlashcard: selectedFlashcard == freezed
+      selectedFlashcard: freezed == selectedFlashcard
           ? _value.selectedFlashcard
           : selectedFlashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      appBarIsStacked: appBarIsStacked == freezed
+      appBarIsStacked: null == appBarIsStacked
           ? _value.appBarIsStacked
           : appBarIsStacked // ignore: cast_nullable_to_non_nullable
               as bool,
-      isActionMode: isActionMode == freezed
+      isActionMode: null == isActionMode
           ? _value.isActionMode
           : isActionMode // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$TopStateCopyWith<$Res> implements $TopStateCopyWith<$Res> {
-  factory _$TopStateCopyWith(_TopState value, $Res Function(_TopState) then) =
-      __$TopStateCopyWithImpl<$Res>;
+abstract class _$$_TopStateCopyWith<$Res> implements $TopStateCopyWith<$Res> {
+  factory _$$_TopStateCopyWith(
+          _$_TopState value, $Res Function(_$_TopState) then) =
+      __$$_TopStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {List<Flashcard> flashcardList,
       Flashcard? selectedFlashcard,
@@ -107,35 +92,35 @@ abstract class _$TopStateCopyWith<$Res> implements $TopStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$TopStateCopyWithImpl<$Res> extends _$TopStateCopyWithImpl<$Res>
-    implements _$TopStateCopyWith<$Res> {
-  __$TopStateCopyWithImpl(_TopState _value, $Res Function(_TopState) _then)
-      : super(_value, (v) => _then(v as _TopState));
+class __$$_TopStateCopyWithImpl<$Res>
+    extends _$TopStateCopyWithImpl<$Res, _$_TopState>
+    implements _$$_TopStateCopyWith<$Res> {
+  __$$_TopStateCopyWithImpl(
+      _$_TopState _value, $Res Function(_$_TopState) _then)
+      : super(_value, _then);
 
-  @override
-  _TopState get _value => super._value as _TopState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? flashcardList = freezed,
+    Object? flashcardList = null,
     Object? selectedFlashcard = freezed,
-    Object? appBarIsStacked = freezed,
-    Object? isActionMode = freezed,
+    Object? appBarIsStacked = null,
+    Object? isActionMode = null,
   }) {
-    return _then(_TopState(
-      flashcardList: flashcardList == freezed
-          ? _value.flashcardList
+    return _then(_$_TopState(
+      flashcardList: null == flashcardList
+          ? _value._flashcardList
           : flashcardList // ignore: cast_nullable_to_non_nullable
               as List<Flashcard>,
-      selectedFlashcard: selectedFlashcard == freezed
+      selectedFlashcard: freezed == selectedFlashcard
           ? _value.selectedFlashcard
           : selectedFlashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      appBarIsStacked: appBarIsStacked == freezed
+      appBarIsStacked: null == appBarIsStacked
           ? _value.appBarIsStacked
           : appBarIsStacked // ignore: cast_nullable_to_non_nullable
               as bool,
-      isActionMode: isActionMode == freezed
+      isActionMode: null == isActionMode
           ? _value.isActionMode
           : isActionMode // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -147,21 +132,28 @@ class __$TopStateCopyWithImpl<$Res> extends _$TopStateCopyWithImpl<$Res>
 
 class _$_TopState implements _TopState {
   _$_TopState(
-      {this.flashcardList = const <Flashcard>[],
+      {final List<Flashcard> flashcardList = const <Flashcard>[],
       this.selectedFlashcard,
       this.appBarIsStacked = false,
-      this.isActionMode = false});
+      this.isActionMode = false})
+      : _flashcardList = flashcardList;
 
-  @JsonKey()
+  final List<Flashcard> _flashcardList;
   @override
-  final List<Flashcard> flashcardList;
+  @JsonKey()
+  List<Flashcard> get flashcardList {
+    if (_flashcardList is EqualUnmodifiableListView) return _flashcardList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_flashcardList);
+  }
+
   @override
   final Flashcard? selectedFlashcard;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool appBarIsStacked;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isActionMode;
 
   @override
@@ -173,37 +165,38 @@ class _$_TopState implements _TopState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _TopState &&
+            other is _$_TopState &&
             const DeepCollectionEquality()
-                .equals(other.flashcardList, flashcardList) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedFlashcard, selectedFlashcard) &&
-            const DeepCollectionEquality()
-                .equals(other.appBarIsStacked, appBarIsStacked) &&
-            const DeepCollectionEquality()
-                .equals(other.isActionMode, isActionMode));
+                .equals(other._flashcardList, _flashcardList) &&
+            (identical(other.selectedFlashcard, selectedFlashcard) ||
+                other.selectedFlashcard == selectedFlashcard) &&
+            (identical(other.appBarIsStacked, appBarIsStacked) ||
+                other.appBarIsStacked == appBarIsStacked) &&
+            (identical(other.isActionMode, isActionMode) ||
+                other.isActionMode == isActionMode));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(flashcardList),
-      const DeepCollectionEquality().hash(selectedFlashcard),
-      const DeepCollectionEquality().hash(appBarIsStacked),
-      const DeepCollectionEquality().hash(isActionMode));
+      const DeepCollectionEquality().hash(_flashcardList),
+      selectedFlashcard,
+      appBarIsStacked,
+      isActionMode);
 
   @JsonKey(ignore: true)
   @override
-  _$TopStateCopyWith<_TopState> get copyWith =>
-      __$TopStateCopyWithImpl<_TopState>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_TopStateCopyWith<_$_TopState> get copyWith =>
+      __$$_TopStateCopyWithImpl<_$_TopState>(this, _$identity);
 }
 
 abstract class _TopState implements TopState {
   factory _TopState(
-      {List<Flashcard> flashcardList,
-      Flashcard? selectedFlashcard,
-      bool appBarIsStacked,
-      bool isActionMode}) = _$_TopState;
+      {final List<Flashcard> flashcardList,
+      final Flashcard? selectedFlashcard,
+      final bool appBarIsStacked,
+      final bool isActionMode}) = _$_TopState;
 
   @override
   List<Flashcard> get flashcardList;
@@ -215,6 +208,6 @@ abstract class _TopState implements TopState {
   bool get isActionMode;
   @override
   @JsonKey(ignore: true)
-  _$TopStateCopyWith<_TopState> get copyWith =>
+  _$$_TopStateCopyWith<_$_TopState> get copyWith =>
       throw _privateConstructorUsedError;
 }

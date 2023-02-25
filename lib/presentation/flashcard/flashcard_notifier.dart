@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/app_model.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_state.dart';
@@ -5,12 +6,17 @@ import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final flashcardProvider =
-    StateNotifierProvider<FlashcardNotifier, FlashcardState>(
-        (ref) => FlashcardNotifier(FlashcardState()));
+    StateNotifierProvider.family<FlashcardNotifier, FlashcardState, Flashcard>(
+        (ref, Flashcard flashcard) =>
+            FlashcardNotifier(ref, FlashcardState(), flashcard));
 
 class FlashcardNotifier extends StateNotifier<FlashcardState> {
-  FlashcardNotifier(FlashcardState state) : super(state);
+  FlashcardNotifier(this._ref, FlashcardState state, Flashcard flashcard)
+      : super(state) {
+    init(flashcard: flashcard);
+  }
   final _wordRepository = WordRepository();
+  final Ref _ref;
 
   ///
   /// 最初に遷移した時のための初期化メソッド
@@ -30,18 +36,26 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
     createWordIdToIsFlipped();
   }
 
-  // flashcardをstateにコピー
-  Future passFlashcard(Flashcard flashcard) async {
+  ///
+  /// flashcardをstateにコピー
+  ///
+  void passFlashcard(Flashcard flashcard) async {
     state = state.copyWith(flashcard: flashcard);
   }
 
-  // このstateのflashcardのwordsをfetch
+  ///
+  /// このstateのflashcardのwordsをfetch
+  ///
   Future fetchWordsOfTheFlashcard() async {
-    List<Word> words = await _wordRepository.findAll(state.flashcard!);
+    final user = _ref.read(userProvider);
+    List<Word> words = await _wordRepository.findAll(
+        uid: user!.uid, flashcard: state.flashcard!);
     state = state.copyWith(words: words);
   }
 
-  // wordをflipするのに必要なプロパティを作成しstateに保存
+  ///
+  /// wordをflipするのに必要なプロパティを作成しstateに保存
+  ///
   void createWordIdToIsFlipped() {
     final Map<String, bool> wordIdToIsFlipped = {};
     for (Word word in state.words) {
@@ -112,8 +126,10 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   /// 削除するwordのidをrepositoryに渡す
   ///
   Future deleteWords() async {
+    final user = _ref.read(userProvider);
     final List<String> wordIds =
         state.wordIdToSelectedWord.entries.map((e) => e.key).toList();
-    await _wordRepository.delete(wordIds: wordIds);
+    await _wordRepository.delete(
+        uid: user!.uid, flashcardId: state.flashcard!.id, wordIds: wordIds);
   }
 }

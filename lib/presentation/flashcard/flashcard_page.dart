@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/custom_widgets/colored_status_bar.dart';
 import 'package:flashcards_mobile_app/presentation/custom_widgets/stacked_app_bar.dart';
@@ -9,12 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FlashcardPage extends ConsumerWidget {
-  const FlashcardPage({Key? key}) : super(key: key);
+  const FlashcardPage({Key? key, required this.flashcard}) : super(key: key);
+  final Flashcard flashcard;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final flashcardState = ref.watch(flashcardProvider);
-    final flashcardNotifier = ref.watch(flashcardProvider.notifier);
+    final flashcardState = ref.watch(flashcardProvider(flashcard));
+    final flashcardNotifier = ref.watch(flashcardProvider(flashcard).notifier);
 
     final defaultAppBar = AppBar(
       title: Text(flashcardState.flashcard!.title),
@@ -118,8 +120,8 @@ class FlashcardPage extends ConsumerWidget {
           contextualActionBar: contextualActionBar,
           isStacked: flashcardState.appBarIsStacked,
           child: _FlashcardPageBody(
-              flashcardNotifier: flashcardNotifier,
-              flashcardState: flashcardState),
+            flashcard: flashcard,
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -150,14 +152,15 @@ class FlashcardPage extends ConsumerWidget {
 }
 
 class _FlashcardPageBody extends ConsumerWidget {
-  const _FlashcardPageBody(
-      {required this.flashcardNotifier, required this.flashcardState, Key? key})
+  const _FlashcardPageBody({Key? key, required this.flashcard})
       : super(key: key);
-  final FlashcardNotifier flashcardNotifier;
-  final FlashcardState flashcardState;
+  final Flashcard flashcard;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final flashcardState = ref.watch(flashcardProvider(flashcard));
+    final flashcardNotifier = ref.watch(flashcardProvider(flashcard).notifier);
+
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

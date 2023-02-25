@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flashcards_mobile_app/app_model.dart';
 import 'package:flashcards_mobile_app/domain/user.dart' as domain;
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_regsiter_notifier.dart';
+import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
 import 'package:flashcards_mobile_app/utils/convert_error_message_util.dart';
-import 'package:flashcards_mobile_app/utils/convert_to_user_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -145,6 +145,8 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                     }
                     // user情報を保存
                     ref.read(userProvider.notifier).setUser(user);
+                    // user情報を元に、データを取得
+                    await ref.read(topProvider.notifier).fetchFlashcards();
                     //top pageへ遷移
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const TopPage()));

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'login_and_register_state.dart';
 
@@ -12,30 +12,7 @@ part of 'login_and_register_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$LoginAndRegisterStateTearOff {
-  const _$LoginAndRegisterStateTearOff();
-
-  _LoginAndRegisterState call(
-      {bool isLoginMode = true,
-      List<Flashcard> flashcardList = const <Flashcard>[],
-      Flashcard? selectedFlashcard,
-      bool appBarIsStacked = false,
-      bool isActionMode = false}) {
-    return _LoginAndRegisterState(
-      isLoginMode: isLoginMode,
-      flashcardList: flashcardList,
-      selectedFlashcard: selectedFlashcard,
-      appBarIsStacked: appBarIsStacked,
-      isActionMode: isActionMode,
-    );
-  }
-}
-
-/// @nodoc
-const $LoginAndRegisterState = _$LoginAndRegisterStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$LoginAndRegisterState {
@@ -54,7 +31,8 @@ mixin _$LoginAndRegisterState {
 abstract class $LoginAndRegisterStateCopyWith<$Res> {
   factory $LoginAndRegisterStateCopyWith(LoginAndRegisterState value,
           $Res Function(LoginAndRegisterState) then) =
-      _$LoginAndRegisterStateCopyWithImpl<$Res>;
+      _$LoginAndRegisterStateCopyWithImpl<$Res, LoginAndRegisterState>;
+  @useResult
   $Res call(
       {bool isLoginMode,
       List<Flashcard> flashcardList,
@@ -64,54 +42,58 @@ abstract class $LoginAndRegisterStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$LoginAndRegisterStateCopyWithImpl<$Res>
+class _$LoginAndRegisterStateCopyWithImpl<$Res,
+        $Val extends LoginAndRegisterState>
     implements $LoginAndRegisterStateCopyWith<$Res> {
   _$LoginAndRegisterStateCopyWithImpl(this._value, this._then);
 
-  final LoginAndRegisterState _value;
   // ignore: unused_field
-  final $Res Function(LoginAndRegisterState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isLoginMode = freezed,
-    Object? flashcardList = freezed,
+    Object? isLoginMode = null,
+    Object? flashcardList = null,
     Object? selectedFlashcard = freezed,
-    Object? appBarIsStacked = freezed,
-    Object? isActionMode = freezed,
+    Object? appBarIsStacked = null,
+    Object? isActionMode = null,
   }) {
     return _then(_value.copyWith(
-      isLoginMode: isLoginMode == freezed
+      isLoginMode: null == isLoginMode
           ? _value.isLoginMode
           : isLoginMode // ignore: cast_nullable_to_non_nullable
               as bool,
-      flashcardList: flashcardList == freezed
+      flashcardList: null == flashcardList
           ? _value.flashcardList
           : flashcardList // ignore: cast_nullable_to_non_nullable
               as List<Flashcard>,
-      selectedFlashcard: selectedFlashcard == freezed
+      selectedFlashcard: freezed == selectedFlashcard
           ? _value.selectedFlashcard
           : selectedFlashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      appBarIsStacked: appBarIsStacked == freezed
+      appBarIsStacked: null == appBarIsStacked
           ? _value.appBarIsStacked
           : appBarIsStacked // ignore: cast_nullable_to_non_nullable
               as bool,
-      isActionMode: isActionMode == freezed
+      isActionMode: null == isActionMode
           ? _value.isActionMode
           : isActionMode // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$LoginAndRegisterStateCopyWith<$Res>
+abstract class _$$_LoginAndRegisterStateCopyWith<$Res>
     implements $LoginAndRegisterStateCopyWith<$Res> {
-  factory _$LoginAndRegisterStateCopyWith(_LoginAndRegisterState value,
-          $Res Function(_LoginAndRegisterState) then) =
-      __$LoginAndRegisterStateCopyWithImpl<$Res>;
+  factory _$$_LoginAndRegisterStateCopyWith(_$_LoginAndRegisterState value,
+          $Res Function(_$_LoginAndRegisterState) then) =
+      __$$_LoginAndRegisterStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {bool isLoginMode,
       List<Flashcard> flashcardList,
@@ -121,42 +103,40 @@ abstract class _$LoginAndRegisterStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$LoginAndRegisterStateCopyWithImpl<$Res>
-    extends _$LoginAndRegisterStateCopyWithImpl<$Res>
-    implements _$LoginAndRegisterStateCopyWith<$Res> {
-  __$LoginAndRegisterStateCopyWithImpl(_LoginAndRegisterState _value,
-      $Res Function(_LoginAndRegisterState) _then)
-      : super(_value, (v) => _then(v as _LoginAndRegisterState));
+class __$$_LoginAndRegisterStateCopyWithImpl<$Res>
+    extends _$LoginAndRegisterStateCopyWithImpl<$Res, _$_LoginAndRegisterState>
+    implements _$$_LoginAndRegisterStateCopyWith<$Res> {
+  __$$_LoginAndRegisterStateCopyWithImpl(_$_LoginAndRegisterState _value,
+      $Res Function(_$_LoginAndRegisterState) _then)
+      : super(_value, _then);
 
-  @override
-  _LoginAndRegisterState get _value => super._value as _LoginAndRegisterState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isLoginMode = freezed,
-    Object? flashcardList = freezed,
+    Object? isLoginMode = null,
+    Object? flashcardList = null,
     Object? selectedFlashcard = freezed,
-    Object? appBarIsStacked = freezed,
-    Object? isActionMode = freezed,
+    Object? appBarIsStacked = null,
+    Object? isActionMode = null,
   }) {
-    return _then(_LoginAndRegisterState(
-      isLoginMode: isLoginMode == freezed
+    return _then(_$_LoginAndRegisterState(
+      isLoginMode: null == isLoginMode
           ? _value.isLoginMode
           : isLoginMode // ignore: cast_nullable_to_non_nullable
               as bool,
-      flashcardList: flashcardList == freezed
-          ? _value.flashcardList
+      flashcardList: null == flashcardList
+          ? _value._flashcardList
           : flashcardList // ignore: cast_nullable_to_non_nullable
               as List<Flashcard>,
-      selectedFlashcard: selectedFlashcard == freezed
+      selectedFlashcard: freezed == selectedFlashcard
           ? _value.selectedFlashcard
           : selectedFlashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      appBarIsStacked: appBarIsStacked == freezed
+      appBarIsStacked: null == appBarIsStacked
           ? _value.appBarIsStacked
           : appBarIsStacked // ignore: cast_nullable_to_non_nullable
               as bool,
-      isActionMode: isActionMode == freezed
+      isActionMode: null == isActionMode
           ? _value.isActionMode
           : isActionMode // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -169,24 +149,33 @@ class __$LoginAndRegisterStateCopyWithImpl<$Res>
 class _$_LoginAndRegisterState implements _LoginAndRegisterState {
   _$_LoginAndRegisterState(
       {this.isLoginMode = true,
-      this.flashcardList = const <Flashcard>[],
+      final List<Flashcard> flashcardList = const <Flashcard>[],
       this.selectedFlashcard,
       this.appBarIsStacked = false,
-      this.isActionMode = false});
+      this.isActionMode = false})
+      : _flashcardList = flashcardList;
 
-  @JsonKey()
   @override
-  final bool isLoginMode;
   @JsonKey()
-  @override ////
-  final List<Flashcard> flashcardList;
+  final bool isLoginMode;
+////
+  final List<Flashcard> _flashcardList;
+////
+  @override
+  @JsonKey()
+  List<Flashcard> get flashcardList {
+    if (_flashcardList is EqualUnmodifiableListView) return _flashcardList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_flashcardList);
+  }
+
   @override
   final Flashcard? selectedFlashcard;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool appBarIsStacked;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isActionMode;
 
   @override
@@ -198,42 +187,43 @@ class _$_LoginAndRegisterState implements _LoginAndRegisterState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _LoginAndRegisterState &&
+            other is _$_LoginAndRegisterState &&
+            (identical(other.isLoginMode, isLoginMode) ||
+                other.isLoginMode == isLoginMode) &&
             const DeepCollectionEquality()
-                .equals(other.isLoginMode, isLoginMode) &&
-            const DeepCollectionEquality()
-                .equals(other.flashcardList, flashcardList) &&
-            const DeepCollectionEquality()
-                .equals(other.selectedFlashcard, selectedFlashcard) &&
-            const DeepCollectionEquality()
-                .equals(other.appBarIsStacked, appBarIsStacked) &&
-            const DeepCollectionEquality()
-                .equals(other.isActionMode, isActionMode));
+                .equals(other._flashcardList, _flashcardList) &&
+            (identical(other.selectedFlashcard, selectedFlashcard) ||
+                other.selectedFlashcard == selectedFlashcard) &&
+            (identical(other.appBarIsStacked, appBarIsStacked) ||
+                other.appBarIsStacked == appBarIsStacked) &&
+            (identical(other.isActionMode, isActionMode) ||
+                other.isActionMode == isActionMode));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(isLoginMode),
-      const DeepCollectionEquality().hash(flashcardList),
-      const DeepCollectionEquality().hash(selectedFlashcard),
-      const DeepCollectionEquality().hash(appBarIsStacked),
-      const DeepCollectionEquality().hash(isActionMode));
+      isLoginMode,
+      const DeepCollectionEquality().hash(_flashcardList),
+      selectedFlashcard,
+      appBarIsStacked,
+      isActionMode);
 
   @JsonKey(ignore: true)
   @override
-  _$LoginAndRegisterStateCopyWith<_LoginAndRegisterState> get copyWith =>
-      __$LoginAndRegisterStateCopyWithImpl<_LoginAndRegisterState>(
+  @pragma('vm:prefer-inline')
+  _$$_LoginAndRegisterStateCopyWith<_$_LoginAndRegisterState> get copyWith =>
+      __$$_LoginAndRegisterStateCopyWithImpl<_$_LoginAndRegisterState>(
           this, _$identity);
 }
 
 abstract class _LoginAndRegisterState implements LoginAndRegisterState {
   factory _LoginAndRegisterState(
-      {bool isLoginMode,
-      List<Flashcard> flashcardList,
-      Flashcard? selectedFlashcard,
-      bool appBarIsStacked,
-      bool isActionMode}) = _$_LoginAndRegisterState;
+      {final bool isLoginMode,
+      final List<Flashcard> flashcardList,
+      final Flashcard? selectedFlashcard,
+      final bool appBarIsStacked,
+      final bool isActionMode}) = _$_LoginAndRegisterState;
 
   @override
   bool get isLoginMode;
@@ -247,6 +237,6 @@ abstract class _LoginAndRegisterState implements LoginAndRegisterState {
   bool get isActionMode;
   @override
   @JsonKey(ignore: true)
-  _$LoginAndRegisterStateCopyWith<_LoginAndRegisterState> get copyWith =>
+  _$$_LoginAndRegisterStateCopyWith<_$_LoginAndRegisterState> get copyWith =>
       throw _privateConstructorUsedError;
 }
