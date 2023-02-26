@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 class WordCard extends StatelessWidget {
   // FlashcardPage内のWordCard Widget
-  const WordCard({required Word word, required FlashcardState model})
+  const WordCard({Key? key, required Word word, required FlashcardState model})
       : _word = word,
-        _model = model;
+        _model = model,
+        super(key: key);
 
   final Word _word;
   final FlashcardState _model;

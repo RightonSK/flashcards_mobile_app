@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/app_theme.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/custom_widgets/colored_status_bar.dart';
 import 'package:flashcards_mobile_app/presentation/custom_widgets/stacked_app_bar.dart';
@@ -81,8 +82,8 @@ class TopPage extends ConsumerWidget {
 
     return ColoredStatusBar(
       color: topState.isActionMode
-          ? Colors.indigoAccent
-          : Theme.of(context).scaffoldBackgroundColor,
+          ? AppColor.colorOfActionModeOfStatusBar
+          : AppColor.colorOfDefaultOfStatusBar,
       child: Scaffold(
         body: SingleChildScrollView(
           child: StackedAppBar(

@@ -7,9 +7,9 @@ import 'package:flashcards_mobile_app/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final loginAndRegisterProvider =
-    StateNotifierProvider<LoginAndRegisterNotifier, LoginAndRegisterState>(
-        (ref) => LoginAndRegisterNotifier(ref, LoginAndRegisterState()));
+final loginAndRegisterProvider = StateNotifierProvider.autoDispose<
+        LoginAndRegisterNotifier, LoginAndRegisterState>(
+    (ref) => LoginAndRegisterNotifier(ref, LoginAndRegisterState()));
 
 class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
   LoginAndRegisterNotifier(this._ref, LoginAndRegisterState state)

@@ -5,14 +5,15 @@ import 'package:flashcards_mobile_app/presentation/word_add_and_update/word_add_
 import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final wordAddAndUpdateProvider = StateNotifierProvider.family<
-        WordAddAndUpdateNotifier, WordAddAndUpdateState, Word?>(
-    (ref, Word? word) =>
-        WordAddAndUpdateNotifier(ref, WordAddAndUpdateState(), word));
+final wordAddAndUpdateProvider = StateNotifierProvider.autoDispose
+    .family<WordAddAndUpdateNotifier, WordAddAndUpdateState, Word?>(
+        (ref, Word? word) =>
+            WordAddAndUpdateNotifier(ref, WordAddAndUpdateState(), word));
 
 class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
   WordAddAndUpdateNotifier(this._ref, WordAddAndUpdateState state, Word? word)
       : super(state) {
+    print('wordAddAndUpdateNotifier constructor');
     // 更新モードの場合、wordをstateに渡す。
     if (word != null) {
       passWord(word: word);

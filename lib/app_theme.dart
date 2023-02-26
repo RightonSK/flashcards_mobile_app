@@ -9,10 +9,18 @@ final theme = ThemeData(
   //     fontSize: 20,
   //   ),
   // ),
+
   // cardTheme: CardTheme(
   //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
   // ),
 );
+
+class AppColor {
+  AppColor._();
+  static final Color colorOfDefaultOfStatusBar = theme.scaffoldBackgroundColor;
+  static const Color colorOfActionModeOfStatusBar = Colors.indigoAccent;
+  static const Color colorOfContextualActionBar = Colors.indigoAccent;
+}
 
 /// colored status barの色もthemeで決めたい。
 /// widgetだからグローバル変数に色設定したcolored status barを返して使う？

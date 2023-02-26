@@ -5,12 +5,13 @@ import 'package:flashcards_mobile_app/repository/flashcard_repository.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final topProvider = StateNotifierProvider<TopNotifier, TopState>(
+final topProvider = StateNotifierProvider.autoDispose<TopNotifier, TopState>(
     (ref) => TopNotifier(ref, TopState()));
 
 class TopNotifier extends StateNotifier<TopState> {
   TopNotifier(this._ref, TopState state) : super(state) {
     // top providerが最初に呼ばれたタイミングでinit()処理
+    print('top notifier constructor');
     init();
   }
   final _flashcardRepository = FlashCaredRepository();

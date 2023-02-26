@@ -5,14 +5,15 @@ import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_state.dar
 import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final flashcardProvider =
-    StateNotifierProvider.family<FlashcardNotifier, FlashcardState, Flashcard>(
+final flashcardProvider = StateNotifierProvider.autoDispose
+    .family<FlashcardNotifier, FlashcardState, Flashcard>(
         (ref, Flashcard flashcard) =>
             FlashcardNotifier(ref, FlashcardState(), flashcard));
 
 class FlashcardNotifier extends StateNotifier<FlashcardState> {
   FlashcardNotifier(this._ref, FlashcardState state, Flashcard flashcard)
       : super(state) {
+    print('flashcard notifier constructor');
     init(flashcard: flashcard);
   }
   final _wordRepository = WordRepository();

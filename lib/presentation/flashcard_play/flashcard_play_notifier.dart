@@ -5,17 +5,18 @@ import 'package:flashcards_mobile_app/presentation/flashcard_play/flashcard_play
 import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-//final flashcardPlayProvider = StateNotifierProvider((ref) => );
-
-final flashcardPlayProvider = StateNotifierProvider.family<
-        FlashcardPlayNotifier, FlashcardPlayState, Flashcard>(
-    (ref, Flashcard flashcard) =>
-        FlashcardPlayNotifier(ref, FlashcardPlayState(), flashcard));
+// autoDisposeで参照されなくなったら毎回破棄して、このpageに遷移する度に
+// notifierのコンストラクタを実行される。
+final flashcardPlayProvider = StateNotifierProvider.autoDispose
+    .family<FlashcardPlayNotifier, FlashcardPlayState, Flashcard>(
+        (ref, Flashcard flashcard) =>
+            FlashcardPlayNotifier(ref, FlashcardPlayState(), flashcard));
 
 class FlashcardPlayNotifier extends StateNotifier<FlashcardPlayState> {
   FlashcardPlayNotifier(
       this._ref, FlashcardPlayState state, Flashcard flashcard)
       : super(state) {
+    print('flashcardPlayNotifier Constructor');
     init(flashcard: flashcard);
   }
 

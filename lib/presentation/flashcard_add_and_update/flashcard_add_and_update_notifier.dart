@@ -5,7 +5,7 @@ import 'package:flashcards_mobile_app/repository/flashcard_repository.dart';
 import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final flashcardAddAndUpdateProvider = StateNotifierProvider.family<
+final flashcardAddAndUpdateProvider = StateNotifierProvider.autoDispose.family<
         FlashCardAddAndUpdateNotifier, FlashcardAddAndUpdateState, Flashcard?>(
     (ref, Flashcard? flashcard) => FlashCardAddAndUpdateNotifier(
         ref, FlashcardAddAndUpdateState(), flashcard));
@@ -15,6 +15,7 @@ class FlashCardAddAndUpdateNotifier
   FlashCardAddAndUpdateNotifier(
       this._ref, FlashcardAddAndUpdateState state, Flashcard? flashcard)
       : super(state) {
+    print('flashcardAddAndUpdateNotifier constructor');
     // 更新モードの時のみflashcardをstateに渡す。
     if (flashcard != null) {
       passFlashcard(flashcard: flashcard);

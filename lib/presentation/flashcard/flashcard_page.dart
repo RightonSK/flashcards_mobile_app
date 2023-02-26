@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/app_theme.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/custom_widgets/colored_status_bar.dart';
@@ -24,7 +25,7 @@ class FlashcardPage extends ConsumerWidget {
       title: Text('${flashcardState.wordIdToSelectedWord.length}'),
       titleSpacing: 0,
       centerTitle: false,
-      backgroundColor: Colors.indigoAccent,
+      backgroundColor: AppColor.colorOfContextualActionBar,
       leading: IconButton(
           onPressed: () {
             //flashcardNotifier.switchIsActionMode(isActionMode: false);
@@ -126,8 +127,8 @@ class FlashcardPage extends ConsumerWidget {
 
     return ColoredStatusBar(
       color: flashcardState.isActionMode
-          ? Colors.indigoAccent
-          : Theme.of(context).scaffoldBackgroundColor,
+          ? AppColor.colorOfActionModeOfStatusBar
+          : AppColor.colorOfDefaultOfStatusBar,
       child: Scaffold(
         body: StackedAppBar(
           defaultAppBar: defaultAppBar,

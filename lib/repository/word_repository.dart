@@ -30,20 +30,21 @@ class WordRepository {
   /// wordを更新
   ///
   Future update({required String uid, required Word word}) async {
-    final wordsSnapshot = await _wordsRef
-        .where('uid', isEqualTo: uid)
-        .where('flashcardId', isEqualTo: word.flashcardId)
-        .where('id', isEqualTo: word.id)
-        .get();
-    if (wordsSnapshot.size == 1) {
-      print('update in word repository: id = ${word.id}');
-      print('update in word repository: size = ${wordsSnapshot.size}');
-      await wordsSnapshot.docs[0].reference.update({
-        'title': word.title,
-        'description': word.description,
-        'updatedAt': word.updatedAt
-      });
-    }
+    _wordsRefWithConverter.doc(word.id).set(word);
+    // final wordsSnapshot = await _wordsRef
+    //     .where('uid', isEqualTo: uid)
+    //     .where('flashcardId', isEqualTo: word.flashcardId)
+    //     .where('id', isEqualTo: word.id)
+    //     .get();
+    // if (wordsSnapshot.size == 1) {
+    //   print('update in word repository: id = ${word.id}');
+    //   print('update in word repository: size = ${wordsSnapshot.size}');
+    //   await wordsSnapshot.docs[0].reference.update({
+    //     'title': word.title,
+    //     'description': word.description,
+    //     'updatedAt': word.updatedAt
+    //   });
+    // }
   }
 
   ///
