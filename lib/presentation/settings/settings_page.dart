@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flashcards_mobile_app/app_model.dart';
+import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';

@@ -1,4 +1,4 @@
-import 'package:flashcards_mobile_app/app_model.dart';
+import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_state.dart';
@@ -74,24 +74,42 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   }
 
   ///
+  /// wordIdToSelectedWordに新しい要素を追加
+  ///
+  void turnOnActionMode({required Word selectedWord}) {
+    final Map<String, Word> wordIdToSelectedWord = {
+      ...state.wordIdToSelectedWord,
+      selectedWord.id: selectedWord,
+    };
+    state = state.copyWith(wordIdToSelectedWord: wordIdToSelectedWord);
+  }
+
+  ///
+  /// WordIdToSelectedWordの中身を空にする。
+  ///
+  void turnOffActionMode() {
+    state = state.copyWith(wordIdToSelectedWord: <String, Word>{});
+  }
+
+  ///
   /// isActionModeのbool値を変更。
   /// trueならappBarIsStackedをtrueにして、wordIdToSelectedWordにselectedWordを追加する。
   /// falseならappBarIsStackedをfalseにして、wordIdToSelectedWordを空マップにする。
   ///
-  void switchIsActionMode({required bool isActionMode, Word? selectedWord}) {
-    state = state.copyWith(isActionMode: isActionMode);
-    if (state.isActionMode) {
-      final Map<String, Word> wordIdToSelectedWord = {
-        ...state.wordIdToSelectedWord,
-        selectedWord!.id: selectedWord,
-      };
-      state = state.copyWith(appBarIsStacked: true);
-      state = state.copyWith(wordIdToSelectedWord: wordIdToSelectedWord);
-    } else {
-      state = state.copyWith(appBarIsStacked: false);
-      state = state.copyWith(wordIdToSelectedWord: <String, Word>{});
-    }
-  }
+  // void switchIsActionMode({required bool isActionMode, Word? selectedWord}) {
+  //   state = state.copyWith(isActionMode: isActionMode);
+  //   if (state.isActionMode) {
+  //     final Map<String, Word> wordIdToSelectedWord = {
+  //       ...state.wordIdToSelectedWord,
+  //       selectedWord!.id: selectedWord,
+  //     };
+  //     state = state.copyWith(appBarIsStacked: true);
+  //     state = state.copyWith(wordIdToSelectedWord: wordIdToSelectedWord);
+  //   } else {
+  //     state = state.copyWith(appBarIsStacked: false);
+  //     state = state.copyWith(wordIdToSelectedWord: <String, Word>{});
+  //   }
+  // }
 
   ///
   /// selectedWordをwordIdToSelectedWordに追加する
@@ -114,12 +132,10 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   }
 
   ///
-  /// wordIdToSelectedWordが空なら、isActionModeをfalseにする。
+  /// wordIdToSelectedWordが空かどうかを返す
   ///
-  void checkIfWordIdToSelectedWordIsEmpty() {
-    if (state.wordIdToSelectedWord.isEmpty) {
-      switchIsActionMode(isActionMode: false);
-    }
+  bool checkIfWordIdToSelectedWordIsEmpty() {
+    return state.wordIdToSelectedWord.isEmpty;
   }
 
   ///

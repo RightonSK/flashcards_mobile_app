@@ -1,17 +1,30 @@
+import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/word_add_and_update/word_add_and_update_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+///追加モードの時は、wordWillUpdate引数はnullを渡し、更新モードの際は、wordWillUpdateを渡す。
 class WordAddAndUpdatePage extends HookConsumerWidget {
-  const WordAddAndUpdatePage({Key? key}) : super(key: key);
+  const WordAddAndUpdatePage(
+      {Key? key,
+      //required this.isUpdateMode,
+      required this.wordWillUpdate,
+      required this.flashcardId})
+      : super(key: key);
+  //final bool isUpdateMode;
+  final Word? wordWillUpdate;
+  final String flashcardId;
+
+  bool get isUpdateMode => wordWillUpdate != null;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wordAddAndUpdateState = ref.watch(wordAddAndUpdateProvider);
+    final wordAddAndUpdateState =
+        ref.watch(wordAddAndUpdateProvider(wordWillUpdate));
     final wordAddAndUpdateNotifier =
-        ref.watch(wordAddAndUpdateProvider.notifier);
+        ref.watch(wordAddAndUpdateProvider(wordWillUpdate).notifier);
     late final String _appBarTitle;
     late final String _buttonTitle;
     final TextEditingController _titleController = useTextEditingController();
@@ -19,7 +32,7 @@ class WordAddAndUpdatePage extends HookConsumerWidget {
         useTextEditingController();
 
     //詳細ページの初期化処理
-    if (wordAddAndUpdateState.isUpdateMode) {
+    if (isUpdateMode) {
       _appBarTitle = '更新';
       _buttonTitle = '更新';
     } else {
@@ -28,7 +41,7 @@ class WordAddAndUpdatePage extends HookConsumerWidget {
     }
 
     useEffect(() {
-      if (wordAddAndUpdateState.isUpdateMode) {
+      if (isUpdateMode) {
         _titleController.text = wordAddAndUpdateState.word!.title;
         _descriptionController.text = wordAddAndUpdateState.word!.description;
       }
@@ -115,7 +128,9 @@ class WordAddAndUpdatePage extends HookConsumerWidget {
                   onPressed: () async {
                     await wordAddAndUpdateNotifier.addOrUpdateWord(
                         title: _titleController.text,
-                        description: _descriptionController.text);
+                        description: _descriptionController.text,
+                        flashcardId: flashcardId,
+                        isUpdateMode: isUpdateMode);
                     Navigator.pop(context);
                   },
                   child: Text(_buttonTitle),

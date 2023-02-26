@@ -1,23 +1,31 @@
+import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+///追加モードの時は、flashcard引数はnullを渡し、更新モードの際は、flashcardを渡す。
 class FlashCardAddAndUpdatePage extends HookConsumerWidget {
-  const FlashCardAddAndUpdatePage({Key? key}) : super(key: key);
+  const FlashCardAddAndUpdatePage({Key? key, required this.flashcard})
+      : super(key: key);
+  //final bool isUpdateMode;
+  final Flashcard? flashcard;
+
+  bool get isUpdateMode => flashcard != null;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final flashcardAddAndUpdateState = ref.watch(flashcardAddAndUpdateProvider);
+    final flashcardAddAndUpdateState =
+        ref.watch(flashcardAddAndUpdateProvider(flashcard));
     final flashcardAddAndUpdateNotifier =
-        ref.watch(flashcardAddAndUpdateProvider.notifier);
+        ref.watch(flashcardAddAndUpdateProvider(flashcard).notifier);
     final TextEditingController _titleController = useTextEditingController();
     //詳細ページの初期化処理
     late final String _appBarTitle;
     late final String _buttonTitle;
 
-    if (flashcardAddAndUpdateState.isUpdateMode) {
+    if (isUpdateMode) {
       _appBarTitle = '更新';
       _buttonTitle = '更新';
     } else {
@@ -26,7 +34,7 @@ class FlashCardAddAndUpdatePage extends HookConsumerWidget {
     }
 
     useEffect(() {
-      if (flashcardAddAndUpdateState.isUpdateMode) {
+      if (isUpdateMode) {
         _titleController.text = flashcardAddAndUpdateState.flashcard!.title;
       }
     }, const []);
@@ -36,7 +44,7 @@ class FlashCardAddAndUpdatePage extends HookConsumerWidget {
         title: Text(_appBarTitle),
         actions: <Widget>[
           Visibility(
-            visible: flashcardAddAndUpdateState.isUpdateMode,
+            visible: isUpdateMode,
             child: IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () async {
@@ -76,7 +84,9 @@ class FlashCardAddAndUpdatePage extends HookConsumerWidget {
           ElevatedButton(
               onPressed: () async {
                 await flashcardAddAndUpdateNotifier.addOrUpdateFlashcard(
-                    title: _titleController.text);
+                  title: _titleController.text,
+                  isUpdateMode: isUpdateMode,
+                );
                 Navigator.pop(context);
               },
               child: Text(_buttonTitle)),

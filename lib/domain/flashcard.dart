@@ -50,4 +50,15 @@ class Flashcard {
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Flashcard &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          id == other.id;
+
+  @override
+  int get hashCode => title.hashCode ^ id.hashCode;
 }

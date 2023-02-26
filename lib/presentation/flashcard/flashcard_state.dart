@@ -6,13 +6,16 @@ part 'flashcard_state.freezed.dart';
 
 @freezed
 class FlashcardState with _$FlashcardState {
-  factory FlashcardState({
+  const FlashcardState._();
+  const factory FlashcardState({
     Flashcard? flashcard,
     @Default(<Word>[]) List<Word> words,
     @Default(<String, Word>{}) Map<String, Word> wordIdToSelectedWord,
     //@Default(<Word>[]) List<Word> selectedWords,
-    @Default(false) appBarIsStacked,
-    @Default(false) bool isActionMode,
+    //@Default(false) appBarIsStacked,
+    //@Default(false) bool isActionMode,
     @Default(<String, bool>{}) wordIdToIsFlipped,
   }) = _FlashcardState;
+
+  bool get isActionMode => wordIdToSelectedWord.isNotEmpty;
 }

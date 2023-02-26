@@ -15,9 +15,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 ///
 /// 画面遷移時にAction modeをoffにして、遷移。
 ///
-Future pushPage(BuildContext context, WidgetRef ref, Widget page) async {
-  ref.read(topProvider.notifier).falseActionMode();
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+Future _pushPage(BuildContext context, WidgetRef ref, Widget page) async {
+  ref.read(topProvider.notifier).turnOffActionMode();
+  await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
     return page;
   }));
 }
@@ -35,7 +35,7 @@ class TopPage extends ConsumerWidget {
       actions: [
         IconButton(
             onPressed: () async {
-              await pushPage(context, ref, const SettingsPage());
+              await _pushPage(context, ref, const SettingsPage());
             },
             icon: const Icon(Icons.settings)),
       ],
@@ -45,71 +45,66 @@ class TopPage extends ConsumerWidget {
       backgroundColor: Colors.indigoAccent,
       leading: IconButton(
           onPressed: () {
-            topNotifier.switchIsActionMode(isActionMode: false);
+            topNotifier.removeSelectedFlashcard();
+            // topNotifier.switchIsActionMode(
+            //   isActionMode: false,
+            //   selectedFlashcard: null,
+            // );
           },
           icon: const Icon(Icons.close)),
       actions: [
         IconButton(
             onPressed: () {
-              showDialog<void>(
-                context: context,
-                builder: (_) {
-                  return AlertDialogSample(
-                    flashcard: topState.selectedFlashcard!,
-                    ref: ref,
-                  );
-                },
-              );
+              _pushPage(context, ref,
+                  FlashcardPlayPage(flashcard: topState.selectedFlashcard!));
             },
             icon: const Icon(Icons.play_arrow)),
         IconButton(
             onPressed: () async {
-              // flashcardを渡し、isUpdateModeをtrue後、遷移
+              // 更新モードでflashcardAddAndUpdatePageに遷移
               if (topState.selectedFlashcard != null) {
-                final flashcardAddAndUpdateState =
-                    ref.read(flashcardAddAndUpdateProvider.notifier);
-                flashcardAddAndUpdateState.passFlashcard(
-                    flashcard: topState.selectedFlashcard!);
-                flashcardAddAndUpdateState.switchIsUpdateMode(
-                    isUpdateMode: true);
+                await _pushPage(
+                    context,
+                    ref,
+                    FlashCardAddAndUpdatePage(
+                      flashcard: topState.selectedFlashcard!,
+                    ));
+                // stateの初期化
+                await topNotifier.init();
               } else {
                 return;
               }
-              await pushPage(context, ref, const FlashCardAddAndUpdatePage());
-              // stateの初期化
-              await topNotifier.init();
             },
             icon: const Icon(Icons.settings)),
       ],
     );
 
     return ColoredStatusBar(
-      color: topState.appBarIsStacked
+      color: topState.isActionMode
           ? Colors.indigoAccent
           : Theme.of(context).scaffoldBackgroundColor,
-      child: GestureDetector(
-        //　単語帳やボタンを押された時以外、アクションモード終了
-        onTap: () {
-          topNotifier.falseActionMode();
-        },
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: StackedAppBar(
-              defaultAppBar: defaultAppBar,
-              contextualActionBar: contextualActionBar,
-              isStacked: topState.appBarIsStacked,
-              child: const _TopPageBody(),
-            ),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: StackedAppBar(
+            defaultAppBar: defaultAppBar,
+            contextualActionBar: contextualActionBar,
+            isStacked: topState.isActionMode,
+            child: const _TopPageBody(),
           ),
-          //body: _createGridView(context, model),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              await pushPage(context, ref, const FlashCardAddAndUpdatePage());
-              // 追加処理後のstateの初期化
-              await topNotifier.init();
-            },
-            child: const Icon(Icons.add),
-          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            // 追加モードでflashcardAddAndUpdatePageに遷移
+            await _pushPage(
+                context,
+                ref,
+                const FlashCardAddAndUpdatePage(
+                  flashcard: null,
+                ));
+            // 追加処理後のstateの初期化
+            await topNotifier.init();
+          },
+          child: const Icon(Icons.add),
         ),
       ),
     );
@@ -156,37 +151,47 @@ class _TopPageBody extends ConsumerWidget {
                   (flashcard) => InkWell(
                     onTap: () async {
                       /// action modeの場合、同一のflashcardならaction modeをfalse
-                      ///  そうではない場合、選択されたものをselectedFlashcardにセット。
+                      ///  同一ではない場合、選択されたものをselectedFlashcardにセット。
+                      ///  action modeではない場合、Flashcard pageに遷移
                       if (topState.isActionMode) {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
-                          topNotifier.switchIsActionMode(isActionMode: false);
+                          topNotifier.removeSelectedFlashcard();
+                          // topNotifier.switchIsActionMode(
+                          //     isActionMode: false, selectedFlashcard: null);
                         } else {
                           topNotifier.setSelectedFlashcard(
                               selectedFlashcard: flashcard);
                         }
                       } else {
-                        await pushPage(
+                        await _pushPage(
                             context, ref, FlashcardPage(flashcard: flashcard));
                         // stateの初期化
                         await topNotifier.init();
                       }
                     },
                     onLongPress: () {
-                      // action modeの場合、selectedFlashcardならaction modeをfalse
-                      // そうではない場合、選択されたものをselectedFlashcardにセット。
-                      // action modeではない場合、action modeをtrueにして、selectedFlashcardをセット
+                      /// action modeの場合、selectedFlashcardならaction modeをfalse
+                      /// そうではない場合、選択されたものをselectedFlashcardにセット。
+                      /// action modeではない場合、action modeをtrueにして、selectedFlashcardをセット
                       if (topState.isActionMode) {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
-                          topNotifier.switchIsActionMode(isActionMode: false);
+                          topNotifier.removeSelectedFlashcard();
+                          // topNotifier.switchIsActionMode(
+                          //     isActionMode: false, selectedFlashcard: null);
                         } else {
                           topNotifier.setSelectedFlashcard(
                               selectedFlashcard: flashcard);
                         }
                       } else {
-                        topNotifier.switchIsActionMode(
-                            isActionMode: true, selectedFlashcard: flashcard);
+                        topNotifier.setSelectedFlashcard(
+                            selectedFlashcard: flashcard);
+                        //print('isActionMode is ${topState.isActionMode}');
+                        print(
+                            'isActionMode is ${ref.read(topProvider).isActionMode}');
+                        // topNotifier.switchIsActionMode(
+                        //     isActionMode: true, selectedFlashcard: flashcard);
                       }
                     },
                     child: Card(
@@ -238,7 +243,7 @@ class AlertDialogSample extends StatelessWidget {
         GestureDetector(
           child: Text('はい'),
           onTap: () {
-            pushPage(context, ref, FlashcardPlayPage(flashcard: flashcard));
+            _pushPage(context, ref, FlashcardPlayPage(flashcard: flashcard));
           },
         )
       ],

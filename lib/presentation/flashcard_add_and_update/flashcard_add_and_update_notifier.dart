@@ -1,18 +1,25 @@
-import 'package:flashcards_mobile_app/app_model.dart';
+import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_state.dart';
 import 'package:flashcards_mobile_app/repository/flashcard_repository.dart';
 import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final flashcardAddAndUpdateProvider = StateNotifierProvider<
-        FlashCardAddAndUpdateNotifier, FlashcardAddAndUpdateState>(
-    (ref) => FlashCardAddAndUpdateNotifier(ref, FlashcardAddAndUpdateState()));
+final flashcardAddAndUpdateProvider = StateNotifierProvider.family<
+        FlashCardAddAndUpdateNotifier, FlashcardAddAndUpdateState, Flashcard?>(
+    (ref, Flashcard? flashcard) => FlashCardAddAndUpdateNotifier(
+        ref, FlashcardAddAndUpdateState(), flashcard));
 
 class FlashCardAddAndUpdateNotifier
     extends StateNotifier<FlashcardAddAndUpdateState> {
-  FlashCardAddAndUpdateNotifier(this._ref, FlashcardAddAndUpdateState state)
-      : super(state);
+  FlashCardAddAndUpdateNotifier(
+      this._ref, FlashcardAddAndUpdateState state, Flashcard? flashcard)
+      : super(state) {
+    // 更新モードの時のみflashcardをstateに渡す。
+    if (flashcard != null) {
+      passFlashcard(flashcard: flashcard);
+    }
+  }
   final _flashCaredRepository = FlashCaredRepository();
   final _wordRepository = WordRepository();
   final Ref _ref;
@@ -28,10 +35,11 @@ class FlashCardAddAndUpdateNotifier
   }
 
   // flashcardの中身を更新して、それをrepositoryに渡す
-  Future addOrUpdateFlashcard({required String title}) async {
+  Future addOrUpdateFlashcard(
+      {required String title, required bool isUpdateMode}) async {
     final user = _ref.read(userProvider);
     final Flashcard flashcard;
-    if (state.isUpdateMode) {
+    if (isUpdateMode) {
       flashcard =
           state.flashcard!.copyWith(title: title, updatedAt: DateTime.now());
     } else {
@@ -45,7 +53,7 @@ class FlashCardAddAndUpdateNotifier
     }
     state = state.copyWith(flashcard: flashcard);
     // add or update分岐
-    if (state.isUpdateMode) {
+    if (isUpdateMode) {
       await _flashCaredRepository.update(
           uid: user!.uid, flashcard: state.flashcard!);
     } else {

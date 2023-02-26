@@ -1,4 +1,4 @@
-import 'package:flashcards_mobile_app/app_model.dart';
+import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_play/flashcard_play_state.dart';

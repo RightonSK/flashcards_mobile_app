@@ -18,8 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TopState {
   List<Flashcard> get flashcardList => throw _privateConstructorUsedError;
   Flashcard? get selectedFlashcard => throw _privateConstructorUsedError;
-  bool get appBarIsStacked => throw _privateConstructorUsedError;
-  bool get isActionMode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TopStateCopyWith<TopState> get copyWith =>
@@ -31,11 +29,7 @@ abstract class $TopStateCopyWith<$Res> {
   factory $TopStateCopyWith(TopState value, $Res Function(TopState) then) =
       _$TopStateCopyWithImpl<$Res, TopState>;
   @useResult
-  $Res call(
-      {List<Flashcard> flashcardList,
-      Flashcard? selectedFlashcard,
-      bool appBarIsStacked,
-      bool isActionMode});
+  $Res call({List<Flashcard> flashcardList, Flashcard? selectedFlashcard});
 }
 
 /// @nodoc
@@ -53,8 +47,6 @@ class _$TopStateCopyWithImpl<$Res, $Val extends TopState>
   $Res call({
     Object? flashcardList = null,
     Object? selectedFlashcard = freezed,
-    Object? appBarIsStacked = null,
-    Object? isActionMode = null,
   }) {
     return _then(_value.copyWith(
       flashcardList: null == flashcardList
@@ -65,14 +57,6 @@ class _$TopStateCopyWithImpl<$Res, $Val extends TopState>
           ? _value.selectedFlashcard
           : selectedFlashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      appBarIsStacked: null == appBarIsStacked
-          ? _value.appBarIsStacked
-          : appBarIsStacked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isActionMode: null == isActionMode
-          ? _value.isActionMode
-          : isActionMode // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -84,11 +68,7 @@ abstract class _$$_TopStateCopyWith<$Res> implements $TopStateCopyWith<$Res> {
       __$$_TopStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {List<Flashcard> flashcardList,
-      Flashcard? selectedFlashcard,
-      bool appBarIsStacked,
-      bool isActionMode});
+  $Res call({List<Flashcard> flashcardList, Flashcard? selectedFlashcard});
 }
 
 /// @nodoc
@@ -104,8 +84,6 @@ class __$$_TopStateCopyWithImpl<$Res>
   $Res call({
     Object? flashcardList = null,
     Object? selectedFlashcard = freezed,
-    Object? appBarIsStacked = null,
-    Object? isActionMode = null,
   }) {
     return _then(_$_TopState(
       flashcardList: null == flashcardList
@@ -116,27 +94,18 @@ class __$$_TopStateCopyWithImpl<$Res>
           ? _value.selectedFlashcard
           : selectedFlashcard // ignore: cast_nullable_to_non_nullable
               as Flashcard?,
-      appBarIsStacked: null == appBarIsStacked
-          ? _value.appBarIsStacked
-          : appBarIsStacked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isActionMode: null == isActionMode
-          ? _value.isActionMode
-          : isActionMode // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_TopState implements _TopState {
-  _$_TopState(
+class _$_TopState extends _TopState {
+  const _$_TopState(
       {final List<Flashcard> flashcardList = const <Flashcard>[],
-      this.selectedFlashcard,
-      this.appBarIsStacked = false,
-      this.isActionMode = false})
-      : _flashcardList = flashcardList;
+      this.selectedFlashcard})
+      : _flashcardList = flashcardList,
+        super._();
 
   final List<Flashcard> _flashcardList;
   @override
@@ -149,16 +118,10 @@ class _$_TopState implements _TopState {
 
   @override
   final Flashcard? selectedFlashcard;
-  @override
-  @JsonKey()
-  final bool appBarIsStacked;
-  @override
-  @JsonKey()
-  final bool isActionMode;
 
   @override
   String toString() {
-    return 'TopState(flashcardList: $flashcardList, selectedFlashcard: $selectedFlashcard, appBarIsStacked: $appBarIsStacked, isActionMode: $isActionMode)';
+    return 'TopState(flashcardList: $flashcardList, selectedFlashcard: $selectedFlashcard)';
   }
 
   @override
@@ -169,20 +132,12 @@ class _$_TopState implements _TopState {
             const DeepCollectionEquality()
                 .equals(other._flashcardList, _flashcardList) &&
             (identical(other.selectedFlashcard, selectedFlashcard) ||
-                other.selectedFlashcard == selectedFlashcard) &&
-            (identical(other.appBarIsStacked, appBarIsStacked) ||
-                other.appBarIsStacked == appBarIsStacked) &&
-            (identical(other.isActionMode, isActionMode) ||
-                other.isActionMode == isActionMode));
+                other.selectedFlashcard == selectedFlashcard));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_flashcardList),
-      selectedFlashcard,
-      appBarIsStacked,
-      isActionMode);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_flashcardList), selectedFlashcard);
 
   @JsonKey(ignore: true)
   @override
@@ -191,21 +146,16 @@ class _$_TopState implements _TopState {
       __$$_TopStateCopyWithImpl<_$_TopState>(this, _$identity);
 }
 
-abstract class _TopState implements TopState {
-  factory _TopState(
+abstract class _TopState extends TopState {
+  const factory _TopState(
       {final List<Flashcard> flashcardList,
-      final Flashcard? selectedFlashcard,
-      final bool appBarIsStacked,
-      final bool isActionMode}) = _$_TopState;
+      final Flashcard? selectedFlashcard}) = _$_TopState;
+  const _TopState._() : super._();
 
   @override
   List<Flashcard> get flashcardList;
   @override
   Flashcard? get selectedFlashcard;
-  @override
-  bool get appBarIsStacked;
-  @override
-  bool get isActionMode;
   @override
   @JsonKey(ignore: true)
   _$$_TopStateCopyWith<_$_TopState> get copyWith =>

@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:flashcards_mobile_app/app_model.dart';
-import 'package:flashcards_mobile_app/domain/user.dart' as domain;
+//import 'package:flashcards_mobile_app/domain/user.dart' as domain;
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_regsiter_notifier.dart';
-import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
 import 'package:flashcards_mobile_app/utils/convert_error_message_util.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +82,7 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                   labelText: 'メールアドレス',
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
@@ -94,7 +92,7 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                 obscureText: true,
                 decoration: InputDecoration(labelText: 'パスワード'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
@@ -116,15 +114,14 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    final domain.User user;
                     //ログインorアカウント登録
                     try {
                       if (loginAndRegisterState.isLoginMode) {
-                        user = await loginAndRegisterNotifier.login(
+                        await loginAndRegisterNotifier.login(
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim());
                       } else {
-                        user = await loginAndRegisterNotifier.signUp(
+                        await loginAndRegisterNotifier.signUp(
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim());
                       }
@@ -143,10 +140,6 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                       }
                       return;
                     }
-                    // user情報を保存
-                    ref.read(userProvider.notifier).setUser(user);
-                    // user情報を元に、データを取得
-                    await ref.read(topProvider.notifier).fetchFlashcards();
                     //top pageへ遷移
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const TopPage()));

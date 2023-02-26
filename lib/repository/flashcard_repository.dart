@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flashcards_mobile_app/app_model.dart';
+import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

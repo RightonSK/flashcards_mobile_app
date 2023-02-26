@@ -1,37 +1,53 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:flashcards_mobile_app/domain/user.dart' as domain;
+//import 'package:flashcards_mobile_app/domain/user.dart' as domain;
+import 'package:flashcards_mobile_app/domain/user.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_state.dart';
+import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/repository/user_repository.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final loginAndRegisterProvider =
     StateNotifierProvider<LoginAndRegisterNotifier, LoginAndRegisterState>(
-        (ref) => LoginAndRegisterNotifier(LoginAndRegisterState()));
+        (ref) => LoginAndRegisterNotifier(ref, LoginAndRegisterState()));
 
 class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
-  LoginAndRegisterNotifier(LoginAndRegisterState state) : super(state);
+  LoginAndRegisterNotifier(this._ref, LoginAndRegisterState state)
+      : super(state);
   final UserRepository _userRepository = UserRepository();
+  final Ref _ref;
 
-  //　ログインモードとアカウント登録モードをswitch
+  // final controller = TextEditingController();
+  //
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   controller.dispose();
+  // }
+
+  ///
+  /// ログインモードとアカウント登録モードをswitch
+  ///
   void switchMode() {
     state = state.copyWith(isLoginMode: !state.isLoginMode);
   }
 
-  //　アカウント登録。登録したUser情報をUserクラスの形式でreturn
-  Future<domain.User> signUp(
-      {required String email, required String password}) async {
+  ///
+  /// アカウント登録。登録したUser情報をUserクラスの形でreturn
+  ///
+  Future<void> signUp({required String email, required String password}) async {
     if (email.isEmpty) {
       throw ('メールアドレスを入力してください');
     }
     if (password.isEmpty) {
       throw ('パスワードを入力してください');
     }
-
     print('email: $email');
     print('password: $password');
     try {
       final user = await _userRepository.add(email: email, password: password);
-      return user;
+      // user providerにuser情報を渡す
+      setUserToUserRepository(user);
     } on auth.FirebaseAuthException catch (e) {
       print('sign up: ${e.code}');
       rethrow;
@@ -39,9 +55,10 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
     }
   }
 
-  //　ログイン。ログインしたUser情報をUserクラスの形式でreturn
-  Future<domain.User> login(
-      {required String email, required String password}) async {
+  ///
+  /// ログイン。ログインしたUser情報をUserクラスの形でreturn
+  ///
+  Future<void> login({required String email, required String password}) async {
     if (email.isEmpty) {
       throw ('メールアドレスを入力してください');
     }
@@ -52,12 +69,20 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
     try {
       final user =
           await _userRepository.logIn(email: email, password: password);
-      return user;
+      // user providerにuser情報を渡す
+      setUserToUserRepository(user);
     } on auth.FirebaseAuthException catch (e) {
       print('login: ${e.code}');
       rethrow;
       //throw (_convertErrorMessageForLogin(e.code));
     }
+  }
+
+  ///
+  /// user情報をuser providerに渡す
+  ///
+  void setUserToUserRepository(User user) {
+    _ref.read(userProvider.notifier).setUser(user);
   }
 }
 

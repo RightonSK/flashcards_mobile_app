@@ -5,10 +5,13 @@ part 'top_state.freezed.dart';
 
 @freezed
 class TopState with _$TopState {
-  factory TopState({
+  const TopState._();
+  const factory TopState({
     @Default(<Flashcard>[]) List<Flashcard> flashcardList,
     Flashcard? selectedFlashcard,
-    @Default(false) bool appBarIsStacked,
-    @Default(false) bool isActionMode,
+    //@Default(false) bool appBarIsStacked,
+    //@Default(false) bool isActionMode,
   }) = _TopState;
+
+  bool get isActionMode => selectedFlashcard != null;
 }
