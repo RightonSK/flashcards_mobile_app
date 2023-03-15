@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/repository/flashcard_repository.dart';
 import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
@@ -21,6 +22,7 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
   }
 
   final _wordRepository = WordRepository();
+  final _flashcardRepository = FlashcardRepository();
   final Ref _ref;
 
   // // flashcardを渡し、stateに保存
@@ -68,6 +70,11 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
       await _wordRepository.update(uid: user!.uid, word: state.word!);
     } else {
       await _wordRepository.add(word: state.word!);
+    }
+    // 親FlashcardのupdatedAtを更新
+    if (state.word != null) {
+      await _flashcardRepository.updateUpdatedAt(
+          uid: state.word!.uid, flashcardId: state.word!.flashcardId);
     }
   }
 }

@@ -25,7 +25,7 @@ class FlashcardPage extends ConsumerWidget {
       title: Text('${flashcardState.wordIdToSelectedWord.length}'),
       titleSpacing: 0,
       centerTitle: false,
-      backgroundColor: AppColor.colorOfContextualActionBar,
+      backgroundColor: AppColor.colorBackgroundOfContextualActionBar,
       leading: IconButton(
           onPressed: () {
             //flashcardNotifier.switchIsActionMode(isActionMode: false);
@@ -33,32 +33,8 @@ class FlashcardPage extends ConsumerWidget {
           },
           icon: const Icon(Icons.close)),
       actions: [
-        // deleteボタン
-        IconButton(
-            onPressed: () async {
-              final result = await showDialog<bool>(
-                context: context,
-                builder: (_) {
-                  return _DeleteCheckDialog(
-                      theNumberOfSelectedWords: flashcardState
-                          .wordIdToSelectedWord.length
-                          .toString());
-                },
-              );
-              // YESの場合
-              if (result != null && result == true) {
-                await flashcardNotifier.deleteWords();
-              } else {
-                // 選択されていない場合、またはNOの場合
-                return;
-              }
-              // wordsを再取得、プロパティの初期化
-              await flashcardNotifier.updateWords();
-              flashcardNotifier.turnOffActionMode();
-              //flashcardNotifier.switchIsActionMode(isActionMode: false);
-            },
-            icon: const Icon(Icons.delete)),
-        // 選択されたwordが1の場合、setting page
+        //setting button
+        // 選択されたwordが1の場合
         if (flashcardState.wordIdToSelectedWord.length == 1)
           IconButton(
             onPressed: () async {
@@ -88,7 +64,7 @@ class FlashcardPage extends ConsumerWidget {
             },
             icon: const Icon(Icons.settings),
           )
-        // 選択されたword2個以上の時のsetting page
+        // 選択されたword2個以上の場合
         else
           PopupMenuButton<Word>(
             // Callback that sets the selected popup menu item.
@@ -122,13 +98,33 @@ class FlashcardPage extends ConsumerWidget {
                         ))
                     .toList(),
           ),
+        PopupMenuButton<String>(
+          icon: const Icon(Icons.more_vert),
+          //padding: EdgeInsets.only(right: 50),
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: '削除',
+              child: Text("削除"),
+            ),
+          ],
+          onSelected: (value) async {
+            if (value == '削除') {
+              await flashcardNotifier.deleteWords();
+              // wordsを再取得、プロパティの初期化
+              await flashcardNotifier.updateWords();
+              flashcardNotifier.turnOffActionMode();
+            } else {
+              print('not expected value');
+            }
+          },
+        ),
       ],
     );
 
     return ColoredStatusBar(
       color: flashcardState.isActionMode
-          ? AppColor.colorOfActionModeOfStatusBar
-          : AppColor.colorOfDefaultOfStatusBar,
+          ? AppColor.colorActionModeOfStatusBar
+          : AppColor.colorDefaultOfStatusBar,
       child: Scaffold(
         body: StackedAppBar(
           defaultAppBar: defaultAppBar,

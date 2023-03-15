@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 final flashcardProvider = StateNotifierProvider.autoDispose
     .family<FlashcardNotifier, FlashcardState, Flashcard>(
         (ref, Flashcard flashcard) =>
-            FlashcardNotifier(ref, FlashcardState(), flashcard));
+            FlashcardNotifier(ref, const FlashcardState(), flashcard));
 
 class FlashcardNotifier extends StateNotifier<FlashcardState> {
   FlashcardNotifier(this._ref, FlashcardState state, Flashcard flashcard)

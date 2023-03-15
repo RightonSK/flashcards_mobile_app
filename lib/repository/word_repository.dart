@@ -23,7 +23,7 @@ class WordRepository {
   /// wordを新規で追加する
   ///
   Future add({required Word word}) async {
-    await _wordsRefWithConverter.doc(word.id).set(word);
+    final aaa = await _wordsRefWithConverter.doc(word.id).set(word);
   }
 
   ///

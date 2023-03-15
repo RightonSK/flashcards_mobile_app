@@ -2,24 +2,33 @@ import 'package:flutter/material.dart';
 
 final theme = ThemeData(
   primarySwatch: Colors.blue,
-  scaffoldBackgroundColor: Colors.grey.shade200,
+  scaffoldBackgroundColor: const Color(0xFFF0F5F9),
   // appBarTheme: AppBarTheme(
   //   titleTextStyle: TextStyle(
   //     fontWeight: FontWeight.bold,
   //     fontSize: 20,
   //   ),
   // ),
-
-  // cardTheme: CardTheme(
-  //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-  // ),
+  appBarTheme: const AppBarTheme(
+      color: Color(0xFFC9D6DF), foregroundColor: Colors.black),
+  cardTheme: const CardTheme(
+      //color: Color(0xFFC9D6DF),
+      ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Color(0xFF52616B),
+    foregroundColor: Colors.white,
+  ),
 );
 
 class AppColor {
   AppColor._();
-  static final Color colorOfDefaultOfStatusBar = theme.scaffoldBackgroundColor;
-  static const Color colorOfActionModeOfStatusBar = Colors.indigoAccent;
-  static const Color colorOfContextualActionBar = Colors.indigoAccent;
+  static final Color colorDefaultOfStatusBar = theme.scaffoldBackgroundColor;
+  static const Color colorActionModeOfStatusBar = Color(0xFF52616B);
+  static const Color colorBackgroundOfContextualActionBar = Color(0xFF52616B);
+  static const Color colorForegroundOfContextualActionBar = Colors.white;
+
+  // static const Color colorOfActionModeOfStatusBar = Colors.indigoAccent;
+  // static const Color colorOfContextualActionBar = Colors.indigoAccent;
 }
 
 /// colored status barの色もthemeで決めたい。

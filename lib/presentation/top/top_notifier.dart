@@ -14,7 +14,8 @@ class TopNotifier extends StateNotifier<TopState> {
     print('top notifier constructor');
     init();
   }
-  final _flashcardRepository = FlashCaredRepository();
+
+  final _flashcardRepository = FlashcardRepository();
   final Ref _ref;
 
   ///
@@ -25,16 +26,6 @@ class TopNotifier extends StateNotifier<TopState> {
     turnOffActionMode();
   }
 
-  // ///
-  // /// アプリ立ち上げ時ログイン済みの場合のinit処理。
-  // /// 通常のinit()に加えてスプラッシュページを閉じる処理。
-  // ///
-  // Future initRightAfterAppLaunch() async {
-  //   await fetchFlashcards();
-  //   // flashcardsをfetchした後に、splash pageをremoveする。
-  //   FlutterNativeSplash.remove();
-  // }
-
   ///
   /// Action Modeに関わるプロパティの値を初期化
   ///
@@ -43,14 +34,17 @@ class TopNotifier extends StateNotifier<TopState> {
     print('false Action Mode');
   }
 
-  //flashcardsの取得, 要素はupdatedAtの昇順
+  //flashcardsの取得
   Future fetchFlashcards() async {
     final user = _ref.read(userProvider);
     print('fetchFlashcard(): ${user!.uid}');
     final List<Flashcard> flashcardList =
         await _flashcardRepository.findAll(uid: user.uid);
-    flashcardList.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+    print(flashcardList == null
+        ? 'flashcardList is null'
+        : 'flashcardList is not null');
     state = state.copyWith(flashcardList: flashcardList);
+    print(flashcardList == null);
   }
 
   ///
@@ -79,5 +73,17 @@ class TopNotifier extends StateNotifier<TopState> {
 
   void removeSelectedFlashcard() {
     state = state.copyWith(selectedFlashcard: null);
+  }
+
+  ///
+  ///  isPinnedのvalueを変更
+  ///
+  Future<void> invertIsPinnedOfSelectedFlashcard() async {
+    final updatedFlashcard = state.selectedFlashcard!
+        .copyWith(isPinned: !state.selectedFlashcard!.isPinned);
+    print('isPinned ${updatedFlashcard.isPinned}');
+    // DBのデータを更新し、stateも更新
+    await _flashcardRepository.invertIsPinned(flashcard: updatedFlashcard);
+    //state = state.copyWith(selectedFlashcard: updatedFlashcard);
   }
 }

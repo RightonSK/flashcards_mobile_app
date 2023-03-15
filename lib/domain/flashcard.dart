@@ -7,6 +7,7 @@ class Flashcard {
     required this.id,
     required this.uid,
     required this.title,
+    required this.isPinned,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -14,6 +15,7 @@ class Flashcard {
   final String id;
   final String uid;
   final String title;
+  final bool isPinned;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -22,6 +24,7 @@ class Flashcard {
           id: json['id']! as String,
           uid: json['uid']! as String,
           title: json['title']! as String,
+          isPinned: json['isPinned'] as bool? ?? false,
           createdAt: (json['createdAt']! as Timestamp).toDate(),
           updatedAt: (json['updatedAt']! as Timestamp).toDate(),
         );
@@ -31,6 +34,7 @@ class Flashcard {
       'id': id,
       'uid': uid,
       'title': title,
+      'isPinned': isPinned,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
@@ -40,12 +44,14 @@ class Flashcard {
       {String? id,
       String? uid,
       String? title,
+      bool? isPinned,
       DateTime? createdAt,
       DateTime? updatedAt}) {
     return Flashcard(
       id: id ?? this.id,
       uid: uid ?? this.uid,
       title: title ?? this.title,
+      isPinned: isPinned ?? this.isPinned,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

@@ -42,15 +42,11 @@ class TopPage extends ConsumerWidget {
       ],
     );
     final contextualActionBar = AppBar(
-      title: const Text('Action Bar'),
-      backgroundColor: Colors.indigoAccent,
+      backgroundColor: AppColor.colorBackgroundOfContextualActionBar,
+      foregroundColor: AppColor.colorForegroundOfContextualActionBar,
       leading: IconButton(
           onPressed: () {
             topNotifier.removeSelectedFlashcard();
-            // topNotifier.switchIsActionMode(
-            //   isActionMode: false,
-            //   selectedFlashcard: null,
-            // );
           },
           icon: const Icon(Icons.close)),
       actions: [
@@ -61,51 +57,81 @@ class TopPage extends ConsumerWidget {
             },
             icon: const Icon(Icons.play_arrow)),
         IconButton(
-            onPressed: () async {
-              // 更新モードでflashcardAddAndUpdatePageに遷移
-              if (topState.selectedFlashcard != null) {
-                await _pushPage(
-                    context,
-                    ref,
-                    FlashCardAddAndUpdatePage(
-                      flashcard: topState.selectedFlashcard!,
-                    ));
-                // stateの初期化
-                await topNotifier.init();
+          onPressed: () async {
+            await topNotifier.invertIsPinnedOfSelectedFlashcard();
+            await topNotifier.init();
+          },
+          icon: () {
+            if (topState.selectedFlashcard != null) {
+              if (topState.selectedFlashcard!.isPinned) {
+                return const Icon(
+                  Icons.push_pin_outlined,
+                  color: Colors.black, //
+                );
               } else {
-                return;
+                return const Icon(
+                  Icons.push_pin,
+                  color: Colors.white, //
+                );
               }
-            },
-            icon: const Icon(Icons.settings)),
+            } else {
+              return const Icon(
+                Icons.push_pin,
+                color: Colors.white, //
+              );
+            }
+          }(),
+        ),
+        IconButton(
+          onPressed: () async {
+            // 更新モードでflashcardAddAndUpdatePageに遷移
+            if (topState.selectedFlashcard != null) {
+              await _pushPage(
+                  context,
+                  ref,
+                  FlashCardAddAndUpdatePage(
+                    flashcard: topState.selectedFlashcard!,
+                  ));
+              // stateの初期化
+              await topNotifier.init();
+            } else {
+              return;
+            }
+          },
+          icon: const Icon(Icons.settings),
+        ),
       ],
     );
 
     return ColoredStatusBar(
       color: topState.isActionMode
-          ? AppColor.colorOfActionModeOfStatusBar
-          : AppColor.colorOfDefaultOfStatusBar,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: StackedAppBar(
-            defaultAppBar: defaultAppBar,
-            contextualActionBar: contextualActionBar,
-            isStacked: topState.isActionMode,
-            child: const _TopPageBody(),
+          ? AppColor.colorActionModeOfStatusBar
+          : AppColor.colorDefaultOfStatusBar,
+      child: GestureDetector(
+        onTap: () => print('tapped'),
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: StackedAppBar(
+              defaultAppBar: defaultAppBar,
+              contextualActionBar: contextualActionBar,
+              isStacked: topState.isActionMode,
+              child: const _TopPageBody(),
+            ),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            // 追加モードでflashcardAddAndUpdatePageに遷移
-            await _pushPage(
-                context,
-                ref,
-                const FlashCardAddAndUpdatePage(
-                  flashcard: null,
-                ));
-            // 追加処理後のstateの初期化
-            await topNotifier.init();
-          },
-          child: const Icon(Icons.add),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              // 追加モードでflashcardAddAndUpdatePageに遷移
+              await _pushPage(
+                  context,
+                  ref,
+                  const FlashCardAddAndUpdatePage(
+                    flashcard: null,
+                  ));
+              // 追加処理後のstateの初期化
+              await topNotifier.init();
+            },
+            child: const Icon(Icons.add),
+          ),
         ),
       ),
     );
@@ -124,19 +150,108 @@ class _TopPageBody extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: Text(
-            'default:',
+            '固定済み',
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              //fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        const Divider(
-          color: Colors.black,
-          indent: 20,
-          endIndent: 20,
+        // const Divider(
+        //   color: Colors.black,
+        //   indent: 20,
+        //   endIndent: 20,
+        // ),
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(20),
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          crossAxisCount: 2,
+          childAspectRatio: 2.0,
+          children: () {
+            return topState.pinnedFlashcardListSortedByUpdatedAt
+                .map(
+                  (flashcard) => InkWell(
+                    onTap: () async {
+                      /// action modeの場合、同一のflashcardならaction modeをfalse
+                      ///  同一ではない場合、選択されたものをselectedFlashcardにセット。
+                      ///  action modeではない場合、Flashcard pageに遷移
+                      if (topState.isActionMode) {
+                        if (flashcard.id ==
+                            (topState.selectedFlashcard?.id ?? -1)) {
+                          topNotifier.removeSelectedFlashcard();
+                          // topNotifier.switchIsActionMode(
+                          //     isActionMode: false, selectedFlashcard: null);
+                        } else {
+                          topNotifier.setSelectedFlashcard(
+                              selectedFlashcard: flashcard);
+                        }
+                      } else {
+                        await _pushPage(
+                            context, ref, FlashcardPage(flashcard: flashcard));
+                        // stateの初期化
+                        await topNotifier.init();
+                      }
+                    },
+                    onLongPress: () {
+                      /// action modeの場合、selectedFlashcardならaction modeをfalse
+                      /// そうではない場合、選択されたものをselectedFlashcardにセット。
+                      /// action modeではない場合、action modeをtrueにして、selectedFlashcardをセット
+                      if (topState.isActionMode) {
+                        if (flashcard.id ==
+                            (topState.selectedFlashcard?.id ?? -1)) {
+                          topNotifier.removeSelectedFlashcard();
+                          // topNotifier.switchIsActionMode(
+                          //     isActionMode: false, selectedFlashcard: null);
+                        } else {
+                          topNotifier.setSelectedFlashcard(
+                              selectedFlashcard: flashcard);
+                        }
+                      } else {
+                        topNotifier.setSelectedFlashcard(
+                            selectedFlashcard: flashcard);
+                        //print('isActionMode is ${topState.isActionMode}');
+                        print(
+                            'isActionMode is ${ref.read(topProvider).isActionMode}');
+                        // topNotifier.switchIsActionMode(
+                        //     isActionMode: true, selectedFlashcard: flashcard);
+                      }
+                    },
+                    child: Card(
+                      shape: () {
+                        // flashcardのidがselectedFlashcardのidと同一なら枠の色を変更。
+                        if (flashcard.id ==
+                            (topState.selectedFlashcard?.id ?? -1)) {
+                          return const RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.teal),
+                          );
+                        } else {
+                          return RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.0));
+                        }
+                      }(),
+                      child: Center(
+                        child: Text(flashcard.title),
+                      ),
+                    ),
+                  ),
+                )
+                .toList();
+          }(),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          child: Text(
+            'その他',
+            style: TextStyle(
+              fontSize: 14,
+              //fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         GridView.count(
           shrinkWrap: true,
@@ -147,7 +262,7 @@ class _TopPageBody extends ConsumerWidget {
           crossAxisCount: 2,
           childAspectRatio: 2.0,
           children: () {
-            return topState.flashcardList.reversed
+            return topState.othersFlashcardListSortedByUpdatedAt
                 .map(
                   (flashcard) => InkWell(
                     onTap: () async {
