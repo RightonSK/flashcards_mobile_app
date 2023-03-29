@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class FlashCardAddAndUpdatePage extends HookConsumerWidget {
   const FlashCardAddAndUpdatePage({Key? key, required this.flashcard})
       : super(key: key);
+
   //final bool isUpdateMode;
   final Flashcard? flashcard;
 
@@ -82,14 +83,15 @@ class FlashCardAddAndUpdatePage extends HookConsumerWidget {
             ),
           ),
           ElevatedButton(
-              onPressed: () async {
-                await flashcardAddAndUpdateNotifier.addOrUpdateFlashcard(
-                  title: _titleController.text,
-                  isUpdateMode: isUpdateMode,
-                );
-                Navigator.pop(context);
-              },
-              child: Text(_buttonTitle)),
+            onPressed: () async {
+              await flashcardAddAndUpdateNotifier.addOrUpdateFlashcard(
+                title: _titleController.text,
+                isUpdateMode: isUpdateMode,
+              );
+              Navigator.pop(context);
+            },
+            child: Text(_buttonTitle),
+          ),
         ],
       ),
     );
