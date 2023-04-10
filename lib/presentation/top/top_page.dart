@@ -32,7 +32,7 @@ class TopPage extends ConsumerWidget {
     final topNotifier = ref.watch(topProvider.notifier);
 
     final defaultAppBar = AppBar(
-      title: const Text('単語'),
+      //title: const Text('Flashcard'),
       actions: [
         IconButton(
             onPressed: () async {
@@ -223,7 +223,7 @@ class _TopPageBody extends ConsumerWidget {
                     },
                     child: Card(
                       shape: () {
-                        // flashcardのidがselectedFlashcardのidと同一なら枠の色を変更。
+                        /// flashcardのidがselectedFlashcardのidと同一なら枠の色を変更。
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
                           return const RoundedRectangleBorder(
@@ -235,7 +235,11 @@ class _TopPageBody extends ConsumerWidget {
                         }
                       }(),
                       child: Center(
-                        child: Text(flashcard.title),
+                        child: Text(
+                          flashcard.title,
+                          style: TextThemeSettings.titleOfFlashcard,
+                          //style: Theme.of(context).textTheme.displaySmall,
+                        ),
                       ),
                     ),
                   ),
@@ -324,7 +328,10 @@ class _TopPageBody extends ConsumerWidget {
                         }
                       }(),
                       child: Center(
-                        child: Text(flashcard.title),
+                        child: Text(
+                          flashcard.title,
+                          style: TextThemeSettings.titleOfFlashcard,
+                        ),
                       ),
                     ),
                   ),

@@ -29,7 +29,7 @@ class FlashcardPlayPage extends HookConsumerWidget {
               child: IconButton(
                 icon: const Icon(Icons.close),
                 // close iconを押されたら、top pageに戻る。
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
               ),
@@ -50,61 +50,178 @@ class _FlashcardPlayPageBody extends HookConsumerWidget {
     final flashcardPlayState = ref.watch(flashcardPlayProvider(flashcard));
     final flashcardPlayNotifier =
         ref.watch(flashcardPlayProvider(flashcard).notifier);
-    //final PageController controller = PageController();
-    final PageController controller = usePageController();
-
-    // useEffect(() {
-    //   final PageController controller = PageController();
-    // }, const []);
-
-    //flashcardPlayNotifier.
+    final PageController pageController = usePageController();
 
     return Theme(
       data: Theme.of(context).copyWith(
-          //cardTheme: null,
+        cardTheme: CardTheme(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
+        ),
+      ),
       child: PageView(
-          controller: controller,
-          children: flashcardPlayState.words.isNotEmpty
-              ? flashcardPlayState.words
-                  .map(
-                    (Word word) => Center(
-                      child: SizedBox(
-                        width: 300,
-                        height: 150,
-                        child: InkWell(
-                          onTap: () async {
-                            flashcardPlayNotifier
-                                .switchTheValueOfWordIdToIsFlipped(
-                                    wordId: word.id);
-                          },
-                          child: Card(
-                            shape: () {
-                              return RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20));
-                            }(),
-                            child: Center(
-                              child: Text(
-                                  flashcardPlayState.wordIdToIsFlipped[word.id]
-                                      ? word.description
-                                      : word.title),
+        controller: pageController,
+        allowImplicitScrolling: false,
+        onPageChanged: (index) {
+          /// 最終単語を終えると,Navigate
+          print(index);
+          if (flashcardPlayState.words.isNotEmpty) {
+            if (index == flashcardPlayState.words.length) {
+              print('navigate');
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              });
+            }
+          }
+        },
+        children: (() {
+          if (flashcardPlayState.words.isNotEmpty) {
+            final pages = flashcardPlayState.words
+                .map(
+                  (Word word) => Center(
+                    child: SizedBox(
+                      width: 300,
+                      height: 150,
+                      child: InkWell(
+                        onTap: () async {
+                          flashcardPlayNotifier
+                              .switchTheValueOfWordIdToIsFlipped(
+                                  wordId: word.id);
+                        },
+                        child: Card(
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              flashcardPlayState.wordIdToIsFlipped[word.id]
+                                  ? word.description
+                                  : word.title,
+                              style: TextStyle(
+                                fontSize: 20.0,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  )
-                  .toList()
-              : <SizedBox>[]),
+                  ),
+                )
+                .toList();
+
+            ///単語再生モード終了用にWidgetを追加したListをreturn
+            return [...pages, const SizedBox.shrink()];
+          } else {
+            return <SizedBox>[];
+          }
+        })(),
+      ),
     );
   }
 }
 
-class CustomCard extends StatelessWidget {
-  const CustomCard({Key? key}) : super(key: key);
+class CustomCard extends ConsumerWidget {
+  CustomCard({Key? key}) : super(key: key);
+  final List<String> wordList = ['a', 'b'];
+  final flashcard = Flashcard(
+      id: '',
+      uid: '',
+      title: '',
+      isPinned: false,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now());
 
   @override
-  Widget build(BuildContext context) {
-    return Card();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final flashcardPlayNotifier =
+        ref.watch(flashcardPlayProvider(flashcard).notifier);
+    final flashcardPlayState = ref.watch(flashcardPlayProvider(flashcard));
+
+    return Center(
+      child: PageView.builder(
+        itemCount: flashcardPlayState.words.length,
+        itemBuilder: (context, index) {
+          final word = flashcardPlayState.words[index];
+          return Center(
+            child: SizedBox(
+              width: 300,
+              height: 150,
+              child: InkWell(
+                onTap: () async {
+                  flashcardPlayNotifier.switchTheValueOfWordIdToIsFlipped(
+                      wordId: word.id);
+                },
+                child: Card(
+                  child: Center(
+                    child: Text(flashcardPlayState.wordIdToIsFlipped[word.id]
+                        ? word.description
+                        : word.title),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
+
+// class Sample extends ConsumerWidget {
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return Center(
+//       child: PageView(
+//         controller: pageController,
+//         allowImplicitScrolling: false,
+//         onPageChanged: (index) {
+//           /// 最終単語を終えると,Navigate
+//           print(index);
+//           if (flashcardPlayState.words.isNotEmpty) {
+//             if (index == flashcardPlayState.words.length) {
+//               print('navigate');
+//               Future.delayed(const Duration(seconds: 1), () {
+//                 Navigator.of(context).popUntil((route) => route.isFirst);
+//               });
+//             }
+//           }
+//         },
+//         children: (() {
+//           if (flashcardPlayState.words.isNotEmpty) {
+//             final pages = flashcardPlayState.words
+//                 .map(
+//                   (Word word) => Center(
+//                     child: SizedBox(
+//                       width: 300,
+//                       height: 150,
+//                       child: InkWell(
+//                         onTap: () async {
+//                           flashcardPlayNotifier
+//                               .switchTheValueOfWordIdToIsFlipped(
+//                                   wordId: word.id);
+//                         },
+//                         child: Card(
+//                           child: Center(
+//                             child: Text(
+//                                 flashcardPlayState.wordIdToIsFlipped[word.id]
+//                                     ? word.description
+//                                     : word.title),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 )
+//                 .toList();
+//
+//             ///単語再生モード終了用にWidgetを追加したListをreturn
+//             return [...pages, const SizedBox.shrink()];
+//           } else {
+//             return <SizedBox>[];
+//           }
+//         })(),
+//       ),
+//     );
+//   }
+// }

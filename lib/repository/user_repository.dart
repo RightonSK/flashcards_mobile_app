@@ -55,24 +55,20 @@ class UserRepository {
     return user;
   }
 
-  // Future<bool> logInToUpdateUserInfo(
-  //     {required String email, required String password}) async {
-  //   bool isLoggedIn = false;
-  //   await auth.FirebaseAuth.instance
-  //       .signInWithEmailAndPassword(email: email, password: password)
-  //       .then((userCredential) => isLoggedIn = true);
-  //   return isLoggedIn;
-  // }
-
+  ///
+  /// 登録メールアドレスの変更
+  ///
   Future<void> updateEmail({required String newEmail}) async {
-    final firebaseAuth = auth.FirebaseAuth.instance;
-    try {} on auth.FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
+    // final firebaseAuth = auth.FirebaseAuth.instance;
+    // try {} on auth.FirebaseAuthException catch (e) {
+    //   if (e.code == 'user-not-found') {
+    //     print('No user found for that email.');
+    //   } else if (e.code == 'wrong-password') {
+    //     print('Wrong password provided for that user.');
+    //   }
+    // }
     await auth.FirebaseAuth.instance.currentUser!.updateEmail(newEmail);
   }
+
+  //Future<void> updatePassword()
 }

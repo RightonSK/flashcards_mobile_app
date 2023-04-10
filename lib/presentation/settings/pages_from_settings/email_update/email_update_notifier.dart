@@ -17,6 +17,13 @@ class EmailUpdateNotifier extends StateNotifier<EmailUpdateState> {
   final emailController = TextEditingController();
   final _userRepository = UserRepository();
 
+  @override
+  void dispose() {
+    super.dispose();
+    passwordController.dispose();
+    emailController.dispose();
+  }
+
   ///
   /// init処理
   ///

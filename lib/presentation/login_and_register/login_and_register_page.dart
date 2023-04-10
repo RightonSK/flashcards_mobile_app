@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flashcards_mobile_app/presentation/forgot_password/forgot_password_page.dart';
+
 //import 'package:flashcards_mobile_app/domain/user.dart' as domain;
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_regsiter_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
@@ -97,12 +99,41 @@ class LoginAndRegisterPage extends HookConsumerWidget {
               ),
 
               //　パスワードを忘れた方はこちら (テキスト)
-              const SizedBox(
+              SizedBox(
                 width: double.infinity,
-                child: Text(
-                  'パスワードを忘れた方はこちら',
-                  style: TextStyle(color: Colors.blue),
-                  textAlign: TextAlign.right,
+                child: GestureDetector(
+                  onTap: () async {
+                    ///メールアドレス入力画面に遷移。
+                    // await Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const ForgotPasswordPage(),
+                    //   ),
+                    // );
+                    await Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            ForgotPasswordPage(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeUpwardsPageTransitionsBuilder()
+                              .buildTransitions(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgotPasswordPage()),
+                                  context,
+                                  animation,
+                                  secondaryAnimation,
+                                  child);
+                        },
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'パスワードを忘れた方はこちら',
+                    style: TextStyle(color: Colors.blue),
+                    textAlign: TextAlign.right,
+                  ),
                 ),
               ),
               const SizedBox(

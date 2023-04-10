@@ -3,6 +3,7 @@ import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_play/flashcard_play_state.dart';
 import 'package:flashcards_mobile_app/repository/word_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // autoDisposeで参照されなくなったら毎回破棄して、このpageに遷移する度に

@@ -60,10 +60,10 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
   ///
   Future<void> login({required String email, required String password}) async {
     if (email.isEmpty) {
-      throw ('メールアドレスを入力してください');
+      throw const FormatException('メールアドレスを入力してください');
     }
     if (password.isEmpty) {
-      throw ('パスワードを入力してください');
+      throw const FormatException('パスワードを入力してください');
     }
 
     try {
@@ -76,6 +76,10 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
       rethrow;
       //throw (_convertErrorMessageForLogin(e.code));
     }
+  }
+
+  Future<void> resetPassword() async {
+    //final email =
   }
 
   ///

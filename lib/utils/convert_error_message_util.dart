@@ -32,4 +32,20 @@ class ConvertErrorMessageUtil {
         return '不明なエラーです';
     }
   }
+
+  // Forgot Password用のエラーメッセージコンバーター
+  static String convertErrorMessageForForgotPassword(String e) {
+    switch (e) {
+      case 'invalid-email':
+        return 'メールアドレスを正しい形式で入力してください';
+      case 'user-not-found':
+        return 'ユーザーが見つかりません';
+      case 'user-disabled':
+        return 'ユーザーが無効です';
+      case 'too-many-requests':
+        return 'しばらく待ってからお試し下さい';
+      default:
+        return '不明なエラーです';
+    }
+  }
 }
