@@ -6,6 +6,7 @@ import 'package:flashcards_mobile_app/presentation/custom_widgets/stacked_app_ba
 import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard/flashcard_state.dart';
 import 'package:flashcards_mobile_app/presentation/word_add_and_update/word_add_and_update_page.dart';
+import 'package:flashcards_mobile_app/utils/navigation_util.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -33,29 +34,23 @@ class FlashcardPage extends ConsumerWidget {
           },
           icon: const Icon(Icons.close)),
       actions: [
-        //setting button
+        //　設定アイコン
         // 選択されたwordが1の場合
         if (flashcardState.wordIdToSelectedWord.length == 1)
           IconButton(
             onPressed: () async {
+              //選択されたwordを抜き出す
               final wordList = flashcardState.wordIdToSelectedWord.entries
                   .map((e) => e.value)
                   .toList();
               final Word word = wordList[0];
-
-              // final wordAddAndUpdatePageNotifier =
-              //     ref.read(wordAddAndUpdateProvider.notifier);
-              // // 遷移先のstateにwordを渡し、そのisUpdateModeをtrueにする。
-              // wordAddAndUpdatePageNotifier.passWord(word: word);
-              // wordAddAndUpdatePageNotifier.switchIsUpdateMode(
-              //     isUpdateMode: true);
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WordAddAndUpdatePage(
-                      wordWillUpdate: word,
-                      flashcardId: flashcardState.flashcard!.id,
-                    ),
+              //遷移
+              await NavigationUtil.pushPage(
+                  context: context,
+                  fullscreenDialog: false,
+                  page: WordAddAndUpdatePage(
+                    wordWillUpdate: word,
+                    flashcardId: flashcardState.flashcard!.id,
                   ));
               // wordsを再取得し更新、isActionModeをfalseにする。
               await flashcardNotifier.updateWords();
@@ -69,25 +64,18 @@ class FlashcardPage extends ConsumerWidget {
           PopupMenuButton<Word>(
             // Callback that sets the selected popup menu item.
             onSelected: (Word word) async {
-              // 遷移先のstateにwordを渡し、そのisUpdateModeをtrueにする。
-              // final wordAddAndUpdatePageNotifier =
-              //     ref.read(wordAddAndUpdateProvider.notifier);
-              // wordAddAndUpdatePageNotifier.passWord(word: word);
-              // wordAddAndUpdatePageNotifier.switchIsUpdateMode(
-              //     isUpdateMode: true);
-
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WordAddAndUpdatePage(
-                      wordWillUpdate: word,
-                      flashcardId: flashcardState.flashcard!.id,
-                    ),
-                  ));
-              // wordsを再取得し更新、isActionModeをfalseにする。
-              await flashcardNotifier.updateWords();
+              // ActionMode終了後、選択されたwordの更新画面に遷移
               flashcardNotifier.turnOffActionMode();
-              //flashcardNotifier.switchIsActionMode(isActionMode: false);
+              await NavigationUtil.pushPage(
+                context: context,
+                fullscreenDialog: false,
+                page: WordAddAndUpdatePage(
+                  wordWillUpdate: word,
+                  flashcardId: flashcardState.flashcard!.id,
+                ),
+              );
+              // wordsを再取得。
+              await flashcardNotifier.updateWords();
             },
             icon: const Icon(Icons.settings),
             itemBuilder: (BuildContext context) =>
@@ -136,33 +124,18 @@ class FlashcardPage extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // word add and update pageのstateにflashcardを渡し、isUpdateModeをfalse
-            // その後flashcardがnullじゃないならページ遷移
-
-            // final wordAddAndUpdateNotifier =
-            //     ref.read(wordAddAndUpdateProvider.notifier);
-            // wordAddAndUpdateNotifier.switchIsUpdateMode(isUpdateMode: false);
-            // if (ref.read(wordAddAndUpdateProvider).parentFlashcard != null) {
-            //   await Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => const WordAddAndUpdatePage(),
-            //     ),
-            //   );
-            // }
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => WordAddAndUpdatePage(
-                  wordWillUpdate: null,
-                  flashcardId: flashcardState.flashcard!.id,
-                ),
+            // action modeを終了し、遷移
+            flashcardNotifier.turnOffActionMode();
+            await NavigationUtil.pushPage(
+              context: context,
+              fullscreenDialog: true,
+              page: WordAddAndUpdatePage(
+                wordWillUpdate: null,
+                flashcardId: flashcardState.flashcard!.id,
               ),
             );
-            // wordsを再取得し更新、isActionModeをfalseにする。
+            // wordsを再取得
             await flashcardNotifier.updateWords();
-            flashcardNotifier.turnOffActionMode();
-            //flashcardNotifier.switchIsActionMode(isActionMode: false);
           },
           child: const Icon(Icons.add),
         ),
@@ -206,7 +179,7 @@ class _FlashcardPageBody extends ConsumerWidget {
                         flashcardNotifier.addWordToWordIdToSelectedWord(
                             selectedWord: word);
                       }
-                      //要素が0かどうか確認
+                      //要素が0かどうか確認して、空ならaction modeを終了
                       flashcardNotifier.checkIfWordIdToSelectedWordIsEmpty();
                     } else {
                       flashcardNotifier.switchTheValueOfWordIdToIsFlipped(
@@ -260,30 +233,6 @@ class _FlashcardPageBody extends ConsumerWidget {
               )
               .toList()
           : <SizedBox>[],
-    );
-  }
-}
-
-class _DeleteCheckDialog extends StatelessWidget {
-  const _DeleteCheckDialog({required this.theNumberOfSelectedWords, Key? key})
-      : super(key: key);
-  final String theNumberOfSelectedWords;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('確認'),
-      content: Text('$theNumberOfSelectedWordsつの単語を削除しますか？'),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('NO'),
-          onPressed: () => Navigator.of(context).pop(false),
-        ),
-        TextButton(
-          child: const Text('YES'),
-          onPressed: () => Navigator.of(context).pop(true),
-        ),
-      ],
     );
   }
 }

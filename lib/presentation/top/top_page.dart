@@ -10,17 +10,21 @@ import 'package:flashcards_mobile_app/presentation/flashcard_play/flashcard_play
 import 'package:flashcards_mobile_app/presentation/settings/settings_page.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_state.dart';
+import 'package:flashcards_mobile_app/utils/navigation_util.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 ///
 /// 画面遷移時にAction modeをoffにして、遷移。
 ///
-Future _pushPage(BuildContext context, WidgetRef ref, Widget page) async {
+Future<void> _pushPage(
+    {required BuildContext context,
+    required WidgetRef ref,
+    required bool fullScreenDialog,
+    required Widget page}) async {
   ref.read(topProvider.notifier).turnOffActionMode();
-  await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-    return page;
-  }));
+  await NavigationUtil.pushPage(
+      context: context, fullscreenDialog: fullScreenDialog, page: page);
 }
 
 class TopPage extends ConsumerWidget {
@@ -36,7 +40,11 @@ class TopPage extends ConsumerWidget {
       actions: [
         IconButton(
             onPressed: () async {
-              await _pushPage(context, ref, const SettingsPage());
+              await _pushPage(
+                  context: context,
+                  ref: ref,
+                  fullScreenDialog: false,
+                  page: const SettingsPage());
             },
             icon: const Icon(Icons.settings)),
       ],
@@ -46,14 +54,18 @@ class TopPage extends ConsumerWidget {
       foregroundColor: AppColor.colorForegroundOfContextualActionBar,
       leading: IconButton(
           onPressed: () {
-            topNotifier.removeSelectedFlashcard();
+            topNotifier.turnOffActionMode();
           },
           icon: const Icon(Icons.close)),
       actions: [
         IconButton(
-            onPressed: () {
-              _pushPage(context, ref,
-                  FlashcardPlayPage(flashcard: topState.selectedFlashcard!));
+            onPressed: () async {
+              await _pushPage(
+                  context: context,
+                  ref: ref,
+                  fullScreenDialog: false,
+                  page: FlashcardPlayPage(
+                      flashcard: topState.selectedFlashcard!));
             },
             icon: const Icon(Icons.play_arrow)),
         IconButton(
@@ -84,12 +96,13 @@ class TopPage extends ConsumerWidget {
         ),
         IconButton(
           onPressed: () async {
-            // 更新モードでflashcardAddAndUpdatePageに遷移
+            // Actionモードの時、flashcardAddAndUpdatePageに遷移
             if (topState.selectedFlashcard != null) {
               await _pushPage(
-                  context,
-                  ref,
-                  FlashCardAddAndUpdatePage(
+                  context: context,
+                  ref: ref,
+                  fullScreenDialog: false,
+                  page: FlashCardAddAndUpdatePage(
                     flashcard: topState.selectedFlashcard!,
                   ));
               // stateの初期化
@@ -107,31 +120,29 @@ class TopPage extends ConsumerWidget {
       color: topState.isActionMode
           ? AppColor.colorActionModeOfStatusBar
           : AppColor.colorDefaultOfStatusBar,
-      child: GestureDetector(
-        onTap: () => print('tapped'),
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: StackedAppBar(
-              defaultAppBar: defaultAppBar,
-              contextualActionBar: contextualActionBar,
-              isStacked: topState.isActionMode,
-              child: const _TopPageBody(),
-            ),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: StackedAppBar(
+            defaultAppBar: defaultAppBar,
+            contextualActionBar: contextualActionBar,
+            isStacked: topState.isActionMode,
+            child: const _TopPageBody(),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              // 追加モードでflashcardAddAndUpdatePageに遷移
-              await _pushPage(
-                  context,
-                  ref,
-                  const FlashCardAddAndUpdatePage(
-                    flashcard: null,
-                  ));
-              // 追加処理後のstateの初期化
-              await topNotifier.init();
-            },
-            child: const Icon(Icons.add),
-          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            //flashcardAddAndUpdatePageに遷移
+            await _pushPage(
+                context: context,
+                ref: ref,
+                fullScreenDialog: true,
+                page: const FlashCardAddAndUpdatePage(
+                  flashcard: null,
+                ));
+            // 追加処理後のstateの初期化
+            await topNotifier.init();
+          },
+          child: const Icon(Icons.add),
         ),
       ),
     );
@@ -159,11 +170,6 @@ class _TopPageBody extends ConsumerWidget {
             ),
           ),
         ),
-        // const Divider(
-        //   color: Colors.black,
-        //   indent: 20,
-        //   endIndent: 20,
-        // ),
         GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -183,16 +189,17 @@ class _TopPageBody extends ConsumerWidget {
                       if (topState.isActionMode) {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
-                          topNotifier.removeSelectedFlashcard();
-                          // topNotifier.switchIsActionMode(
-                          //     isActionMode: false, selectedFlashcard: null);
+                          topNotifier.turnOffActionMode();
                         } else {
                           topNotifier.setSelectedFlashcard(
                               selectedFlashcard: flashcard);
                         }
                       } else {
                         await _pushPage(
-                            context, ref, FlashcardPage(flashcard: flashcard));
+                            context: context,
+                            ref: ref,
+                            fullScreenDialog: false,
+                            page: FlashcardPage(flashcard: flashcard));
                         // stateの初期化
                         await topNotifier.init();
                       }
@@ -204,9 +211,7 @@ class _TopPageBody extends ConsumerWidget {
                       if (topState.isActionMode) {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
-                          topNotifier.removeSelectedFlashcard();
-                          // topNotifier.switchIsActionMode(
-                          //     isActionMode: false, selectedFlashcard: null);
+                          topNotifier.turnOffActionMode();
                         } else {
                           topNotifier.setSelectedFlashcard(
                               selectedFlashcard: flashcard);
@@ -214,11 +219,8 @@ class _TopPageBody extends ConsumerWidget {
                       } else {
                         topNotifier.setSelectedFlashcard(
                             selectedFlashcard: flashcard);
-                        //print('isActionMode is ${topState.isActionMode}');
                         print(
                             'isActionMode is ${ref.read(topProvider).isActionMode}');
-                        // topNotifier.switchIsActionMode(
-                        //     isActionMode: true, selectedFlashcard: flashcard);
                       }
                     },
                     child: Card(
@@ -238,7 +240,6 @@ class _TopPageBody extends ConsumerWidget {
                         child: Text(
                           flashcard.title,
                           style: TextThemeSettings.titleOfFlashcard,
-                          //style: Theme.of(context).textTheme.displaySmall,
                         ),
                       ),
                     ),
@@ -253,7 +254,6 @@ class _TopPageBody extends ConsumerWidget {
             'その他',
             style: TextStyle(
               fontSize: 14,
-              //fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -276,16 +276,17 @@ class _TopPageBody extends ConsumerWidget {
                       if (topState.isActionMode) {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
-                          topNotifier.removeSelectedFlashcard();
-                          // topNotifier.switchIsActionMode(
-                          //     isActionMode: false, selectedFlashcard: null);
+                          topNotifier.turnOffActionMode();
                         } else {
                           topNotifier.setSelectedFlashcard(
                               selectedFlashcard: flashcard);
                         }
                       } else {
                         await _pushPage(
-                            context, ref, FlashcardPage(flashcard: flashcard));
+                            context: context,
+                            ref: ref,
+                            fullScreenDialog: false,
+                            page: FlashcardPage(flashcard: flashcard));
                         // stateの初期化
                         await topNotifier.init();
                       }
@@ -297,9 +298,7 @@ class _TopPageBody extends ConsumerWidget {
                       if (topState.isActionMode) {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
-                          topNotifier.removeSelectedFlashcard();
-                          // topNotifier.switchIsActionMode(
-                          //     isActionMode: false, selectedFlashcard: null);
+                          topNotifier.turnOffActionMode();
                         } else {
                           topNotifier.setSelectedFlashcard(
                               selectedFlashcard: flashcard);
@@ -307,16 +306,13 @@ class _TopPageBody extends ConsumerWidget {
                       } else {
                         topNotifier.setSelectedFlashcard(
                             selectedFlashcard: flashcard);
-                        //print('isActionMode is ${topState.isActionMode}');
                         print(
                             'isActionMode is ${ref.read(topProvider).isActionMode}');
-                        // topNotifier.switchIsActionMode(
-                        //     isActionMode: true, selectedFlashcard: flashcard);
                       }
                     },
                     child: Card(
                       shape: () {
-                        // flashcardのidがselectedFlashcardのidと同一なら枠の色を変更。
+                        /// flashcardのidがselectedFlashcardのidと同一なら枠の色を変更。
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
                           return const RoundedRectangleBorder(
@@ -339,36 +335,6 @@ class _TopPageBody extends ConsumerWidget {
                 .toList();
           }(),
         ),
-      ],
-    );
-  }
-}
-
-class AlertDialogSample extends StatelessWidget {
-  const AlertDialogSample(
-      {required this.flashcard, required this.ref, Key? key})
-      : super(key: key);
-  final Flashcard flashcard;
-  final WidgetRef ref;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('${flashcard.title}の再生ボタンが押されました。'),
-      //content: Text('こうかいしませんね？'),
-      actions: <Widget>[
-        GestureDetector(
-          child: Text('いいえ'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        GestureDetector(
-          child: Text('はい'),
-          onTap: () {
-            _pushPage(context, ref, FlashcardPlayPage(flashcard: flashcard));
-          },
-        )
       ],
     );
   }

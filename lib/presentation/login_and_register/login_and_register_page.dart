@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:flashcards_mobile_app/presentation/forgot_password/forgot_password_page.dart';
+import 'package:flashcards_mobile_app/presentation/login_and_register/forgot_password/forgot_password_page.dart';
 
 //import 'package:flashcards_mobile_app/domain/user.dart' as domain;
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_regsiter_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
-import 'package:flashcards_mobile_app/utils/convert_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/navigation_util.dart';
+import 'package:flashcards_mobile_app/utils/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -49,7 +51,8 @@ class LoginAndRegisterPage extends HookConsumerWidget {
               // ログイン　(テキスト)
               Text(
                 _modeTitle,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
               const SizedBox(
                 height: 10,
@@ -60,7 +63,7 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                 children: [
                   Text(
                     _navigationText + ' ',
-                    style: TextStyle(color: Colors.black, fontSize: 12),
+                    style: const TextStyle(color: Colors.black, fontSize: 12),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -68,7 +71,7 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                     },
                     child: Text(
                       _navigationTitle,
-                      style: TextStyle(color: Colors.blue, fontSize: 14),
+                      style: const TextStyle(color: Colors.blue, fontSize: 14),
                     ),
                   ),
                 ],
@@ -80,7 +83,7 @@ class LoginAndRegisterPage extends HookConsumerWidget {
               // email text field
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'メールアドレス',
                 ),
               ),
@@ -92,7 +95,7 @@ class LoginAndRegisterPage extends HookConsumerWidget {
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'パスワード'),
+                decoration: const InputDecoration(labelText: 'パスワード'),
               ),
               const SizedBox(
                 height: 10,
@@ -104,30 +107,10 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                 child: GestureDetector(
                   onTap: () async {
                     ///メールアドレス入力画面に遷移。
-                    // await Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const ForgotPasswordPage(),
-                    //   ),
-                    // );
-                    await Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            ForgotPasswordPage(),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          return FadeUpwardsPageTransitionsBuilder()
-                              .buildTransitions(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ForgotPasswordPage()),
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child);
-                        },
-                      ),
-                    );
+                    await NavigationUtil.pushPage(
+                        context: context,
+                        fullscreenDialog: true,
+                        page: const ForgotPasswordPage());
                   },
                   child: const Text(
                     'パスワードを忘れた方はこちら',
@@ -156,31 +139,31 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim());
                       }
-                    } on auth.FirebaseAuthException catch (e, stacktrace) {
-                      //print(stacktrace);
-                      if (loginAndRegisterState.isLoginMode) {
-                        _showTextDialog(
-                            context,
-                            ConvertErrorMessageUtil.convertErrorMessageForLogin(
-                                e.code));
-                      } else {
-                        _showTextDialog(
-                            context,
-                            ConvertErrorMessageUtil
-                                .convertErrorMessageForSignup(e.code));
-                      }
+                    } on auth.FirebaseAuthException catch (e) {
+                      await NotificationUtil.showTextDialog(
+                          context: context,
+                          message:
+                              ConvertToErrorMessageUtil.convertErrorMessage(
+                                  e.code));
+                      //エラーの場合、処理を停止
+                      return;
+                    } catch (e) {
+                      NotificationUtil.showTextSnackBar(context, '不明なエラーです');
+                      //エラーの場合、処理を停止
                       return;
                     }
                     //top pageへ遷移
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const TopPage()));
+                    NavigationUtil.pushAndReplacePage(
+                        context: context,
+                        fullscreenDialog: false,
+                        page: const TopPage());
                   },
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       _buttonTitle,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
                 ),
@@ -191,23 +174,4 @@ class LoginAndRegisterPage extends HookConsumerWidget {
       ),
     );
   }
-}
-
-_showTextDialog(context, message) async {
-  await showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
 }

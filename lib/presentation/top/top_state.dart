@@ -15,7 +15,7 @@ class TopState with _$TopState {
   }) = _TopState;
 
   bool get isActionMode => selectedFlashcard != null;
-  // 年代降順でソートしたflashcardListを返す
+  // 年代降順でソートしたpinnedFlashcardListを返す
   List<Flashcard> get pinnedFlashcardListSortedByUpdatedAt {
     final pinnedFlashcardList =
         flashcardList.where((flashcard) => flashcard.isPinned == true).toList();
@@ -23,7 +23,7 @@ class TopState with _$TopState {
     return pinnedFlashcardList;
   }
 
-  // 年代降順でソートしたflashcardListを返す
+  // 年代降順でソートしたotherFlashcardListを返す
   List<Flashcard> get othersFlashcardListSortedByUpdatedAt {
     final othersFlashcardList = flashcardList
         .where((flashcard) => flashcard.isPinned == false)

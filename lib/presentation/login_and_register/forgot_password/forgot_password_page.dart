@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flashcards_mobile_app/presentation/forgot_password/forgot_password_viewmodel.dart';
-import 'package:flashcards_mobile_app/utils/convert_error_message_util.dart';
+import 'package:flashcards_mobile_app/presentation/login_and_register/forgot_password/forgot_password_viewmodel.dart';
+import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
 import 'package:flashcards_mobile_app/utils/convert_to_user_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -65,10 +65,8 @@ class _ForgotPasswordPageBody extends ConsumerWidget {
                   //成功したら前の画面に遷移
                   Navigator.of(context).pop();
                 } on FirebaseAuthException catch (e) {
-                  _showSnackBar(
-                      context,
-                      ConvertErrorMessageUtil
-                          .convertErrorMessageForForgotPassword(e.code));
+                  _showSnackBar(context,
+                      ConvertToErrorMessageUtil.convertErrorMessage(e.code));
                 } on FormatException catch (e) {
                   _showSnackBar(context, e.message);
                 }

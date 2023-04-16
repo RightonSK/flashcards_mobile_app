@@ -6,13 +6,13 @@ import 'package:flashcards_mobile_app/domain/user.dart' as domain;
 class UserRepository {
   final CollectionReference _usersRef =
       FirebaseFirestore.instance.collection('users');
-
   final _usersRefWithConverter = FirebaseFirestore.instance
       .collection('users')
       .withConverter<domain.User>(
           fromFirestore: (snapshot, _) =>
               domain.User.fromJson(snapshot.data()!),
           toFirestore: (user, _) => user.toJson());
+  final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
 
   ///
   /// userを取得
@@ -56,6 +56,17 @@ class UserRepository {
   }
 
   ///
+  /// 再認証用メソッド。ユーザ情報更新のため
+  ///
+  Future<void> reAuthenticate({required String password}) async {
+    // Create a credential
+    auth.AuthCredential credential = auth.EmailAuthProvider.credential(
+        email: _auth.currentUser!.email!, password: password);
+    // Reauthenticate
+    await _auth.currentUser!.reauthenticateWithCredential(credential);
+  }
+
+  ///
   /// 登録メールアドレスの変更
   ///
   Future<void> updateEmail({required String newEmail}) async {
@@ -70,5 +81,7 @@ class UserRepository {
     await auth.FirebaseAuth.instance.currentUser!.updateEmail(newEmail);
   }
 
-  //Future<void> updatePassword()
+  Future<void> updatePassword({required String newPassword}) async {
+    await auth.FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/email_update/email_update_notifier.dart';
-import 'package:flashcards_mobile_app/utils/convert_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -46,10 +46,8 @@ class EmailUpdatePage extends ConsumerWidget {
                             builder: (context) => const LoginAndRegisterPage()),
                         (route) => false);
                   } on FirebaseAuthException catch (e) {
-                    await _showTextDialog(
-                        context,
-                        ConvertErrorMessageUtil.convertErrorMessageForLogin(
-                            e.code));
+                    await _showTextDialog(context,
+                        ConvertToErrorMessageUtil.convertErrorMessage(e.code));
                   }
                 }
               },
@@ -112,7 +110,7 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
                       } on FirebaseAuthException catch (e) {
                         await _showTextDialog(
                             context,
-                            ConvertErrorMessageUtil.convertErrorMessageForLogin(
+                            ConvertToErrorMessageUtil.convertErrorMessage(
                                 e.code));
                         Navigator.of(context).pop(false);
                       }

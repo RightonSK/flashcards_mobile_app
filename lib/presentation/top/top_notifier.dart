@@ -27,14 +27,16 @@ class TopNotifier extends StateNotifier<TopState> {
   }
 
   ///
-  /// Action Modeに関わるプロパティの値を初期化
+  /// selectedFlashcardをnullにする。
   ///
   void turnOffActionMode() {
     state = state.copyWith(selectedFlashcard: null);
     print('false Action Mode');
   }
 
-  //flashcardsの取得
+  ///
+  /// flashcardsの取得
+  ///
   Future fetchFlashcards() async {
     final user = _ref.read(userProvider);
     print('fetchFlashcard(): ${user!.uid}');
@@ -69,10 +71,6 @@ class TopNotifier extends StateNotifier<TopState> {
   ///
   void setSelectedFlashcard({required Flashcard selectedFlashcard}) {
     state = state.copyWith(selectedFlashcard: selectedFlashcard);
-  }
-
-  void removeSelectedFlashcard() {
-    state = state.copyWith(selectedFlashcard: null);
   }
 
   ///

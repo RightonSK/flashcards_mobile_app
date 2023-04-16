@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/email_update/email_update_page.dart';
+import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/password_update/password_update_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/settings_viewmodel.dart';
 import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
+import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/navigation_util.dart';
+import 'package:flashcards_mobile_app/utils/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +25,6 @@ class SettingsPage extends ConsumerWidget {
     final user = ref.read(userProvider);
     final deviceHeight = MediaQuery.of(context).size.height;
     final itemHeight = deviceHeight / 12;
-    print(itemHeight);
     final settingsViewModel = SettingsViewModel();
 
     return Scaffold(
@@ -37,25 +40,36 @@ class SettingsPage extends ConsumerWidget {
               // switch文
               switch (listTitles[index]) {
                 case 'メールアドレス':
-                  await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const EmailUpdatePage()));
+                  await NavigationUtil.pushPage(
+                      context: context,
+                      fullscreenDialog: false,
+                      page: const EmailUpdatePage());
                   break;
                 case 'パスワード':
-                  print('');
+                  await NavigationUtil.pushPage(
+                      context: context,
+                      fullscreenDialog: false,
+                      page: const PasswordUpdatePage());
                   break;
                 case 'ログアウト':
-                  final bool result =
-                      await settingsViewModel.logOut(context: context);
-                  //ログアウトに成功したら、login pageにpush and remove
-                  if (result) {
+                  try {
+                    await settingsViewModel.logOut(context: context);
                     await Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (context) => const LoginAndRegisterPage()),
                         (route) => false);
+                  } on FirebaseAuthException catch (e) {
+                    NotificationUtil.showTextSnackBar(context,
+                        ConvertToErrorMessageUtil.convertErrorMessage(e.code));
+                  } catch (e) {
+                    NotificationUtil.showTextSnackBar(context, '不明なエラーです');
                   }
                   break;
                 case 'アカウントの削除':
-                  print('');
+                  await NotificationUtil.showTextDialog(
+                      context: context,
+                      message: ConvertToErrorMessageUtil.convertErrorMessage(
+                          'invalid-email'));
                   break;
                 default:
                   break;
@@ -64,30 +78,6 @@ class SettingsPage extends ConsumerWidget {
           );
         },
       ),
-      // body: SizedBox(
-      //   width: double.infinity,
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       Text(user!.uid),
-      //       Text(user.email),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: ElevatedButton(
-      //             onPressed: () async {
-      //               //一時的にここでログアウト処理を記述する
-      //               await FirebaseAuth.instance.signOut();
-      //               //ログアウトに成功したら、loginpageにpush and remove
-      //               Navigator.of(context).pushAndRemoveUntil(
-      //                   MaterialPageRoute(
-      //                       builder: (context) => const LoginAndRegisterPage()),
-      //                   (route) => false);
-      //             },
-      //             child: Text('ログアウト')),
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

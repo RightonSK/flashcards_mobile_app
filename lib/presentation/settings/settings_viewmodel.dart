@@ -5,21 +5,22 @@ import 'package:flutter/material.dart';
 class SettingsViewModel {
   //
 
-  Future<bool> logOut({required BuildContext context}) async {
-    bool returnedValue = false;
-    try {
-      await FirebaseAuth.instance.signOut().then((value) {
-        returnedValue = true;
-      });
-      return returnedValue;
-    } catch (e) {
-      if (e is FirebaseAuthException) {
-        print('FirebaseAuthException caught: $e');
-        // handle specific FirebaseAuthException error codes here
-      } else {
-        print('Error signing out: $e');
-      }
-      return returnedValue;
-    }
+  Future<void> logOut({required BuildContext context}) async {
+    await FirebaseAuth.instance.signOut();
+    // bool returnedValue = false;
+    // try {
+    //   await FirebaseAuth.instance.signOut().then((value) {
+    //     returnedValue = true;
+    //   });
+    //   return returnedValue;
+    // } catch (e) {
+    //   if (e is FirebaseAuthException) {
+    //     print('FirebaseAuthException caught: $e');
+    //     // handle specific FirebaseAuthException error codes here
+    //   } else {
+    //     print('Error signing out: $e');
+    //   }
+    //   return returnedValue;
+    // }
   }
 }

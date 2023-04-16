@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 /// スプラッシュ画面
 class SplashPage extends StatelessWidget {
+  const SplashPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -26,7 +26,9 @@ class AppColor {
   static const Color colorActionModeOfStatusBar = Color(0xFF52616B);
   static const Color colorBackgroundOfContextualActionBar = Color(0xFF52616B);
   static const Color colorForegroundOfContextualActionBar = Colors.white;
-
+  static const Color baseColor = Color(0xFFF0F5F9);
+  static const Color mainColor = Color(0xFFC9D6DF);
+  static const Color accentColor = Color(0xFF52616B);
   // static const Color colorOfActionModeOfStatusBar = Colors.indigoAccent;
   // static const Color colorOfContextualActionBar = Colors.indigoAccent;
 }
