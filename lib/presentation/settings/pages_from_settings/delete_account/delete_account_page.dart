@@ -1,57 +1,63 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flashcards_mobile_app/app.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
-import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/email_update/email_update_notifier.dart';
+import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/delete_account/delete_account_viewmodel.dart';
 import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class EmailUpdatePage extends ConsumerWidget {
-  const EmailUpdatePage({Key? key}) : super(key: key);
+class DeleteAccountPage extends ConsumerWidget {
+  const DeleteAccountPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailUpdateState = ref.watch(emailUpdateProvider);
-    final emailUpdateNotifier = ref.watch(emailUpdateProvider.notifier);
-
+    // provider保持用の監視
+    final deleteAccountViewModel = ref.watch(deleteAccountProvider.notifier);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('メールアドレス設定'),
+        title: const Text('退会'),
       ),
       body: SizedBox.expand(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('現在のメールアドレス'),
-            Text(emailUpdateState.email),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'メールアドレス',
-                    hintText: 'メールアドレス'),
-                controller: emailUpdateNotifier.emailController,
-              ),
+            const SizedBox(
+              height: 16.0,
+            ),
+            const Text('退会するとあなたのユーザ情報が全て削除されます'),
+            const Text('それでもよろしいですか？'),
+            const SizedBox(
+              height: 16.0,
             ),
             ElevatedButton(
+              child: const Text('はい'),
               onPressed: () async {
                 final isLoggedIn = await _showBottomSheet(context, ref);
                 if (isLoggedIn) {
                   try {
-                    await emailUpdateNotifier.updateEmail();
-                    //アップデート出来たら実行。
+                    //アカウントの削除
+                    await deleteAccountViewModel.deleteAccount();
+                    //削除成功後実行
+                    await NotificationUtil.showTextDialog(
+                        context: context, message: 'アカウントを削除しました');
                     await Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (context) => const LoginAndRegisterPage()),
                         (route) => false);
                   } on FirebaseAuthException catch (e) {
-                    await _showTextDialog(context,
-                        ConvertToErrorMessageUtil.convertErrorMessage(e.code));
+                    await NotificationUtil.showTextDialog(
+                        context: context,
+                        message: ConvertToErrorMessageUtil.convertErrorMessage(
+                            e.code));
+                  } catch (e) {
+                    NotificationUtil.showTextSnackBar(context,
+                        ConvertToErrorMessageUtil.convertErrorMessage(''));
                   }
                 }
               },
-              child: const Text('変更'),
             ),
           ],
         ),
@@ -61,14 +67,13 @@ class EmailUpdatePage extends ConsumerWidget {
 }
 
 Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
-  final emailUpdateState = ref.watch(emailUpdateProvider);
-  final emailUpdateNotifier = ref.watch(emailUpdateProvider.notifier);
+  //final deleteAccountState = ref.watch(deleteAccountProvider);
+  final deleteAccountViewModel = ref.watch(deleteAccountProvider.notifier);
   final deviceHeight = MediaQuery.of(context).size.height;
   final unSafeAreaTop = MediaQuery.of(context).padding.top;
   final bottomSheetHeight =
       deviceHeight - unSafeAreaTop - AppBar().preferredSize.height;
-  print(unSafeAreaTop);
-  return await showModalBottomSheet(
+  return await showModalBottomSheet<bool>(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -93,10 +98,11 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
                   const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
               child: Column(
                 children: [
-                  const Text('現在のメールアドレス'),
-                  Text(emailUpdateState.email),
+                  // const SizedBox(
+                  //   height: 16,
+                  // ),
                   TextField(
-                    controller: emailUpdateNotifier.passwordController,
+                    controller: deleteAccountViewModel.passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(labelText: 'パスワード'),
                   ),
@@ -106,15 +112,22 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        await emailUpdateNotifier.reLogin();
+                        //再ログイン
+                        await deleteAccountViewModel.reLogin();
                         //ログイン成功時、trueを返す
                         Navigator.of(context).pop(true);
                       } on FirebaseAuthException catch (e) {
-                        await _showTextDialog(
-                            context,
-                            ConvertToErrorMessageUtil.convertErrorMessage(
-                                e.code));
+                        await NotificationUtil.showTextDialog(
+                            context: context,
+                            message:
+                                ConvertToErrorMessageUtil.convertErrorMessage(
+                                    e.code));
                         Navigator.of(context).pop(false);
+                      } catch (e) {
+                        Navigator.of(context).pop(false);
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        NotificationUtil.showTextSnackBar(context,
+                            ConvertToErrorMessageUtil.convertErrorMessage(''));
                       }
                     },
                     child: const Text('確認'),
@@ -126,24 +139,4 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
         },
       ) ??
       false;
-}
-
-/// メールアドレス入力の際のエラー表示用ダイアログ
-_showTextDialog(context, message) async {
-  await showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
 }

@@ -83,6 +83,17 @@ class WordRepository {
   }
 
   ///
+  /// あるuidに紐づくwordを全て削除 (アカウント削除用メソッド)
+  ///
+  Future<void> deleteAllByUID({required String uid}) async {
+    final wordsSnapshot =
+        await _wordsRefWithConverter.where('uid', isEqualTo: uid).get();
+    for (QueryDocumentSnapshot doc in wordsSnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  ///
   /// 新規で追加する際に新規のidを発行
   ///
   String getNewId() {

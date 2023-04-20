@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flashcards_mobile_app/app_theme.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/forgot_password/forgot_password_viewmodel.dart';
 import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
 import 'package:flashcards_mobile_app/utils/convert_to_user_util.dart';
+import 'package:flashcards_mobile_app/utils/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -39,25 +41,30 @@ class _ForgotPasswordPageBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final forgotPasswordViewModel = ref.watch(forgotPasswordProvider.notifier);
+    final appBarHeight = AppBar().preferredSize.height;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      padding: EdgeInsets.fromLTRB(25.0, appBarHeight, 25.0, 0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
             controller: forgotPasswordViewModel.emailController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'メールアドレス',
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.backgroundColorOfButton,
+                foregroundColor: AppColor.foregroundColorOfButton,
+              ),
               onPressed: () async {
                 try {
                   // メールアドレスを送信
@@ -65,13 +72,14 @@ class _ForgotPasswordPageBody extends ConsumerWidget {
                   //成功したら前の画面に遷移
                   Navigator.of(context).pop();
                 } on FirebaseAuthException catch (e) {
-                  _showSnackBar(context,
+                  NotificationUtil.showTextSnackBar(context,
                       ConvertToErrorMessageUtil.convertErrorMessage(e.code));
-                } on FormatException catch (e) {
-                  _showSnackBar(context, e.message);
+                } catch (e) {
+                  NotificationUtil.showTextSnackBar(context,
+                      ConvertToErrorMessageUtil.convertErrorMessage(''));
                 }
               },
-              child: Padding(
+              child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   '送信',
@@ -84,18 +92,4 @@ class _ForgotPasswordPageBody extends ConsumerWidget {
       ),
     );
   }
-}
-
-_showSnackBar(BuildContext context, String errorMessage) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      backgroundColor: Colors.blue,
-      behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
-      content: Text(errorMessage),
-    ),
-  );
 }

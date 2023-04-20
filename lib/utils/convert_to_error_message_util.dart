@@ -22,6 +22,8 @@ class ConvertToErrorMessageUtil {
         return '指定したメールアドレス・パスワードは現在使用できません';
       case 'weak-password':
         return 'パスワードは６文字以上にしてください';
+      case 'missing-email':
+        return 'メールアドレスを入力してください';
       default:
         return '不明なエラーです';
     }

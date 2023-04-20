@@ -69,10 +69,14 @@ class FlashcardRepository {
   }
 
   ///
-  /// 新規で追加する際に新規のidを発行
+  /// あるuidに関する全てのflashcardを削除
   ///
-  String getNewId() {
-    return _flashcardsRef.doc().id;
+  Future<void> deleteAllByUID({required String uid}) async {
+    final flashcardSnapshot =
+        await _flashcardsRefWithConverter.where('uid', isEqualTo: uid).get();
+    for (QueryDocumentSnapshot doc in flashcardSnapshot.docs) {
+      await doc.reference.delete();
+    }
   }
 
   ///
@@ -82,5 +86,12 @@ class FlashcardRepository {
     await _flashcardsRef
         .doc(flashcard.id)
         .update({'isPinned': flashcard.isPinned});
+  }
+
+  ///
+  /// 新規で追加する際に新規のidを発行
+  ///
+  String getNewId() {
+    return _flashcardsRef.doc().id;
   }
 }

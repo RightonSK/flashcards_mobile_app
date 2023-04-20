@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flashcards_mobile_app/app_theme.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/forgot_password/forgot_password_page.dart';
 
 //import 'package:flashcards_mobile_app/domain/user.dart' as domain;
@@ -127,6 +128,10 @@ class LoginAndRegisterPage extends HookConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.backgroundColorOfButton,
+                    foregroundColor: AppColor.foregroundColorOfButton,
+                  ),
                   onPressed: () async {
                     //ログインorアカウント登録
                     try {

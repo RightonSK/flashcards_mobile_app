@@ -84,4 +84,11 @@ class UserRepository {
   Future<void> updatePassword({required String newPassword}) async {
     await auth.FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
   }
+
+  ///
+  /// ユーザの削除
+  ///
+  Future<void> delete({required String uid}) async {
+    await _usersRefWithConverter.doc(uid).delete();
+  }
 }

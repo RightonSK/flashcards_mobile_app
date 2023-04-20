@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 final theme = ThemeData(
   primarySwatch: Colors.blue,
+  //primarySwatch: Colors.black,
   scaffoldBackgroundColor: const Color(0xFFF0F5F9),
   appBarTheme: const AppBarTheme(
       color: Color(0xFFC9D6DF), foregroundColor: Colors.black),
-  cardTheme: const CardTheme(
-    elevation: 2.0,
-  ),
+  // cardTheme: const CardTheme(
+  //   elevation: 2.0,
+  // ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFF52616B),
+    backgroundColor: AppColor.accentColor,
     foregroundColor: Colors.white,
   ),
 );
@@ -22,13 +23,17 @@ class TextThemeSettings {
 
 class AppColor {
   AppColor._();
+  static const Color baseColor = Color(0xFFF0F5F9);
+  static const Color mainColor = Color(0xFFC9D6DF);
+  static const Color accentColor = Color(0xFF52616B);
+
   static final Color colorDefaultOfStatusBar = theme.scaffoldBackgroundColor;
   static const Color colorActionModeOfStatusBar = Color(0xFF52616B);
   static const Color colorBackgroundOfContextualActionBar = Color(0xFF52616B);
   static const Color colorForegroundOfContextualActionBar = Colors.white;
-  static const Color baseColor = Color(0xFFF0F5F9);
-  static const Color mainColor = Color(0xFFC9D6DF);
-  static const Color accentColor = Color(0xFF52616B);
+  static const Color backgroundColorOfButton = mainColor;
+  static const Color foregroundColorOfButton = Colors.black;
+
   // static const Color colorOfActionModeOfStatusBar = Colors.indigoAccent;
   // static const Color colorOfContextualActionBar = Colors.indigoAccent;
 }

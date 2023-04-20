@@ -17,10 +17,11 @@ class ForgotPasswordViewModel extends StateNotifier<void> {
     emailController.dispose();
   }
 
+  ///
+  /// パスワードリセット用のメールを送信
+  ///
   Future<void> sendEmailToResetPassword() async {
-    if (emailController.text.isEmpty) {
-      throw const FormatException('メールアドレスを入力してください');
-    }
+    //メールアドレスがnullだと、エラーコード missing-emailを返す
     await _auth.sendPasswordResetEmail(email: emailController.text.trim());
   }
 }
