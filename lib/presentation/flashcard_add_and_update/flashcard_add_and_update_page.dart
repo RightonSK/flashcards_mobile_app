@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/app_theme.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
@@ -67,32 +68,56 @@ class FlashCardAddAndUpdatePage extends HookConsumerWidget {
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '単語カードタイトル',
-                  hintText: '単語カードタイトル'),
-              onChanged: (String title) {
-                //model.changeTitle(title);
-              },
-              controller: _titleController,
-            ),
+      body: SingleChildScrollView(
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              await flashcardAddAndUpdateNotifier.addOrUpdateFlashcard(
-                title: _titleController.text,
-                isUpdateMode: isUpdateMode,
-              );
-              Navigator.pop(context);
-            },
-            child: Text(_buttonTitle),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    const Icon(
+                      Icons.create,
+                      color: Colors.black54,
+                    ),
+                    const SizedBox(
+                      width: 16.0,
+                    ),
+                    Flexible(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: '単語カードタイトル',
+                          hintText: '単語カードタイトル',
+                        ),
+                        controller: _titleController,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await flashcardAddAndUpdateNotifier.addOrUpdateFlashcard(
+                      title: _titleController.text,
+                      isUpdateMode: isUpdateMode,
+                    );
+                    Navigator.pop(context);
+                  },
+                  child: Text(_buttonTitle),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

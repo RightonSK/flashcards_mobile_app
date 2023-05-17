@@ -25,8 +25,6 @@ class PasswordUpdateViewModel extends StateNotifier<void> {
   /// ログインパスワードの更新
   ///
   Future<void> updatePassword() async {
-    throw Exception();
-
     if (currentPasswordController.text.isEmpty ||
         newPasswordController.text.isEmpty ||
         newPasswordToConfirmController.text.isEmpty) {

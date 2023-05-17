@@ -16,6 +16,9 @@ class NotificationUtil {
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -29,7 +32,8 @@ class NotificationUtil {
   ///
   /// メッセージ通知用snack bar
   ///
-  static void showTextSnackBar(BuildContext context, String message) {
+  static void showTextSnackBar(
+      {required BuildContext context, required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.blue,

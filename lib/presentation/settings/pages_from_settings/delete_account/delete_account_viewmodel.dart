@@ -50,7 +50,7 @@ class DeleteAccountViewModel extends StateNotifier<void> {
   Future<void> deleteAccount() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      final uid = user.uid!;
+      final uid = user.uid;
       try {
         // wordを全て削除
         await _wordRepository.deleteAllByUID(uid: uid);

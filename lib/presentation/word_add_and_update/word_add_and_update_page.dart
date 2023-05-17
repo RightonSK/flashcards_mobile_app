@@ -78,9 +78,6 @@ class WordAddAndUpdatePage extends HookConsumerWidget {
                           labelText: '単語名',
                           hintText: '単語名',
                         ),
-                        onChanged: (String name) {
-                          //model.changeWordName(name);
-                        },
                         controller: _titleController,
                       ),
                     ),
@@ -110,20 +107,15 @@ class WordAddAndUpdatePage extends HookConsumerWidget {
                         keyboardType: TextInputType.multiline,
                         minLines: 2,
                         maxLines: null,
-                        onChanged: (String description) {
-                          //model.changeDescription(description);
-                        },
                         controller: _descriptionController,
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 16,
-                ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () async {
                     await wordAddAndUpdateNotifier.addOrUpdateWord(

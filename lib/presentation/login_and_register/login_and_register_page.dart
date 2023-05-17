@@ -96,7 +96,9 @@ class LoginAndRegisterPage extends HookConsumerWidget {
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: 'パスワード'),
+                decoration: const InputDecoration(
+                  labelText: 'パスワード',
+                ),
               ),
               const SizedBox(
                 height: 10,
@@ -128,10 +130,6 @@ class LoginAndRegisterPage extends HookConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.backgroundColorOfButton,
-                    foregroundColor: AppColor.foregroundColorOfButton,
-                  ),
                   onPressed: () async {
                     //ログインorアカウント登録
                     try {
@@ -144,24 +142,27 @@ class LoginAndRegisterPage extends HookConsumerWidget {
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim());
                       }
+                      //成功後、top pageへ遷移
+                      NavigationUtil.pushAndReplacePage(
+                          context: context,
+                          fullscreenDialog: false,
+                          page: const TopPage());
                     } on auth.FirebaseAuthException catch (e) {
                       await NotificationUtil.showTextDialog(
                           context: context,
                           message:
                               ConvertToErrorMessageUtil.convertErrorMessage(
                                   e.code));
-                      //エラーの場合、処理を停止
-                      return;
+                    } on FormatException catch (e) {
+                      NotificationUtil.showTextDialog(
+                          context: context, message: e.message);
                     } catch (e) {
-                      NotificationUtil.showTextSnackBar(context, '不明なエラーです');
-                      //エラーの場合、処理を停止
-                      return;
+                      NotificationUtil.showTextSnackBar(
+                          context: context,
+                          message:
+                              ConvertToErrorMessageUtil.convertErrorMessage(
+                                  ''));
                     }
-                    //top pageへ遷移
-                    NavigationUtil.pushAndReplacePage(
-                        context: context,
-                        fullscreenDialog: false,
-                        page: const TopPage());
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

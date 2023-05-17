@@ -27,4 +27,15 @@ class NavigationUtil {
       ),
     );
   }
+
+  static Future<void> pushAndRemoveAll(
+      {required BuildContext context,
+      required bool fullscreenDialog,
+      required Widget page}) async {
+    await Navigator.of(context).pushAndRemoveUntil(
+      CupertinoPageRoute(
+          builder: (context) => page, fullscreenDialog: fullscreenDialog),
+      (route) => false,
+    );
+  }
 }

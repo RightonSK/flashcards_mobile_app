@@ -61,10 +61,6 @@ class _ForgotPasswordPageBody extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.backgroundColorOfButton,
-                foregroundColor: AppColor.foregroundColorOfButton,
-              ),
               onPressed: () async {
                 try {
                   // メールアドレスを送信
@@ -72,11 +68,15 @@ class _ForgotPasswordPageBody extends ConsumerWidget {
                   //成功したら前の画面に遷移
                   Navigator.of(context).pop();
                 } on FirebaseAuthException catch (e) {
-                  NotificationUtil.showTextSnackBar(context,
-                      ConvertToErrorMessageUtil.convertErrorMessage(e.code));
+                  NotificationUtil.showTextSnackBar(
+                      context: context,
+                      message: ConvertToErrorMessageUtil.convertErrorMessage(
+                          e.code));
                 } catch (e) {
-                  NotificationUtil.showTextSnackBar(context,
-                      ConvertToErrorMessageUtil.convertErrorMessage(''));
+                  NotificationUtil.showTextSnackBar(
+                      context: context,
+                      message:
+                          ConvertToErrorMessageUtil.convertErrorMessage(''));
                 }
               },
               child: const Padding(

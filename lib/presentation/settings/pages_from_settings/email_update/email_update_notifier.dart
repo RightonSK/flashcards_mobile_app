@@ -34,13 +34,35 @@ class EmailUpdateNotifier extends StateNotifier<EmailUpdateState> {
   }
 
   ///
+  /// メールアドレスのフォーマットを確認
+  ///
+  void checkEmailFormat() {
+    RegExp regExp = RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      caseSensitive: false,
+      multiLine: false,
+    );
+    bool isValid = regExp.hasMatch(emailController.text.trim());
+    if (emailController.text.isEmpty) {
+      throw const FormatException('メールアドレスを入力してください');
+    }
+    if (!isValid) {
+      throw const FormatException('メールアドレスを正しい形式で入力してください');
+    }
+  }
+
+  ///
   /// メールアドレス変更のための再度ログイン用メソッド
   ///
   Future<void> reLogin() async {
+    if (passwordController.text.isEmpty) {
+      throw const FormatException('パスワードを入力してください');
+    }
     try {
       await _userRepository.logIn(
           email: state.email, password: passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
+      emailController.clear();
       passwordController.clear();
       rethrow;
     }
@@ -54,7 +76,7 @@ class EmailUpdateNotifier extends StateNotifier<EmailUpdateState> {
       await _userRepository.updateEmail(newEmail: emailController.text.trim());
       print("Email updated successfully.");
       await FirebaseAuth.instance.signOut();
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       passwordController.clear();
       emailController.clear();
       rethrow;

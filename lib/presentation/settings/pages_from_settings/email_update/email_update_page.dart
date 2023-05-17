@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/email_update/email_update_notifier.dart';
 import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/navigation_util.dart';
+import 'package:flashcards_mobile_app/utils/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,41 +21,55 @@ class EmailUpdatePage extends ConsumerWidget {
         title: const Text('メールアドレス設定'),
       ),
       body: SizedBox.expand(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text('現在のメールアドレス'),
-            Text(emailUpdateState.email),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextField(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text('現在のメールアドレス'),
+              Text(emailUpdateState.email),
+              TextField(
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'メールアドレス',
-                    hintText: 'メールアドレス'),
+                    labelText: 'メールアドレス', hintText: 'メールアドレス'),
                 controller: emailUpdateNotifier.emailController,
               ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final isLoggedIn = await _showBottomSheet(context, ref);
-                if (isLoggedIn) {
+              const SizedBox(height: 8.0),
+              ElevatedButton(
+                onPressed: () async {
                   try {
-                    await emailUpdateNotifier.updateEmail();
-                    //アップデート出来たら実行。
-                    await Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const LoginAndRegisterPage()),
-                        (route) => false);
-                  } on FirebaseAuthException catch (e) {
-                    await _showTextDialog(context,
-                        ConvertToErrorMessageUtil.convertErrorMessage(e.code));
+                    emailUpdateNotifier.checkEmailFormat();
+                    final isLoggedIn = await _showBottomSheet(context, ref);
+                    // 再ログインに成功した場合
+                    if (isLoggedIn) {
+                      try {
+                        await emailUpdateNotifier.updateEmail();
+                        //アップデート成功後実行
+                        await NavigationUtil.pushAndRemoveAll(
+                            context: context,
+                            fullscreenDialog: true,
+                            page: const LoginAndRegisterPage());
+                      } on FirebaseAuthException catch (e) {
+                        await NotificationUtil.showTextDialog(
+                            context: context,
+                            message:
+                                ConvertToErrorMessageUtil.convertErrorMessage(
+                                    e.code));
+                      }
+                    }
+                  } on FormatException catch (e) {
+                    await NotificationUtil.showTextDialog(
+                        context: context, message: e.message);
+                  } catch (e) {
+                    NotificationUtil.showTextSnackBar(
+                        context: context,
+                        message:
+                            ConvertToErrorMessageUtil.convertErrorMessage(''));
                   }
-                }
-              },
-              child: const Text('変更'),
-            ),
-          ],
+                },
+                child: const Text('変更'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -109,12 +125,26 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
                         await emailUpdateNotifier.reLogin();
                         //ログイン成功時、trueを返す
                         Navigator.of(context).pop(true);
+                      } on FormatException catch (e) {
+                        await NotificationUtil.showTextDialog(
+                            context: context, message: e.message);
                       } on FirebaseAuthException catch (e) {
-                        await _showTextDialog(
-                            context,
-                            ConvertToErrorMessageUtil.convertErrorMessage(
-                                e.code));
+                        await NotificationUtil.showTextDialog(
+                            context: context,
+                            message:
+                                ConvertToErrorMessageUtil.convertErrorMessage(
+                                    e.code));
+                        // firebase authエラーの時は、ボトムシートを閉じる
                         Navigator.of(context).pop(false);
+                      } catch (e) {
+                        //その他のエラーの場合、ボトムシートを閉じ、スナックバーを表示
+                        Navigator.of(context).pop(false);
+                        Future.delayed(const Duration(milliseconds: 500));
+                        NotificationUtil.showTextSnackBar(
+                            context: context,
+                            message:
+                                ConvertToErrorMessageUtil.convertErrorMessage(
+                                    ''));
                       }
                     },
                     child: const Text('確認'),
@@ -126,24 +156,4 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
         },
       ) ??
       false;
-}
-
-/// メールアドレス入力の際のエラー表示用ダイアログ
-_showTextDialog(context, message) async {
-  await showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
 }

@@ -53,8 +53,10 @@ class DeleteAccountPage extends ConsumerWidget {
                         message: ConvertToErrorMessageUtil.convertErrorMessage(
                             e.code));
                   } catch (e) {
-                    NotificationUtil.showTextSnackBar(context,
-                        ConvertToErrorMessageUtil.convertErrorMessage(''));
+                    NotificationUtil.showTextSnackBar(
+                        context: context,
+                        message:
+                            ConvertToErrorMessageUtil.convertErrorMessage(''));
                   }
                 }
               },
@@ -126,8 +128,11 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
                       } catch (e) {
                         Navigator.of(context).pop(false);
                         await Future.delayed(const Duration(milliseconds: 500));
-                        NotificationUtil.showTextSnackBar(context,
-                            ConvertToErrorMessageUtil.convertErrorMessage(''));
+                        NotificationUtil.showTextSnackBar(
+                            context: context,
+                            message:
+                                ConvertToErrorMessageUtil.convertErrorMessage(
+                                    ''));
                       }
                     },
                     child: const Text('確認'),

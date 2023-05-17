@@ -36,7 +36,6 @@ class TopPage extends ConsumerWidget {
     final topNotifier = ref.watch(topProvider.notifier);
 
     final defaultAppBar = AppBar(
-      //title: const Text('Flashcard'),
       actions: [
         IconButton(
             onPressed: () async {
@@ -229,7 +228,8 @@ class _TopPageBody extends ConsumerWidget {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
                           return const RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.teal),
+                            side: BorderSide(
+                                color: AppColor.colorBorderOfSelectedCard),
                           );
                         } else {
                           return RoundedRectangleBorder(
@@ -316,7 +316,8 @@ class _TopPageBody extends ConsumerWidget {
                         if (flashcard.id ==
                             (topState.selectedFlashcard?.id ?? -1)) {
                           return const RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.teal),
+                            side: BorderSide(
+                                color: AppColor.colorBorderOfSelectedCard),
                           );
                         } else {
                           return RoundedRectangleBorder(

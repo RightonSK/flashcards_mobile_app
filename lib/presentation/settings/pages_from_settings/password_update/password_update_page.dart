@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcards_mobile_app/app_theme.dart';
+import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/password_update/password_update_viewmodel.dart';
 import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/navigation_util.dart';
 import 'package:flashcards_mobile_app/utils/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -58,14 +60,15 @@ class PasswordUpdatePage extends ConsumerWidget {
                     try {
                       //ログインパスワードの更新
                       await passwordUpdateViewModel.updatePassword();
-                      //成功したら、通知用ダイアログ
-                      print('パスワードを変更しました');
+                      //更新成功後、通知用ダイアログ
                       await NotificationUtil.showTextDialog(
                           context: context, message: 'パスワードを変更しました');
-                      //その後、前の画面に戻る
-                      Navigator.of(context).pop();
+                      //その後、ログイン画面に戻る
+                      await NavigationUtil.pushAndRemoveAll(
+                          context: context,
+                          fullscreenDialog: true,
+                          page: const LoginAndRegisterPage());
                     } on FirebaseAuthException catch (e) {
-                      print(e.code);
                       await NotificationUtil.showTextDialog(
                           context: context,
                           message:
@@ -73,22 +76,19 @@ class PasswordUpdatePage extends ConsumerWidget {
                                   e.code));
                     } on FormatException catch (e) {
                       await NotificationUtil.showTextDialog(
-                          context: context, message: e.toString());
+                          context: context, message: e.message);
                     } catch (e) {
-                      NotificationUtil.showTextSnackBar(context, '不明なエラーです');
+                      NotificationUtil.showTextSnackBar(
+                          context: context,
+                          message:
+                              ConvertToErrorMessageUtil.convertErrorMessage(
+                                  ''));
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.mainColor,
-                    foregroundColor: Colors.black,
-                    elevation: 3.0,
-                  ),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       '変更する',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
                 ),

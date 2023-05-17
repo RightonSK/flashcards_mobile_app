@@ -216,7 +216,8 @@ class _FlashcardPageBody extends ConsumerWidget {
                       if (flashcardState.wordIdToSelectedWord
                           .containsKey(word.id)) {
                         return const RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.teal),
+                          side: BorderSide(
+                              color: AppColor.colorBorderOfSelectedCard),
                         );
                       } else {
                         return RoundedRectangleBorder(

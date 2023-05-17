@@ -55,16 +55,20 @@ class SettingsPage extends ConsumerWidget {
                 case 'ログアウト':
                   try {
                     await settingsViewModel.logOut(context: context);
-                    await Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const LoginAndRegisterPage(),
-                        ),
-                        (route) => false);
+                    await NavigationUtil.pushAndRemoveAll(
+                        context: context,
+                        fullscreenDialog: true,
+                        page: const LoginAndRegisterPage());
                   } on FirebaseAuthException catch (e) {
-                    NotificationUtil.showTextSnackBar(context,
-                        ConvertToErrorMessageUtil.convertErrorMessage(e.code));
+                    NotificationUtil.showTextSnackBar(
+                        context: context,
+                        message: ConvertToErrorMessageUtil.convertErrorMessage(
+                            e.code));
                   } catch (e) {
-                    NotificationUtil.showTextSnackBar(context, '不明なエラーです');
+                    NotificationUtil.showTextSnackBar(
+                        context: context,
+                        message:
+                            ConvertToErrorMessageUtil.convertErrorMessage(''));
                   }
                   break;
                 case 'アカウントの削除':
@@ -72,10 +76,6 @@ class SettingsPage extends ConsumerWidget {
                       context: context,
                       fullscreenDialog: true,
                       page: const DeleteAccountPage());
-                  // await NotificationUtil.showTextDialog(
-                  //     context: context,
-                  //     message: ConvertToErrorMessageUtil.convertErrorMessage(
-                  //         'invalid-email'));
                   break;
                 default:
                   break;
