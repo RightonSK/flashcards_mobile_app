@@ -15,7 +15,6 @@ class FlashcardAddAndUpdateNotifier
   FlashcardAddAndUpdateNotifier(
       this._ref, FlashcardAddAndUpdateState state, Flashcard? flashcard)
       : super(state) {
-    print('flashcardAddAndUpdateNotifier constructor');
     // 更新モードの時のみflashcardをstateに渡す。
     if (flashcard != null) {
       passFlashcard(flashcard: flashcard);
@@ -38,6 +37,9 @@ class FlashcardAddAndUpdateNotifier
   // flashcardの中身を更新して、それをrepositoryに渡す
   Future addOrUpdateFlashcard(
       {required String title, required bool isUpdateMode}) async {
+    if (title.isEmpty) {
+      throw const FormatException('タイトルを入力して下さい');
+    }
     final user = _ref.read(userProvider);
     final Flashcard flashcard;
     if (isUpdateMode) {
@@ -56,8 +58,7 @@ class FlashcardAddAndUpdateNotifier
     state = state.copyWith(flashcard: flashcard);
     // add or update分岐
     if (isUpdateMode) {
-      await _flashcardRepository.update(
-          uid: user!.uid, flashcard: state.flashcard!);
+      await _flashcardRepository.update(flashcard: state.flashcard!);
     } else {
       await _flashcardRepository.add(flashcard: state.flashcard!);
     }
@@ -68,7 +69,6 @@ class FlashcardAddAndUpdateNotifier
     final user = _ref.read(userProvider);
     await _wordRepository.deleteAll(
         uid: user!.uid, flashcardId: state.flashcard!.id);
-    await _flashcardRepository.delete(
-        uid: user.uid, flashcardId: state.flashcard!.id);
+    await _flashcardRepository.delete(flashcardId: state.flashcard!.id);
   }
 }

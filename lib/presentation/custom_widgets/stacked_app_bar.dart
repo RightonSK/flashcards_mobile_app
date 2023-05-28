@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ///
 /// stacked状態に移行する時、次の状態遷移を行う。
-/// 1. default app barのみ
+/// 1. default app barのみ(最初の状態)
 /// 2. default app barの上にcontextual action barがexistする状態
 /// 3. default app barの上にcontextual action barがexistし、かつvisibleの状態
 ///

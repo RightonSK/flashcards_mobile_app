@@ -62,4 +62,15 @@ class Word {
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Word &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          id == other.id;
+
+  @override
+  int get hashCode => title.hashCode ^ id.hashCode;
 }

@@ -120,12 +120,14 @@ class TopPage extends ConsumerWidget {
           ? AppColor.colorActionModeOfStatusBar
           : AppColor.colorDefaultOfStatusBar,
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: StackedAppBar(
-            defaultAppBar: defaultAppBar,
-            contextualActionBar: contextualActionBar,
-            isStacked: topState.isActionMode,
-            child: const _TopPageBody(),
+        body: StackedAppBar(
+          defaultAppBar: defaultAppBar,
+          contextualActionBar: contextualActionBar,
+          isStacked: topState.isActionMode,
+          child: const Expanded(
+            child: SingleChildScrollView(
+              child: _TopPageBody(),
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(

@@ -6,8 +6,6 @@ import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// autoDisposeで参照されなくなったら毎回破棄して、このpageに遷移する度に
-// notifierのコンストラクタを実行される。
 final flashcardPlayProvider = StateNotifierProvider.autoDispose
     .family<FlashcardPlayNotifier, FlashcardPlayState, Flashcard>(
         (ref, Flashcard flashcard) =>

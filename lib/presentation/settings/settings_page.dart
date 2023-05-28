@@ -23,9 +23,6 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userProvider);
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final itemHeight = deviceHeight / 12;
     final settingsViewModel = SettingsViewModel();
 
     return Scaffold(
@@ -74,7 +71,7 @@ class SettingsPage extends ConsumerWidget {
                 case 'アカウントの削除':
                   await NavigationUtil.pushPage(
                       context: context,
-                      fullscreenDialog: true,
+                      fullscreenDialog: false,
                       page: const DeleteAccountPage());
                   break;
                 default:

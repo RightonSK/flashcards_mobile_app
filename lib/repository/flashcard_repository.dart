@@ -31,41 +31,22 @@ class FlashcardRepository {
   ///
   /// flashcardを更新
   ///
-  Future update({required String uid, required Flashcard flashcard}) async {
+  Future update({required Flashcard flashcard}) async {
     await _flashcardsRefWithConverter.doc(flashcard.id).set(flashcard);
-    // final flashcardsSnapshot = await _flashcardsRef
-    //     .where('uid', isEqualTo: uid)
-    //     .where('id', isEqualTo: flashcard.id)
-    //     .get();
-    // if (flashcardsSnapshot.size == 1) {
-    //   print(
-    //       'update in flashcard repository: size = ${flashcardsSnapshot.size}');
-    //   await flashcardsSnapshot.docs[0].reference
-    //       .update({'title': flashcard.title, 'updatedAt': flashcard.updatedAt});
-    // }
   }
 
   ///
   /// flashcardのupdatedAtプロパティを更新
   ///
-  Future updateUpdatedAt(
-      {required String uid, required String flashcardId}) async {
+  Future updateUpdatedAt({required String flashcardId}) async {
     await _flashcardsRef.doc(flashcardId).update({'updatedAt': DateTime.now()});
   }
 
   ///
   /// flashcardを削除
   ///
-  Future delete({required String uid, required String flashcardId}) async {
-    final flashcardsSnapshot = await _flashcardsRef
-        .where('uid', isEqualTo: uid)
-        .where('id', isEqualTo: flashcardId)
-        .get();
-    if (flashcardsSnapshot.size == 1) {
-      print(
-          'delete in flashcard repository: size = ${flashcardsSnapshot.size}');
-      await flashcardsSnapshot.docs[0].reference.delete();
-    }
+  Future delete({required String flashcardId}) async {
+    await _flashcardsRefWithConverter.doc(flashcardId).delete();
   }
 
   ///

@@ -34,8 +34,8 @@ class FlashcardPage extends ConsumerWidget {
           },
           icon: const Icon(Icons.close)),
       actions: [
-        //　設定アイコン
-        // 選択されたwordが1の場合
+        ///　設定アイコン
+        /// 選択されたwordが1の場合
         if (flashcardState.wordIdToSelectedWord.length == 1)
           IconButton(
             onPressed: () async {
@@ -59,7 +59,8 @@ class FlashcardPage extends ConsumerWidget {
             },
             icon: const Icon(Icons.settings),
           )
-        // 選択されたword2個以上の場合
+
+        /// 選択されたword2個以上の場合
         else
           PopupMenuButton<Word>(
             // Callback that sets the selected popup menu item.
@@ -118,8 +119,12 @@ class FlashcardPage extends ConsumerWidget {
           defaultAppBar: defaultAppBar,
           contextualActionBar: contextualActionBar,
           isStacked: flashcardState.isActionMode,
-          child: _FlashcardPageBody(
-            flashcard: flashcard,
+          child: Expanded(
+            child: SingleChildScrollView(
+              child: _FlashcardPageBody(
+                flashcard: flashcard,
+              ),
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(

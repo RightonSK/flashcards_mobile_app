@@ -13,7 +13,6 @@ final flashcardProvider = StateNotifierProvider.autoDispose
 class FlashcardNotifier extends StateNotifier<FlashcardState> {
   FlashcardNotifier(this._ref, FlashcardState state, Flashcard flashcard)
       : super(state) {
-    print('flashcard notifier constructor');
     init(flashcard: flashcard);
   }
   final _wordRepository = WordRepository();

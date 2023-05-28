@@ -1,6 +1,5 @@
 import 'package:flashcards_mobile_app/repository/flashcard_repository.dart';
 import 'package:flashcards_mobile_app/repository/user_provider.dart';
-import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/word_add_and_update/word_add_and_update_state.dart';
 import 'package:flashcards_mobile_app/repository/word_repository.dart';
@@ -14,7 +13,6 @@ final wordAddAndUpdateProvider = StateNotifierProvider.autoDispose
 class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
   WordAddAndUpdateNotifier(this._ref, WordAddAndUpdateState state, Word? word)
       : super(state) {
-    print('wordAddAndUpdateNotifier constructor');
     // 更新モードの場合、wordをstateに渡す。
     if (word != null) {
       passWord(word: word);
@@ -48,6 +46,12 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
       required String description,
       required String flashcardId,
       required bool isUpdateMode}) async {
+    if (title.isEmpty) {
+      throw const FormatException('単語名を入力して下さい');
+    }
+    if (description.isEmpty) {
+      throw const FormatException('意味を入力して下さい');
+    }
     final user = _ref.read(userProvider);
     final Word word;
     if (isUpdateMode) {
@@ -73,8 +77,7 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
     }
     // 親FlashcardのupdatedAtを更新
     if (state.word != null) {
-      await _flashcardRepository.updateUpdatedAt(
-          uid: state.word!.uid, flashcardId: state.word!.flashcardId);
+      await _flashcardRepository.updateUpdatedAt(flashcardId: state.word!.flashcardId);
     }
   }
 }

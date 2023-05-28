@@ -2,6 +2,8 @@ import 'package:flashcards_mobile_app/app_theme.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_add_and_update/flashcard_add_and_update_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
+import 'package:flashcards_mobile_app/utils/convert_to_error_message_util.dart';
+import 'package:flashcards_mobile_app/utils/notification_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -106,11 +108,22 @@ class FlashCardAddAndUpdatePage extends HookConsumerWidget {
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () async {
-                    await flashcardAddAndUpdateNotifier.addOrUpdateFlashcard(
-                      title: _titleController.text,
-                      isUpdateMode: isUpdateMode,
-                    );
-                    Navigator.pop(context);
+                    try {
+                      await flashcardAddAndUpdateNotifier.addOrUpdateFlashcard(
+                        title: _titleController.text,
+                        isUpdateMode: isUpdateMode,
+                      );
+                      Navigator.pop(context);
+                    } on FormatException catch (e) {
+                      NotificationUtil.showTextDialog(
+                          context: context, message: e.message);
+                    } catch (e) {
+                      NotificationUtil.showTextSnackBar(
+                          context: context,
+                          message:
+                              ConvertToErrorMessageUtil.convertErrorMessage(
+                                  ''));
+                    }
                   },
                   child: Text(_buttonTitle),
                 ),
@@ -136,10 +149,16 @@ class _DeleteCheckDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           child: const Text('NO'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+          ),
           onPressed: () => Navigator.of(context).pop(false),
         ),
         TextButton(
           child: const Text('YES'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+          ),
           onPressed: () => Navigator.of(context).pop(true),
         ),
       ],
