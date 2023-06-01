@@ -16,9 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$WordAddAndUpdateState {
-  Flashcard? get parentFlashcard => throw _privateConstructorUsedError;
   Word? get word => throw _privateConstructorUsedError;
-  bool get isUpdateMode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WordAddAndUpdateStateCopyWith<WordAddAndUpdateState> get copyWith =>
@@ -31,7 +29,7 @@ abstract class $WordAddAndUpdateStateCopyWith<$Res> {
           $Res Function(WordAddAndUpdateState) then) =
       _$WordAddAndUpdateStateCopyWithImpl<$Res, WordAddAndUpdateState>;
   @useResult
-  $Res call({Flashcard? parentFlashcard, Word? word, bool isUpdateMode});
+  $Res call({Word? word});
 }
 
 /// @nodoc
@@ -48,23 +46,13 @@ class _$WordAddAndUpdateStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? parentFlashcard = freezed,
     Object? word = freezed,
-    Object? isUpdateMode = null,
   }) {
     return _then(_value.copyWith(
-      parentFlashcard: freezed == parentFlashcard
-          ? _value.parentFlashcard
-          : parentFlashcard // ignore: cast_nullable_to_non_nullable
-              as Flashcard?,
       word: freezed == word
           ? _value.word
           : word // ignore: cast_nullable_to_non_nullable
               as Word?,
-      isUpdateMode: null == isUpdateMode
-          ? _value.isUpdateMode
-          : isUpdateMode // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -77,7 +65,7 @@ abstract class _$$_WordAddAndUpdateStateCopyWith<$Res>
       __$$_WordAddAndUpdateStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Flashcard? parentFlashcard, Word? word, bool isUpdateMode});
+  $Res call({Word? word});
 }
 
 /// @nodoc
@@ -91,23 +79,13 @@ class __$$_WordAddAndUpdateStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? parentFlashcard = freezed,
     Object? word = freezed,
-    Object? isUpdateMode = null,
   }) {
     return _then(_$_WordAddAndUpdateState(
-      parentFlashcard: freezed == parentFlashcard
-          ? _value.parentFlashcard
-          : parentFlashcard // ignore: cast_nullable_to_non_nullable
-              as Flashcard?,
       word: freezed == word
           ? _value.word
           : word // ignore: cast_nullable_to_non_nullable
               as Word?,
-      isUpdateMode: null == isUpdateMode
-          ? _value.isUpdateMode
-          : isUpdateMode // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -115,20 +93,14 @@ class __$$_WordAddAndUpdateStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_WordAddAndUpdateState implements _WordAddAndUpdateState {
-  _$_WordAddAndUpdateState(
-      {this.parentFlashcard, this.word, this.isUpdateMode = false});
+  _$_WordAddAndUpdateState({this.word});
 
   @override
-  final Flashcard? parentFlashcard;
-  @override
   final Word? word;
-  @override
-  @JsonKey()
-  final bool isUpdateMode;
 
   @override
   String toString() {
-    return 'WordAddAndUpdateState(parentFlashcard: $parentFlashcard, word: $word, isUpdateMode: $isUpdateMode)';
+    return 'WordAddAndUpdateState(word: $word)';
   }
 
   @override
@@ -136,16 +108,11 @@ class _$_WordAddAndUpdateState implements _WordAddAndUpdateState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_WordAddAndUpdateState &&
-            (identical(other.parentFlashcard, parentFlashcard) ||
-                other.parentFlashcard == parentFlashcard) &&
-            (identical(other.word, word) || other.word == word) &&
-            (identical(other.isUpdateMode, isUpdateMode) ||
-                other.isUpdateMode == isUpdateMode));
+            (identical(other.word, word) || other.word == word));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, parentFlashcard, word, isUpdateMode);
+  int get hashCode => Object.hash(runtimeType, word);
 
   @JsonKey(ignore: true)
   @override
@@ -156,17 +123,10 @@ class _$_WordAddAndUpdateState implements _WordAddAndUpdateState {
 }
 
 abstract class _WordAddAndUpdateState implements WordAddAndUpdateState {
-  factory _WordAddAndUpdateState(
-      {final Flashcard? parentFlashcard,
-      final Word? word,
-      final bool isUpdateMode}) = _$_WordAddAndUpdateState;
+  factory _WordAddAndUpdateState({final Word? word}) = _$_WordAddAndUpdateState;
 
   @override
-  Flashcard? get parentFlashcard;
-  @override
   Word? get word;
-  @override
-  bool get isUpdateMode;
   @override
   @JsonKey(ignore: true)
   _$$_WordAddAndUpdateStateCopyWith<_$_WordAddAndUpdateState> get copyWith =>

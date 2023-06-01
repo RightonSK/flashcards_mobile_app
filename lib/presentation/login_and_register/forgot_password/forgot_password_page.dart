@@ -49,6 +49,10 @@ class _ForgotPasswordPageBody extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text('ご入力のメールアドレス宛に、新しいパスワードを作成するリンクを送信します。'),
+          const SizedBox(
+            height: 16.0,
+          ),
           TextField(
             controller: forgotPasswordViewModel.emailController,
             decoration: const InputDecoration(

@@ -19,9 +19,7 @@ mixin _$FlashcardState {
   Flashcard? get flashcard => throw _privateConstructorUsedError;
   List<Word> get words => throw _privateConstructorUsedError;
   Map<String, Word> get wordIdToSelectedWord =>
-      throw _privateConstructorUsedError; //@Default(<Word>[]) List<Word> selectedWords,
-//@Default(false) appBarIsStacked,
-//@Default(false) bool isActionMode,
+      throw _privateConstructorUsedError;
   dynamic get wordIdToIsFlipped => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -165,9 +163,6 @@ class _$_FlashcardState extends _FlashcardState {
     return EqualUnmodifiableMapView(_wordIdToSelectedWord);
   }
 
-//@Default(<Word>[]) List<Word> selectedWords,
-//@Default(false) appBarIsStacked,
-//@Default(false) bool isActionMode,
   @override
   @JsonKey()
   final dynamic wordIdToIsFlipped;
@@ -220,9 +215,7 @@ abstract class _FlashcardState extends FlashcardState {
   List<Word> get words;
   @override
   Map<String, Word> get wordIdToSelectedWord;
-  @override //@Default(<Word>[]) List<Word> selectedWords,
-//@Default(false) appBarIsStacked,
-//@Default(false) bool isActionMode,
+  @override
   dynamic get wordIdToIsFlipped;
   @override
   @JsonKey(ignore: true)

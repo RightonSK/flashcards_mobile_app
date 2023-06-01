@@ -11,7 +11,6 @@ final topProvider = StateNotifierProvider.autoDispose<TopNotifier, TopState>(
 class TopNotifier extends StateNotifier<TopState> {
   TopNotifier(this._ref, TopState state) : super(state) {
     // top providerが最初に呼ばれたタイミングでinit()処理
-    print('top notifier constructor');
     init();
   }
 
@@ -31,7 +30,6 @@ class TopNotifier extends StateNotifier<TopState> {
   ///
   void turnOffActionMode() {
     state = state.copyWith(selectedFlashcard: null);
-    print('false Action Mode');
   }
 
   ///
@@ -39,32 +37,10 @@ class TopNotifier extends StateNotifier<TopState> {
   ///
   Future fetchFlashcards() async {
     final user = _ref.read(userProvider);
-    print('fetchFlashcard(): ${user!.uid}');
     final List<Flashcard> flashcardList =
-        await _flashcardRepository.findAll(uid: user.uid);
-    print(flashcardList == null
-        ? 'flashcardList is null'
-        : 'flashcardList is not null');
+        await _flashcardRepository.findAll(uid: user!.uid);
     state = state.copyWith(flashcardList: flashcardList);
-    print(flashcardList == null);
   }
-
-  ///
-  /// isActionModeのbool値を変更。
-  /// trueならappBarIsStackedをtrueにして、selectedFlashcardをセットする。
-  /// falseならappBarIsStackedをfalseにして、selectedFlashcardをnullにする。
-  ///
-  // void switchIsActionMode(
-  //     {required bool isActionMode, required Flashcard? selectedFlashcard}) {
-  //   state = state.copyWith(isActionMode: isActionMode);
-  //   if (state.isActionMode) {
-  //     state = state.copyWith(appBarIsStacked: true);
-  //     state = state.copyWith(selectedFlashcard: selectedFlashcard);
-  //   } else {
-  //     state = state.copyWith(appBarIsStacked: false);
-  //     state = state.copyWith(selectedFlashcard: null);
-  //   }
-  // }
 
   ///
   /// selectedFlashcardをセットする。
@@ -77,11 +53,11 @@ class TopNotifier extends StateNotifier<TopState> {
   ///  isPinnedのvalueを変更
   ///
   Future<void> invertIsPinnedOfSelectedFlashcard() async {
-    final updatedFlashcard = state.selectedFlashcard!
-        .copyWith(isPinned: !state.selectedFlashcard!.isPinned);
+    final updatedFlashcard = state.selectedFlashcard!.copyWith(
+        isPinned: !state.selectedFlashcard!.isPinned,
+        updatedAt: DateTime.now());
     print('isPinned ${updatedFlashcard.isPinned}');
-    // DBのデータを更新し、stateも更新
+    // flashcardを更新(isPinned, updatedAt)
     await _flashcardRepository.invertIsPinned(flashcard: updatedFlashcard);
-    //state = state.copyWith(selectedFlashcard: updatedFlashcard);
   }
 }

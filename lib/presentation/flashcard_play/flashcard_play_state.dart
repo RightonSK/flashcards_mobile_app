@@ -6,9 +6,11 @@ part 'flashcard_play_state.freezed.dart';
 
 @freezed
 class FlashcardPlayState with _$FlashcardPlayState {
-  factory FlashcardPlayState({
+  const FlashcardPlayState._();
+  const factory FlashcardPlayState({
     Flashcard? flashcard,
     @Default(<Word>[]) List<Word> words,
     @Default(<String, bool>{}) wordIdToIsFlipped,
+    @Default(1) int currentPageNumber,
   }) = _FlashcardPlayState;
 }

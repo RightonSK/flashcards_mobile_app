@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
@@ -21,6 +23,13 @@ class FlashcardPlayNotifier extends StateNotifier<FlashcardPlayState> {
 
   final _wordRepository = WordRepository();
   final Ref _ref;
+  final pageController = PageController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
 
   ///
   /// 最初に遷移した時のための初期化メソッド
@@ -39,13 +48,14 @@ class FlashcardPlayNotifier extends StateNotifier<FlashcardPlayState> {
   }
 
   ///
-  /// このstateのflashcardのwordsをfetch
+  /// このstateのflashcardのwordsをfetchし、それをランダムな順でリスト化
   ///
   Future fetchWordsOfTheFlashcard() async {
-    final user = _ref.read(userProvider);
-    List<Word> words = await _wordRepository.findAll(
-        uid: user!.uid, flashcard: state.flashcard!);
-    state = state.copyWith(words: words);
+    List<Word> words =
+        await _wordRepository.findAll(flashcard: state.flashcard!);
+    List<Word> shuffledWords = List.from(words);
+    shuffledWords.shuffle(Random());
+    state = state.copyWith(words: shuffledWords);
   }
 
   ///
@@ -66,5 +76,17 @@ class FlashcardPlayNotifier extends StateNotifier<FlashcardPlayState> {
     final Map<String, bool> wordIdToIsFlipped = {...state.wordIdToIsFlipped};
     wordIdToIsFlipped.update(wordId, (value) => !value);
     state = state.copyWith(wordIdToIsFlipped: wordIdToIsFlipped);
+  }
+
+  ///
+  /// stateのcurrentPageNumberを更新
+  ///
+  void updateCurrentPageNumber({required int index}) {
+    // pageのindexは0始まりなので+1
+    final currentPageNumber = index + 1;
+    //　追加された無のページの際に更新が起きないための条件分岐
+    if (currentPageNumber <= state.words.length) {
+      state = state.copyWith(currentPageNumber: currentPageNumber);
+    }
   }
 }

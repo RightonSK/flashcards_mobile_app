@@ -19,6 +19,7 @@ mixin _$FlashcardPlayState {
   Flashcard? get flashcard => throw _privateConstructorUsedError;
   List<Word> get words => throw _privateConstructorUsedError;
   dynamic get wordIdToIsFlipped => throw _privateConstructorUsedError;
+  int get currentPageNumber => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FlashcardPlayStateCopyWith<FlashcardPlayState> get copyWith =>
@@ -32,7 +33,10 @@ abstract class $FlashcardPlayStateCopyWith<$Res> {
       _$FlashcardPlayStateCopyWithImpl<$Res, FlashcardPlayState>;
   @useResult
   $Res call(
-      {Flashcard? flashcard, List<Word> words, dynamic wordIdToIsFlipped});
+      {Flashcard? flashcard,
+      List<Word> words,
+      dynamic wordIdToIsFlipped,
+      int currentPageNumber});
 }
 
 /// @nodoc
@@ -51,6 +55,7 @@ class _$FlashcardPlayStateCopyWithImpl<$Res, $Val extends FlashcardPlayState>
     Object? flashcard = freezed,
     Object? words = null,
     Object? wordIdToIsFlipped = freezed,
+    Object? currentPageNumber = null,
   }) {
     return _then(_value.copyWith(
       flashcard: freezed == flashcard
@@ -65,6 +70,10 @@ class _$FlashcardPlayStateCopyWithImpl<$Res, $Val extends FlashcardPlayState>
           ? _value.wordIdToIsFlipped
           : wordIdToIsFlipped // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      currentPageNumber: null == currentPageNumber
+          ? _value.currentPageNumber
+          : currentPageNumber // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -78,7 +87,10 @@ abstract class _$$_FlashcardPlayStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Flashcard? flashcard, List<Word> words, dynamic wordIdToIsFlipped});
+      {Flashcard? flashcard,
+      List<Word> words,
+      dynamic wordIdToIsFlipped,
+      int currentPageNumber});
 }
 
 /// @nodoc
@@ -95,6 +107,7 @@ class __$$_FlashcardPlayStateCopyWithImpl<$Res>
     Object? flashcard = freezed,
     Object? words = null,
     Object? wordIdToIsFlipped = freezed,
+    Object? currentPageNumber = null,
   }) {
     return _then(_$_FlashcardPlayState(
       flashcard: freezed == flashcard
@@ -108,18 +121,24 @@ class __$$_FlashcardPlayStateCopyWithImpl<$Res>
       wordIdToIsFlipped: freezed == wordIdToIsFlipped
           ? _value.wordIdToIsFlipped!
           : wordIdToIsFlipped,
+      currentPageNumber: null == currentPageNumber
+          ? _value.currentPageNumber
+          : currentPageNumber // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_FlashcardPlayState implements _FlashcardPlayState {
-  _$_FlashcardPlayState(
+class _$_FlashcardPlayState extends _FlashcardPlayState {
+  const _$_FlashcardPlayState(
       {this.flashcard,
       final List<Word> words = const <Word>[],
-      this.wordIdToIsFlipped = const <String, bool>{}})
-      : _words = words;
+      this.wordIdToIsFlipped = const <String, bool>{},
+      this.currentPageNumber = 1})
+      : _words = words,
+        super._();
 
   @override
   final Flashcard? flashcard;
@@ -135,10 +154,13 @@ class _$_FlashcardPlayState implements _FlashcardPlayState {
   @override
   @JsonKey()
   final dynamic wordIdToIsFlipped;
+  @override
+  @JsonKey()
+  final int currentPageNumber;
 
   @override
   String toString() {
-    return 'FlashcardPlayState(flashcard: $flashcard, words: $words, wordIdToIsFlipped: $wordIdToIsFlipped)';
+    return 'FlashcardPlayState(flashcard: $flashcard, words: $words, wordIdToIsFlipped: $wordIdToIsFlipped, currentPageNumber: $currentPageNumber)';
   }
 
   @override
@@ -150,7 +172,9 @@ class _$_FlashcardPlayState implements _FlashcardPlayState {
                 other.flashcard == flashcard) &&
             const DeepCollectionEquality().equals(other._words, _words) &&
             const DeepCollectionEquality()
-                .equals(other.wordIdToIsFlipped, wordIdToIsFlipped));
+                .equals(other.wordIdToIsFlipped, wordIdToIsFlipped) &&
+            (identical(other.currentPageNumber, currentPageNumber) ||
+                other.currentPageNumber == currentPageNumber));
   }
 
   @override
@@ -158,7 +182,8 @@ class _$_FlashcardPlayState implements _FlashcardPlayState {
       runtimeType,
       flashcard,
       const DeepCollectionEquality().hash(_words),
-      const DeepCollectionEquality().hash(wordIdToIsFlipped));
+      const DeepCollectionEquality().hash(wordIdToIsFlipped),
+      currentPageNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -168,11 +193,13 @@ class _$_FlashcardPlayState implements _FlashcardPlayState {
           this, _$identity);
 }
 
-abstract class _FlashcardPlayState implements FlashcardPlayState {
-  factory _FlashcardPlayState(
+abstract class _FlashcardPlayState extends FlashcardPlayState {
+  const factory _FlashcardPlayState(
       {final Flashcard? flashcard,
       final List<Word> words,
-      final dynamic wordIdToIsFlipped}) = _$_FlashcardPlayState;
+      final dynamic wordIdToIsFlipped,
+      final int currentPageNumber}) = _$_FlashcardPlayState;
+  const _FlashcardPlayState._() : super._();
 
   @override
   Flashcard? get flashcard;
@@ -180,6 +207,8 @@ abstract class _FlashcardPlayState implements FlashcardPlayState {
   List<Word> get words;
   @override
   dynamic get wordIdToIsFlipped;
+  @override
+  int get currentPageNumber;
   @override
   @JsonKey(ignore: true)
   _$$_FlashcardPlayStateCopyWith<_$_FlashcardPlayState> get copyWith =>

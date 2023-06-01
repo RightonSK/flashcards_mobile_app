@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FlashcardAddAndUpdateState {
-  bool get isUpdateMode => throw _privateConstructorUsedError;
   Flashcard? get flashcard => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +30,7 @@ abstract class $FlashcardAddAndUpdateStateCopyWith<$Res> {
       _$FlashcardAddAndUpdateStateCopyWithImpl<$Res,
           FlashcardAddAndUpdateState>;
   @useResult
-  $Res call({bool isUpdateMode, Flashcard? flashcard});
+  $Res call({Flashcard? flashcard});
 }
 
 /// @nodoc
@@ -48,14 +47,9 @@ class _$FlashcardAddAndUpdateStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isUpdateMode = null,
     Object? flashcard = freezed,
   }) {
     return _then(_value.copyWith(
-      isUpdateMode: null == isUpdateMode
-          ? _value.isUpdateMode
-          : isUpdateMode // ignore: cast_nullable_to_non_nullable
-              as bool,
       flashcard: freezed == flashcard
           ? _value.flashcard
           : flashcard // ignore: cast_nullable_to_non_nullable
@@ -73,7 +67,7 @@ abstract class _$$_FlashcardAddAndUpdateStateCopyWith<$Res>
       __$$_FlashcardAddAndUpdateStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isUpdateMode, Flashcard? flashcard});
+  $Res call({Flashcard? flashcard});
 }
 
 /// @nodoc
@@ -89,14 +83,9 @@ class __$$_FlashcardAddAndUpdateStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isUpdateMode = null,
     Object? flashcard = freezed,
   }) {
     return _then(_$_FlashcardAddAndUpdateState(
-      isUpdateMode: null == isUpdateMode
-          ? _value.isUpdateMode
-          : isUpdateMode // ignore: cast_nullable_to_non_nullable
-              as bool,
       flashcard: freezed == flashcard
           ? _value.flashcard
           : flashcard // ignore: cast_nullable_to_non_nullable
@@ -110,17 +99,14 @@ class __$$_FlashcardAddAndUpdateStateCopyWithImpl<$Res>
 class _$_FlashcardAddAndUpdateState
     with DiagnosticableTreeMixin
     implements _FlashcardAddAndUpdateState {
-  _$_FlashcardAddAndUpdateState({this.isUpdateMode = false, this.flashcard});
+  _$_FlashcardAddAndUpdateState({this.flashcard});
 
-  @override
-  @JsonKey()
-  final bool isUpdateMode;
   @override
   final Flashcard? flashcard;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FlashcardAddAndUpdateState(isUpdateMode: $isUpdateMode, flashcard: $flashcard)';
+    return 'FlashcardAddAndUpdateState(flashcard: $flashcard)';
   }
 
   @override
@@ -128,7 +114,6 @@ class _$_FlashcardAddAndUpdateState
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'FlashcardAddAndUpdateState'))
-      ..add(DiagnosticsProperty('isUpdateMode', isUpdateMode))
       ..add(DiagnosticsProperty('flashcard', flashcard));
   }
 
@@ -137,14 +122,12 @@ class _$_FlashcardAddAndUpdateState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_FlashcardAddAndUpdateState &&
-            (identical(other.isUpdateMode, isUpdateMode) ||
-                other.isUpdateMode == isUpdateMode) &&
             (identical(other.flashcard, flashcard) ||
                 other.flashcard == flashcard));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isUpdateMode, flashcard);
+  int get hashCode => Object.hash(runtimeType, flashcard);
 
   @JsonKey(ignore: true)
   @override
@@ -156,12 +139,9 @@ class _$_FlashcardAddAndUpdateState
 
 abstract class _FlashcardAddAndUpdateState
     implements FlashcardAddAndUpdateState {
-  factory _FlashcardAddAndUpdateState(
-      {final bool isUpdateMode,
-      final Flashcard? flashcard}) = _$_FlashcardAddAndUpdateState;
+  factory _FlashcardAddAndUpdateState({final Flashcard? flashcard}) =
+      _$_FlashcardAddAndUpdateState;
 
-  @override
-  bool get isUpdateMode;
   @override
   Flashcard? get flashcard;
   @override

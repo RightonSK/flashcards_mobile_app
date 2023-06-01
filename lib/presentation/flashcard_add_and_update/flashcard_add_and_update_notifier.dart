@@ -24,17 +24,16 @@ class FlashcardAddAndUpdateNotifier
   final _wordRepository = WordRepository();
   final Ref _ref;
 
-  // flashcardを渡し、stateに保存
+  ///
+  /// flashcardを渡し、stateに保存
+  ///
   void passFlashcard({required Flashcard flashcard}) {
     state = state.copyWith(flashcard: flashcard);
   }
 
-  // isUpdateModeのbool値の変更
-  void switchIsUpdateMode({required bool isUpdateMode}) {
-    state = state.copyWith(isUpdateMode: isUpdateMode);
-  }
-
-  // flashcardの中身を更新して、それをrepositoryに渡す
+  ///
+  /// flashcardの中身を更新して、それをrepositoryに渡す
+  ///
   Future addOrUpdateFlashcard(
       {required String title, required bool isUpdateMode}) async {
     if (title.isEmpty) {
@@ -64,11 +63,11 @@ class FlashcardAddAndUpdateNotifier
     }
   }
 
-  // flashcardをflashcardとwordのrepositoryそれぞれに渡す
+  ///
+  /// flashcardをflashcardとwordのrepositoryそれぞれに渡す
+  ///
   Future deleteFlashcard() async {
-    final user = _ref.read(userProvider);
-    await _wordRepository.deleteAll(
-        uid: user!.uid, flashcardId: state.flashcard!.id);
+    await _wordRepository.deleteAll(flashcardId: state.flashcard!.id);
     await _flashcardRepository.delete(flashcardId: state.flashcard!.id);
   }
 }

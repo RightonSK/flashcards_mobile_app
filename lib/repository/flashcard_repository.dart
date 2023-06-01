@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FlashcardRepository {
   final CollectionReference _flashcardsRef =
@@ -64,9 +63,8 @@ class FlashcardRepository {
   /// flashcardのisPinnedを反転
   ///
   Future<void> invertIsPinned({required Flashcard flashcard}) async {
-    await _flashcardsRef
-        .doc(flashcard.id)
-        .update({'isPinned': flashcard.isPinned});
+    await _flashcardsRef.doc(flashcard.id).update(
+        {'isPinned': flashcard.isPinned, 'updatedAt': flashcard.updatedAt});
   }
 
   ///

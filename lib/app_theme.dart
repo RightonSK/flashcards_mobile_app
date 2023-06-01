@@ -30,6 +30,7 @@ class TextThemeSettings {
 
 class AppColor {
   AppColor._();
+  static const Color colorBackground = _baseColor;
   static final Color colorDefaultOfStatusBar = theme.scaffoldBackgroundColor;
   static const Color colorActionModeOfStatusBar = _accentColor;
   static const Color colorBackgroundOfContextualActionBar = _accentColor;

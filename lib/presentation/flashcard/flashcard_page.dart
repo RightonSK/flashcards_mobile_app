@@ -168,7 +168,7 @@ class _FlashcardPageBody extends ConsumerWidget {
       crossAxisCount: 2,
       childAspectRatio: 2.0,
       children: flashcardState.words.isNotEmpty
-          ? flashcardState.words
+          ? flashcardState.wordsSortedByUpdatedAt
               .map(
                 (Word word) => InkWell(
                   onTap: () async {
@@ -178,7 +178,7 @@ class _FlashcardPageBody extends ConsumerWidget {
                     if (flashcardState.isActionMode) {
                       if (flashcardState.wordIdToSelectedWord
                           .containsKey(word.id)) {
-                        flashcardNotifier.deleteWordFromWordIdToSelectedWord(
+                        flashcardNotifier.removeWordFromWordIdToSelectedWord(
                             selectedWord: word);
                       } else {
                         flashcardNotifier.addWordToWordIdToSelectedWord(
@@ -194,11 +194,11 @@ class _FlashcardPageBody extends ConsumerWidget {
                   onLongPress: () {
                     // action modeの場合、selectedWordならMapからそのWordを削除
                     // そうではない場合,そのWordをMapに追加。
-                    // action modeではない場合、action modeをtrueにして、selectedWordをMapに追加
+                    // action modeではない場合、selectedWordをMapに追加
                     if (flashcardState.isActionMode) {
                       if (flashcardState.wordIdToSelectedWord
                           .containsKey(word.id)) {
-                        flashcardNotifier.deleteWordFromWordIdToSelectedWord(
+                        flashcardNotifier.removeWordFromWordIdToSelectedWord(
                             selectedWord: word);
                       } else {
                         flashcardNotifier.addWordToWordIdToSelectedWord(
@@ -211,8 +211,6 @@ class _FlashcardPageBody extends ConsumerWidget {
                       }
                     } else {
                       flashcardNotifier.turnOnActionMode(selectedWord: word);
-                      // flashcardNotifier.switchIsActionMode(
-                      //     isActionMode: true, selectedWord: word);
                     }
                   },
                   child: Card(

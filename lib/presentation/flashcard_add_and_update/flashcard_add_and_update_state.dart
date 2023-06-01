@@ -7,7 +7,6 @@ part 'flashcard_add_and_update_state.freezed.dart';
 @freezed
 class FlashcardAddAndUpdateState with _$FlashcardAddAndUpdateState {
   factory FlashcardAddAndUpdateState({
-    @Default(false) bool isUpdateMode,
     Flashcard? flashcard,
   }) = _FlashcardAddAndUpdateState;
 }

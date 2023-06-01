@@ -1,3 +1,4 @@
+import 'package:flashcards_mobile_app/app_theme.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/domain/word.dart';
 import 'package:flashcards_mobile_app/presentation/flashcard_play/flashcard_play_notifier.dart';
@@ -18,24 +19,28 @@ class FlashcardPlayPage extends HookConsumerWidget {
     final flashcardPlayNotifier =
         ref.watch(flashcardPlayProvider(flashcard).notifier);
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            _FlashcardPlayPageBody(
-              flashcard: flashcard,
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: const Icon(Icons.close),
-                // close iconを押されたら、top pageに戻る。
-                onPressed: () async {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: AppColor.colorBackground,
+        foregroundColor: Colors.black,
+
+        /// ページ数を表示
+        title: Text(
+          flashcardPlayState.currentPageNumber.toString() +
+              '/' +
+              flashcardPlayState.words.length.toString(),
+          style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.normal),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          // close iconを押されたら、top pageに戻る。
+          onPressed: () async {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+        ),
+      ),
+      body: _FlashcardPlayPageBody(
+        flashcard: flashcard,
       ),
     );
   }
@@ -50,7 +55,6 @@ class _FlashcardPlayPageBody extends HookConsumerWidget {
     final flashcardPlayState = ref.watch(flashcardPlayProvider(flashcard));
     final flashcardPlayNotifier =
         ref.watch(flashcardPlayProvider(flashcard).notifier);
-    final PageController pageController = usePageController();
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -62,18 +66,17 @@ class _FlashcardPlayPageBody extends HookConsumerWidget {
         ),
       ),
       child: PageView(
-        controller: pageController,
-        allowImplicitScrolling: false,
+        controller: flashcardPlayNotifier.pageController,
+        //allowImplicitScrolling: true,
         onPageChanged: (index) {
-          /// 最終単語を終えると,Navigate
-          print(index);
-          if (flashcardPlayState.words.isNotEmpty) {
-            if (index == flashcardPlayState.words.length) {
-              print('navigate');
-              Future.delayed(const Duration(seconds: 1), () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              });
-            }
+          /// ページ番号を更新
+          flashcardPlayNotifier.updateCurrentPageNumber(index: index);
+
+          /// 最終単語を終えると,top pageへ
+          if (index == flashcardPlayState.words.length) {
+            Future.delayed(const Duration(seconds: 1), () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            });
           }
         },
         children: (() {
@@ -110,7 +113,7 @@ class _FlashcardPlayPageBody extends HookConsumerWidget {
                 )
                 .toList();
 
-            ///単語再生モード終了用にWidgetを追加したListをreturn
+            ///単語再生モード終了用に何もないpageを追加したListをreturn
             return [...pages, const SizedBox.shrink()];
           } else {
             return <SizedBox>[];
@@ -167,61 +170,3 @@ class CustomCard extends ConsumerWidget {
     );
   }
 }
-
-// class Sample extends ConsumerWidget {
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return Center(
-//       child: PageView(
-//         controller: pageController,
-//         allowImplicitScrolling: false,
-//         onPageChanged: (index) {
-//           /// 最終単語を終えると,Navigate
-//           print(index);
-//           if (flashcardPlayState.words.isNotEmpty) {
-//             if (index == flashcardPlayState.words.length) {
-//               print('navigate');
-//               Future.delayed(const Duration(seconds: 1), () {
-//                 Navigator.of(context).popUntil((route) => route.isFirst);
-//               });
-//             }
-//           }
-//         },
-//         children: (() {
-//           if (flashcardPlayState.words.isNotEmpty) {
-//             final pages = flashcardPlayState.words
-//                 .map(
-//                   (Word word) => Center(
-//                     child: SizedBox(
-//                       width: 300,
-//                       height: 150,
-//                       child: InkWell(
-//                         onTap: () async {
-//                           flashcardPlayNotifier
-//                               .switchTheValueOfWordIdToIsFlipped(
-//                                   wordId: word.id);
-//                         },
-//                         child: Card(
-//                           child: Center(
-//                             child: Text(
-//                                 flashcardPlayState.wordIdToIsFlipped[word.id]
-//                                     ? word.description
-//                                     : word.title),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 )
-//                 .toList();
-//
-//             ///単語再生モード終了用にWidgetを追加したListをreturn
-//             return [...pages, const SizedBox.shrink()];
-//           } else {
-//             return <SizedBox>[];
-//           }
-//         })(),
-//       ),
-//     );
-//   }
-// }

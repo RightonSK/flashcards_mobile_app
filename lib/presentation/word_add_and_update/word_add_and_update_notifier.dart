@@ -23,20 +23,10 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
   final _flashcardRepository = FlashcardRepository();
   final Ref _ref;
 
-  // // flashcardを渡し、stateに保存
-  // void passFlashcard({required Flashcard flashcard}) async {
-  //   state = state.copyWith(parentFlashcard: flashcard);
-  // }
-
   // wordをstateに渡すためのメソッド
   void passWord({required Word word}) {
     state = state.copyWith(word: word);
   }
-
-  // // isUpdateModeのbool値を変更
-  // void switchIsUpdateMode({required bool isUpdateMode}) {
-  //   state = state.copyWith(isUpdateMode: isUpdateMode);
-  // }
 
   ///
   /// 追加または、更新されたwordをrepositoryに渡す
@@ -77,7 +67,8 @@ class WordAddAndUpdateNotifier extends StateNotifier<WordAddAndUpdateState> {
     }
     // 親FlashcardのupdatedAtを更新
     if (state.word != null) {
-      await _flashcardRepository.updateUpdatedAt(flashcardId: state.word!.flashcardId);
+      await _flashcardRepository.updateUpdatedAt(
+          flashcardId: state.word!.flashcardId);
     }
   }
 }

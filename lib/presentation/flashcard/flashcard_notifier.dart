@@ -47,9 +47,8 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   /// このstateのflashcardのwordsをfetch
   ///
   Future fetchWordsOfTheFlashcard() async {
-    final user = _ref.read(userProvider);
-    List<Word> words = await _wordRepository.findAll(
-        uid: user!.uid, flashcard: state.flashcard!);
+    List<Word> words =
+        await _wordRepository.findAll(flashcard: state.flashcard!);
     state = state.copyWith(words: words);
   }
 
@@ -92,26 +91,6 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   }
 
   ///
-  /// isActionModeのbool値を変更。
-  /// trueならappBarIsStackedをtrueにして、wordIdToSelectedWordにselectedWordを追加する。
-  /// falseならappBarIsStackedをfalseにして、wordIdToSelectedWordを空マップにする。
-  ///
-  // void switchIsActionMode({required bool isActionMode, Word? selectedWord}) {
-  //   state = state.copyWith(isActionMode: isActionMode);
-  //   if (state.isActionMode) {
-  //     final Map<String, Word> wordIdToSelectedWord = {
-  //       ...state.wordIdToSelectedWord,
-  //       selectedWord!.id: selectedWord,
-  //     };
-  //     state = state.copyWith(appBarIsStacked: true);
-  //     state = state.copyWith(wordIdToSelectedWord: wordIdToSelectedWord);
-  //   } else {
-  //     state = state.copyWith(appBarIsStacked: false);
-  //     state = state.copyWith(wordIdToSelectedWord: <String, Word>{});
-  //   }
-  // }
-
-  ///
   /// selectedWordをwordIdToSelectedWordに追加する
   ///
   void addWordToWordIdToSelectedWord({required Word selectedWord}) {
@@ -123,9 +102,9 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   }
 
   ///
-  /// selectedWordをwordIdToSelectedWordから削除する
+  /// selectedWordをwordIdToSelectedWordから取り除く
   ///
-  void deleteWordFromWordIdToSelectedWord({required Word selectedWord}) {
+  void removeWordFromWordIdToSelectedWord({required Word selectedWord}) {
     final wordIdToSelectedWord = {...state.wordIdToSelectedWord};
     wordIdToSelectedWord.remove(selectedWord.id);
     state = state.copyWith(wordIdToSelectedWord: wordIdToSelectedWord);
@@ -142,10 +121,8 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   /// 削除するwordのidをrepositoryに渡す
   ///
   Future deleteWords() async {
-    final user = _ref.read(userProvider);
     final List<String> wordIds =
         state.wordIdToSelectedWord.entries.map((e) => e.key).toList();
-    await _wordRepository.delete(
-        uid: user!.uid, flashcardId: state.flashcard!.id, wordIds: wordIds);
+    await _wordRepository.delete(wordIds: wordIds);
   }
 }
