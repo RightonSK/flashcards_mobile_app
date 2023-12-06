@@ -9,8 +9,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 ///追加モードの時は、flashcard引数はnullを渡し、更新モードの際は、flashcardを渡す。
-class FlashCardAddAndUpdatePage extends HookConsumerWidget {
-  const FlashCardAddAndUpdatePage({Key? key, required this.flashcard})
+class FlashcardAddAndUpdatePage extends HookConsumerWidget {
+  const FlashcardAddAndUpdatePage({Key? key, required this.flashcard})
       : super(key: key);
 
   //final bool isUpdateMode;
@@ -94,8 +94,8 @@ class FlashCardAddAndUpdatePage extends HookConsumerWidget {
                     Flexible(
                       child: TextField(
                         decoration: const InputDecoration(
-                          labelText: '単語カードタイトル',
-                          hintText: '単語カードタイトル',
+                          labelText: '単語カード名',
+                          hintText: '単語カード名を入力して下さい',
                         ),
                         controller: _titleController,
                       ),

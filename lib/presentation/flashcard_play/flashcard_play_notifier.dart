@@ -17,7 +17,6 @@ class FlashcardPlayNotifier extends StateNotifier<FlashcardPlayState> {
   FlashcardPlayNotifier(
       this._ref, FlashcardPlayState state, Flashcard flashcard)
       : super(state) {
-    print('flashcardPlayNotifier Constructor');
     init(flashcard: flashcard);
   }
 

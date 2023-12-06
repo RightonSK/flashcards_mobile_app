@@ -1,4 +1,4 @@
-package com.example.flashcards_mobile_app
+package com.shoyu_apps.flashcards_mobile_app
 
 import io.flutter.embedding.android.FlutterActivity
 

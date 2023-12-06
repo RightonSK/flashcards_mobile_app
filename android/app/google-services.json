@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:740038560694:android:6fdf221b9667bf41cb0f17",
         "android_client_info": {
-          "package_name": "com.example.flashcards_mobile_app"
+          "package_name": "com.shoyu_apps.flashcards_mobile_app"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "740038560694-s939k1c63d7nq9dlj6ljdl56060dj0dj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.flashcardsMobileApp"
+                "bundle_id": "com.shoyu_apps.flashcardsMobileApp"
               }
             }
           ]

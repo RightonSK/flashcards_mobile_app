@@ -18,6 +18,7 @@ class App extends ConsumerWidget {
     final userAuth = FirebaseAuth.instance.currentUser;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: theme,
       routes: {
         '/login': (context) => const LoginAndRegisterPage(),

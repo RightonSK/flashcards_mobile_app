@@ -23,6 +23,7 @@ class FlashcardPlayPage extends HookConsumerWidget {
         elevation: 0,
         backgroundColor: AppColor.colorBackground,
         foregroundColor: Colors.black,
+        centerTitle: true,
 
         /// ページ数を表示
         title: Text(

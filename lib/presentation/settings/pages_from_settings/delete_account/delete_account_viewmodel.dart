@@ -34,7 +34,7 @@ class DeleteAccountViewModel extends StateNotifier<void> {
         await _userRepository.logIn(
             email: user.email!, password: passwordController.text.trim());
       } on FirebaseAuthException catch (e) {
-        print('reloginエラー');
+        print('relogin error');
         passwordController.clear();
         rethrow;
       }
@@ -63,7 +63,7 @@ class DeleteAccountViewModel extends StateNotifier<void> {
         // ログアウト
         await FirebaseAuth.instance.signOut();
       } on FirebaseAuthException catch (e) {
-        print('delete account エラー');
+        print('delete account error');
         rethrow;
       }
     } else {

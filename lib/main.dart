@@ -10,23 +10,3 @@ void main() async {
   await Firebase.initializeApp();
   runApp(const ProviderScope(child: App()));
 }
-
-// class MyApp extends ConsumerWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     // initialize(DBからデータ取得)
-//     Future(() async {
-//       await ref.read(topProvider.notifier).fetchFlashcards();
-//       FlutterNativeSplash.remove();
-//     });
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: const LoginAndRegisterPage(),
-//     );
-//   }
-// }

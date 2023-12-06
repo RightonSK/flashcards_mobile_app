@@ -38,7 +38,7 @@ class EmailUpdateNotifier extends StateNotifier<EmailUpdateState> {
   ///
   void checkEmailFormat() {
     RegExp regExp = RegExp(
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+      r"^[\w-+.!#$%&'*/=?^`{|}~]+@[\w-]+(\.[\w-]+)+$",
       caseSensitive: false,
       multiLine: false,
     );
@@ -62,6 +62,7 @@ class EmailUpdateNotifier extends StateNotifier<EmailUpdateState> {
       await _userRepository.logIn(
           email: state.email, password: passwordController.text.trim());
     } catch (e) {
+      print('reLogin(): $e');
       emailController.clear();
       passwordController.clear();
       rethrow;
@@ -73,10 +74,12 @@ class EmailUpdateNotifier extends StateNotifier<EmailUpdateState> {
   ///
   Future<void> updateEmail() async {
     try {
-      await _userRepository.updateEmail(newEmail: emailController.text.trim());
-      print("Email updated successfully.");
+      final user = FirebaseAuth.instance.currentUser!;
+      await _userRepository.updateEmail(
+          uid: user.uid, newEmail: emailController.text.trim());
       await FirebaseAuth.instance.signOut();
     } catch (e) {
+      print('updateEmail(): $e');
       passwordController.clear();
       emailController.clear();
       rethrow;

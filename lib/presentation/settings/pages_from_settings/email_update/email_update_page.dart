@@ -43,7 +43,10 @@ class EmailUpdatePage extends ConsumerWidget {
                     if (isLoggedIn) {
                       try {
                         await emailUpdateNotifier.updateEmail();
-                        //アップデート成功後実行
+                        //更新成功後、通知用ダイアログ
+                        await NotificationUtil.showTextDialog(
+                            context: context, message: 'メールアドレスを変更しました');
+                        //その後、ログイン画面に戻る
                         await NavigationUtil.pushAndRemoveAll(
                             context: context,
                             fullscreenDialog: true,
@@ -83,7 +86,6 @@ Future<bool> _showBottomSheet(BuildContext context, WidgetRef ref) async {
   final unSafeAreaTop = MediaQuery.of(context).padding.top;
   final bottomSheetHeight =
       deviceHeight - unSafeAreaTop - AppBar().preferredSize.height;
-  print(unSafeAreaTop);
   return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,

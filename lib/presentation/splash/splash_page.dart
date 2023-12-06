@@ -15,10 +15,10 @@ class SplashPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  width: 96,
-                  child: Image.asset('assets/flutter-logo.png'),
-                ),
+                // SizedBox(
+                //   width: 96,
+                //   child: Image.asset('assets/flutter-logo.png'),
+                // ),
               ],
             ),
           ),

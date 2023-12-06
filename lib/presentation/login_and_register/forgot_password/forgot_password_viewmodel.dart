@@ -21,7 +21,12 @@ class ForgotPasswordViewModel extends StateNotifier<void> {
   /// パスワードリセット用のメールを送信
   ///
   Future<void> sendEmailToResetPassword() async {
-    //メールアドレスがnullだと、エラーコード missing-emailを返す
-    await _auth.sendPasswordResetEmail(email: emailController.text.trim());
+    try {
+      //メールアドレスがnullだと、エラーコード missing-emailを返す
+      await _auth.sendPasswordResetEmail(email: emailController.text.trim());
+    } catch (e) {
+      print('sendEmailToResetPassword(): $e');
+      rethrow;
+    }
   }
 }

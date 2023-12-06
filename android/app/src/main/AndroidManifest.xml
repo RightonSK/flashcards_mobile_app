@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flashcards_mobile_app">
+    package="com.shoyu_apps.flashcards_mobile_app">
    <application
-        android:label="flashcards_mobile_app"
+        android:label="Flashcard | 単語帳アプリ"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
