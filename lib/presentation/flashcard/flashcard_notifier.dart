@@ -31,9 +31,10 @@ class FlashcardNotifier extends StateNotifier<FlashcardState> {
   /// rebuildの際に使用するメソッド
   /// wordsを再取得して、wordIdToIsFlippedも再度作成
   ///
-  Future updateWords() async {
+  Future reBuild() async {
     await fetchWordsOfTheFlashcard();
     createWordIdToIsFlipped();
+    turnOffActionMode();
   }
 
   ///

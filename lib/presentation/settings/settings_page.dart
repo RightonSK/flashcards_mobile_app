@@ -30,7 +30,7 @@ class SettingsPage extends ConsumerWidget {
         title: const Text('設定'),
       ),
       body: ListView.builder(
-        itemCount: 4,
+        itemCount: listTitles.length,
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(listTitles[index]),

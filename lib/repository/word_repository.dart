@@ -42,8 +42,6 @@ class WordRepository {
       final wordsSnapshot =
           await _wordsRefWithConverter.where('id', isEqualTo: wordId).get();
       if (wordsSnapshot.size == 1) {
-        print('update in word repository: id = ${wordId}');
-        print('update in word repository: size = ${wordsSnapshot.size}');
         await wordsSnapshot.docs[0].reference.delete();
       }
     }
@@ -70,6 +68,16 @@ class WordRepository {
     for (QueryDocumentSnapshot doc in wordsSnapshot.docs) {
       await doc.reference.delete();
     }
+  }
+
+  ///
+  /// flashcardのidを元に、wordがあるかどうかを確認
+  ///
+  Future<bool> checkHasWords({required String flashcardId}) async {
+    final wordsSnapshot = await _wordsRefWithConverter
+        .where('flashcardId', isEqualTo: flashcardId)
+        .get();
+    return wordsSnapshot.docs.isEmpty ? false : true;
   }
 
   ///

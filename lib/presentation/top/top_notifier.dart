@@ -2,6 +2,7 @@ import 'package:flashcards_mobile_app/repository/user_provider.dart';
 import 'package:flashcards_mobile_app/domain/flashcard.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_state.dart';
 import 'package:flashcards_mobile_app/repository/flashcard_repository.dart';
+import 'package:flashcards_mobile_app/repository/word_repository.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -56,7 +57,6 @@ class TopNotifier extends StateNotifier<TopState> {
     final updatedFlashcard = state.selectedFlashcard!.copyWith(
         isPinned: !state.selectedFlashcard!.isPinned,
         updatedAt: DateTime.now());
-    print('isPinned ${updatedFlashcard.isPinned}');
     // flashcardを更新(isPinned, updatedAt)
     await _flashcardRepository.invertIsPinned(flashcard: updatedFlashcard);
   }

@@ -78,7 +78,7 @@ class WordAddAndUpdatePage extends HookConsumerWidget {
                       child: TextField(
                         decoration: const InputDecoration(
                           labelText: '単語名',
-                          hintText: '単語名',
+                          hintText: '単語名を入力して下さい',
                         ),
                         controller: _titleController,
                       ),
@@ -104,7 +104,7 @@ class WordAddAndUpdatePage extends HookConsumerWidget {
                       child: TextField(
                         decoration: const InputDecoration(
                           labelText: '意味',
-                          hintText: '意味',
+                          hintText: '単語の意味を入力して下さい',
                         ),
                         keyboardType: TextInputType.multiline,
                         minLines: 2,

@@ -17,14 +17,6 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
   final UserRepository _userRepository = UserRepository();
   final Ref _ref;
 
-  // final controller = TextEditingController();
-  //
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   controller.dispose();
-  // }
-
   ///
   /// ログインモードとアカウント登録モードをswitch
   ///
@@ -47,10 +39,9 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
       final user = await _userRepository.add(email: email, password: password);
       // user providerにuser情報を渡す
       setUserToUserRepository(user);
-    } on auth.FirebaseAuthException catch (e) {
-      print('sign up: ${e.code}');
+    } catch (e) {
+      print('signUp(): $e');
       rethrow;
-      //throw (_convertErrorMessageForSignup(e.code));
     }
   }
 
@@ -70,10 +61,9 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
           await _userRepository.logIn(email: email, password: password);
       // user providerにuser情報を渡す
       setUserToUserRepository(user);
-    } on auth.FirebaseAuthException catch (e) {
-      print('login: ${e.code}');
+    } catch (e) {
+      print('login(): $e');
       rethrow;
-      //throw (_convertErrorMessageForLogin(e.code));
     }
   }
 
@@ -84,35 +74,3 @@ class LoginAndRegisterNotifier extends StateNotifier<LoginAndRegisterState> {
     _ref.read(userProvider.notifier).setUser(user);
   }
 }
-
-// String _convertErrorMessageForLogin(String e) {
-//   switch (e) {
-//     case 'invalid-email':
-//       return 'メールアドレスを正しい形式で入力してください';
-//     case 'wrong-password':
-//       return 'パスワードが間違っています';
-//     case 'user-not-found':
-//       return 'ユーザーが見つかりません';
-//     case 'user-disabled':
-//       return 'ユーザーが無効です';
-//     case 'too-many-requests':
-//       return 'しばらく待ってからお試し下さい';
-//     default:
-//       return '不明なエラーです';
-//   }
-// }
-//
-// String _convertErrorMessageForSignup(String e) {
-//   switch (e) {
-//     case 'invalid-email':
-//       return 'メールアドレスを正しい形式で入力してください';
-//     case 'email-already-in-use':
-//       return '指定したメールアドレスは登録済みです';
-//     case 'operation-not-allowed':
-//       return '指定したメールアドレス・パスワードは現在使用できません';
-//     case 'weak-password':
-//       return 'パスワードは６文字以上にしてください';
-//     default:
-//       return '不明なエラーです';
-//   }
-// }

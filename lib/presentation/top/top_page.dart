@@ -12,12 +12,13 @@ import 'package:flashcards_mobile_app/presentation/top/top_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_state.dart';
 import 'package:flashcards_mobile_app/utils/navigation_util.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 ///
 /// 画面遷移時にAction modeをoffにして、遷移。
 ///
-Future<void> _pushPage(
+Future<void> _pushPageAndTurnOffActionMode(
     {required BuildContext context,
     required WidgetRef ref,
     required bool fullScreenDialog,
@@ -36,10 +37,16 @@ class TopPage extends ConsumerWidget {
     final topNotifier = ref.watch(topProvider.notifier);
 
     final defaultAppBar = AppBar(
+      title: Text(
+        'Flashcard',
+        style: GoogleFonts.yellowtail(
+            textStyle: Theme.of(context).textTheme.headlineMedium,
+            color: Colors.black),
+      ),
       actions: [
         IconButton(
             onPressed: () async {
-              await _pushPage(
+              await _pushPageAndTurnOffActionMode(
                   context: context,
                   ref: ref,
                   fullScreenDialog: false,
@@ -59,7 +66,7 @@ class TopPage extends ConsumerWidget {
       actions: [
         IconButton(
             onPressed: () async {
-              await _pushPage(
+              await _pushPageAndTurnOffActionMode(
                   context: context,
                   ref: ref,
                   fullScreenDialog: false,
@@ -97,11 +104,11 @@ class TopPage extends ConsumerWidget {
           onPressed: () async {
             // Actionモードの時、flashcardAddAndUpdatePageに遷移
             if (topState.selectedFlashcard != null) {
-              await _pushPage(
+              await _pushPageAndTurnOffActionMode(
                   context: context,
                   ref: ref,
                   fullScreenDialog: false,
-                  page: FlashCardAddAndUpdatePage(
+                  page: FlashcardAddAndUpdatePage(
                     flashcard: topState.selectedFlashcard!,
                   ));
               // stateの初期化
@@ -133,11 +140,11 @@ class TopPage extends ConsumerWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             //flashcardAddAndUpdatePageに遷移
-            await _pushPage(
+            await _pushPageAndTurnOffActionMode(
                 context: context,
                 ref: ref,
                 fullScreenDialog: true,
-                page: const FlashCardAddAndUpdatePage(
+                page: const FlashcardAddAndUpdatePage(
                   flashcard: null,
                 ));
             // 追加処理後のstateの初期化
@@ -196,7 +203,7 @@ class _TopPageBody extends ConsumerWidget {
                               selectedFlashcard: flashcard);
                         }
                       } else {
-                        await _pushPage(
+                        await _pushPageAndTurnOffActionMode(
                             context: context,
                             ref: ref,
                             fullScreenDialog: false,
@@ -220,8 +227,6 @@ class _TopPageBody extends ConsumerWidget {
                       } else {
                         topNotifier.setSelectedFlashcard(
                             selectedFlashcard: flashcard);
-                        print(
-                            'isActionMode is ${ref.read(topProvider).isActionMode}');
                       }
                     },
                     child: Card(
@@ -238,10 +243,13 @@ class _TopPageBody extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(4.0));
                         }
                       }(),
-                      child: Center(
-                        child: Text(
-                          flashcard.title,
-                          style: TextThemeSettings.titleOfFlashcard,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(
+                            flashcard.title,
+                            style: TextThemeSettings.titleOfFlashcard,
+                          ),
                         ),
                       ),
                     ),
@@ -284,7 +292,7 @@ class _TopPageBody extends ConsumerWidget {
                               selectedFlashcard: flashcard);
                         }
                       } else {
-                        await _pushPage(
+                        await _pushPageAndTurnOffActionMode(
                             context: context,
                             ref: ref,
                             fullScreenDialog: false,
@@ -308,8 +316,6 @@ class _TopPageBody extends ConsumerWidget {
                       } else {
                         topNotifier.setSelectedFlashcard(
                             selectedFlashcard: flashcard);
-                        print(
-                            'isActionMode is ${ref.read(topProvider).isActionMode}');
                       }
                     },
                     child: Card(
@@ -326,10 +332,13 @@ class _TopPageBody extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(4.0));
                         }
                       }(),
-                      child: Center(
-                        child: Text(
-                          flashcard.title,
-                          style: TextThemeSettings.titleOfFlashcard,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(
+                            flashcard.title,
+                            style: TextThemeSettings.titleOfFlashcard,
+                          ),
                         ),
                       ),
                     ),

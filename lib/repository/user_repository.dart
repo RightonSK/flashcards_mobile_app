@@ -67,20 +67,21 @@ class UserRepository {
   }
 
   ///
-  /// 登録メールアドレスの変更
+  /// 登録メールアドレスの変更 (auth and user collection)
   ///
-  Future<void> updateEmail({required String newEmail}) async {
-    // final firebaseAuth = auth.FirebaseAuth.instance;
-    // try {} on auth.FirebaseAuthException catch (e) {
-    //   if (e.code == 'user-not-found') {
-    //     print('No user found for that email.');
-    //   } else if (e.code == 'wrong-password') {
-    //     print('Wrong password provided for that user.');
-    //   }
-    // }
+  Future<void> updateEmail(
+      {required String uid, required String newEmail}) async {
+    // firebase authのemailを更新
     await auth.FirebaseAuth.instance.currentUser!.updateEmail(newEmail);
+    // user collectionのemailを更新
+    await _usersRefWithConverter
+        .doc(uid)
+        .update({'email': newEmail, 'updatedAt': DateTime.now()});
   }
 
+  ///
+  /// パスワードの更新 (user collectionの更新なし)
+  ///
   Future<void> updatePassword({required String newPassword}) async {
     await auth.FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
   }

@@ -23,10 +23,10 @@ class FlashcardPage extends ConsumerWidget {
       title: Text(flashcardState.flashcard!.title),
     );
     final contextualActionBar = AppBar(
+      backgroundColor: AppColor.colorBackgroundOfContextualActionBar,
+      foregroundColor: AppColor.colorForegroundOfContextualActionBar,
       title: Text('${flashcardState.wordIdToSelectedWord.length}'),
       titleSpacing: 0,
-      centerTitle: false,
-      backgroundColor: AppColor.colorBackgroundOfContextualActionBar,
       leading: IconButton(
           onPressed: () {
             //flashcardNotifier.switchIsActionMode(isActionMode: false);
@@ -44,7 +44,8 @@ class FlashcardPage extends ConsumerWidget {
                   .map((e) => e.value)
                   .toList();
               final Word word = wordList[0];
-              //遷移
+              //画面遷移時にAction modeをoffにして、遷移。
+              flashcardNotifier.turnOffActionMode();
               await NavigationUtil.pushPage(
                   context: context,
                   fullscreenDialog: false,
@@ -52,10 +53,8 @@ class FlashcardPage extends ConsumerWidget {
                     wordWillUpdate: word,
                     flashcardId: flashcardState.flashcard!.id,
                   ));
-              // wordsを再取得し更新、isActionModeをfalseにする。
-              await flashcardNotifier.updateWords();
-              flashcardNotifier.turnOffActionMode();
-              //flashcardNotifier.switchIsActionMode(isActionMode: false);
+              // wordsを再取得し更新
+              await flashcardNotifier.reBuild();
             },
             icon: const Icon(Icons.settings),
           )
@@ -76,7 +75,7 @@ class FlashcardPage extends ConsumerWidget {
                 ),
               );
               // wordsを再取得。
-              await flashcardNotifier.updateWords();
+              await flashcardNotifier.reBuild();
             },
             icon: const Icon(Icons.settings),
             itemBuilder: (BuildContext context) =>
@@ -100,7 +99,7 @@ class FlashcardPage extends ConsumerWidget {
             if (value == '削除') {
               await flashcardNotifier.deleteWords();
               // wordsを再取得、プロパティの初期化
-              await flashcardNotifier.updateWords();
+              await flashcardNotifier.reBuild();
               flashcardNotifier.turnOffActionMode();
             } else {
               print('not expected value');
@@ -140,7 +139,7 @@ class FlashcardPage extends ConsumerWidget {
               ),
             );
             // wordsを再取得
-            await flashcardNotifier.updateWords();
+            await flashcardNotifier.reBuild();
           },
           child: const Icon(Icons.add),
         ),
@@ -227,10 +226,13 @@ class _FlashcardPageBody extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(4.0));
                       }
                     }(),
-                    child: Center(
-                      child: Text(flashcardState.wordIdToIsFlipped[word.id]
-                          ? word.description
-                          : word.title),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(flashcardState.wordIdToIsFlipped[word.id]
+                            ? word.description
+                            : word.title),
+                      ),
                     ),
                   ),
                 ),
