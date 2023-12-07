@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/delete_account/delete_account_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/email_update/email_update_page.dart';
-import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/introduction/introductio_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/pages_from_settings/password_update/password_update_page.dart';
 import 'package:flashcards_mobile_app/presentation/settings/settings_viewmodel.dart';
 import 'package:flashcards_mobile_app/repository/user_provider.dart';
