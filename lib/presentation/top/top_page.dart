@@ -37,6 +37,7 @@ class TopPage extends ConsumerWidget {
     final topNotifier = ref.watch(topProvider.notifier);
 
     final defaultAppBar = AppBar(
+      centerTitle: true,
       title: Text(
         'Flashcard',
         style: GoogleFonts.yellowtail(

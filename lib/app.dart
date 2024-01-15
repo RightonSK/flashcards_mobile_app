@@ -5,6 +5,7 @@ import 'package:flashcards_mobile_app/app_notifier.dart';
 import 'package:flashcards_mobile_app/presentation/login_and_register/login_and_register_page.dart';
 import 'package:flashcards_mobile_app/presentation/top/top_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,6 +25,14 @@ class App extends ConsumerWidget {
         '/login': (context) => const LoginAndRegisterPage(),
         '/top': (context) => const TopPage(),
       },
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("ja", "JP"),
+      ],
       home: () {
         /// ログインされていない状態、LoginAndRegisterPageに遷移。
         /// ログインされている状態、user providerにユーザー情報を渡した後、
