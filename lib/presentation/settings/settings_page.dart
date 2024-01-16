@@ -19,7 +19,8 @@ class SettingsPage extends ConsumerWidget {
     'メールアドレス',
     'パスワード',
     'ログアウト',
-    'アカウントの削除'
+    'アカウントの削除',
+    'アプリの使い方'
   ];
 
   @override
@@ -74,6 +75,12 @@ class SettingsPage extends ConsumerWidget {
                       context: context,
                       fullscreenDialog: false,
                       page: const DeleteAccountPage());
+                  break;
+                case 'アプリの使い方':
+                  await NavigationUtil.pushPage(
+                      context: context,
+                      fullscreenDialog: false,
+                      page: const IntroductionPage());
                   break;
                 default:
                   break;
