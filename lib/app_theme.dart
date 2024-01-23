@@ -38,6 +38,7 @@ class AppColor {
   static const Color backgroundColorOfButton = _mainColor;
   static const Color foregroundColorOfButton = Colors.black;
   static const Color colorBorderOfSelectedCard = _accentColor;
+  static const Color backgroundColorOfTutorial = _accentColor;
 }
 
 /// Flutter側の設定：
