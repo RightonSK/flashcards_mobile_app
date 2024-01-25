@@ -18,7 +18,6 @@ class IntroductionPage extends ConsumerWidget {
           pages: [
             //first page
             PageViewModel(
-              // \nは改行を意味しているよ！
               title: '定番の暗記法である\n単語カードのアプリ化！',
               body: '自分だけの単語カードを作り、単語を覚えていこう\n\n手書きよりも簡単に早く作れて使いやすい！',
               //image: Image.asset("assets/introfirst.png"),
@@ -79,7 +78,7 @@ class IntroductionPage extends ConsumerWidget {
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
+                      border: Border.all(color: const Color(0xFFC9D6DF)),
                     ),
                     child: Image.asset('assets/intro/introfourth.png'),
                   ),
