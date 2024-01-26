@@ -19,7 +19,7 @@ class IntroductionPage extends ConsumerWidget {
             //first page
             PageViewModel(
               title: '定番の暗記法である\n単語カードのアプリ化！',
-              body: '自分だけの単語カードを作り、単語を覚えていこう\n\n手書きよりも簡単に早く作れて使いやすい！',
+              body: '自分だけの単語カードを作り、単語を覚えていこう。\n\n手書きよりも簡単に早く作れて使いやすい！',
               //image: Image.asset("assets/introfirst.png"),
               image: Container(
                 width: double.infinity,
@@ -49,7 +49,7 @@ class IntroductionPage extends ConsumerWidget {
             //third page
             PageViewModel(
               title: '2. 単語を作成しよう！',
-              body: 'トップページの単語カードをタップすると単語カードのページに遷移します\n\n同様に右下のプラスボタンから作成画面に移動し、単語を作成。',
+              body: 'トップページの単語カードをタップすると単語カードのページに遷移します。\n\n同様に右下のプラスボタンから作成画面に移動し、単語を作成。',
               image: Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -70,7 +70,7 @@ class IntroductionPage extends ConsumerWidget {
             //fourth page
             PageViewModel(
               title: '3. 単語を覚えよう！',
-              body: '単語がある程度作れたら、暗記モードで単語を覚えよう！\n\n暗記モード起動は、ダークグレーアプリバーの再生ボタンをタップ\n\n(アプリバーは単語カードを長押しすると現れます)',
+              body: '単語がある程度作れたら、暗記モードで単語を覚えよう！\n\n暗記モード起動は、ダークグレーアプリバーの再生ボタンをタップ。\n\n(アプリバーは単語カードを長押しすると現れます)',
               image: Container(
                 width: double.infinity,
                 height: double.infinity,
