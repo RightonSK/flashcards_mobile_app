@@ -226,14 +226,23 @@ class _FlashcardPageBody extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(4.0));
                       }
                     }(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(flashcardState.wordIdToIsFlipped[word.id]
-                            ? word.description
-                            : word.title),
-                      ),
-                    ),
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      return SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints:
+                              BoxConstraints(minHeight: constraints.maxHeight),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                  flashcardState.wordIdToIsFlipped[word.id]
+                                      ? word.description
+                                      : word.title),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                 ),
               )
