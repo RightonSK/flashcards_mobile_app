@@ -95,18 +95,27 @@ class _FlashcardPlayPageBody extends HookConsumerWidget {
                                   wordId: word.id);
                         },
                         child: Card(
-                          child: Container(
-                            padding: const EdgeInsets.all(16.0),
-                            alignment: Alignment.center,
-                            child: Text(
-                              flashcardPlayState.wordIdToIsFlipped[word.id]
-                                  ? word.description
-                                  : word.title,
-                              style: TextStyle(
-                                fontSize: 20.0,
+                          child: LayoutBuilder(builder: (context, constraints) {
+                            return SingleChildScrollView(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    minHeight: constraints.maxHeight),
+                                child: Container(
+                                  padding: const EdgeInsets.all(16.0),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    flashcardPlayState
+                                            .wordIdToIsFlipped[word.id]
+                                        ? word.description
+                                        : word.title,
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                         ),
                       ),
                     ),
