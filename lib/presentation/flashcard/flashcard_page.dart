@@ -113,6 +113,7 @@ class FlashcardPage extends ConsumerWidget {
       color: flashcardState.isActionMode
           ? AppColor.colorActionModeOfStatusBar
           : AppColor.colorDefaultOfStatusBar,
+      brightness: flashcardState.isActionMode ? Brightness.dark : Brightness.light,
       child: Scaffold(
         body: StackedAppBar(
           defaultAppBar: defaultAppBar,

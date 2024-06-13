@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+///
+/// Action Modeの時、ダークモード同様status barは黒くなるので、Brightness.dark
+/// 通常時は、ライトモード同様status barは白いので、Brightness.light
+///
+
 class ColoredStatusBar extends StatelessWidget {
   const ColoredStatusBar({
     Key? key,
     required this.color,
     required this.child,
-    this.brightness = Brightness.light, //for android
+    required this.brightness, //for android
   }) : super(key: key);
 
   final Color color;
@@ -15,13 +20,14 @@ class ColoredStatusBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iosBrightnessForIcons =
-        brightness == Brightness.light ? Brightness.dark : Brightness.light;
+    // final iosBrightnessForIcons =
+    //     brightness == Brightness.light ? Brightness.dark : Brightness.light;
+    final androidBrightnessForIcons = brightness == Brightness.light ? Brightness.dark : Brightness.light;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: color,
-        statusBarIconBrightness: brightness, // brightness for android
-        statusBarBrightness: iosBrightnessForIcons, // brightness for ios
+        statusBarIconBrightness: androidBrightnessForIcons, // brightness for android
+        statusBarBrightness: brightness, // brightness for ios
       ),
       child: Container(
         color: color,

@@ -150,14 +150,14 @@ class _DeleteCheckDialog extends StatelessWidget {
         TextButton(
           child: const Text('NO'),
           style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+            foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
           ),
           onPressed: () => Navigator.of(context).pop(false),
         ),
         TextButton(
           child: const Text('YES'),
           style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+            foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
           ),
           onPressed: () => Navigator.of(context).pop(true),
         ),

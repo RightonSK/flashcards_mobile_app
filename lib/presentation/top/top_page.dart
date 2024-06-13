@@ -127,6 +127,7 @@ class TopPage extends ConsumerWidget {
       color: topState.isActionMode
           ? AppColor.colorActionModeOfStatusBar
           : AppColor.colorDefaultOfStatusBar,
+      brightness: topState.isActionMode ? Brightness.dark : Brightness.light,
       child: Scaffold(
         body: StackedAppBar(
           defaultAppBar: defaultAppBar,
