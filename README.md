@@ -1,8 +1,28 @@
-# flashcard | 単語カードアプリ
+# Flashcard | 単語カードアプリ
+自分で作る単語カードのアプリ。
+このモバイルアプリは昔からある暗記法の単語カードをアプリ化したものです。表に単語、裏に単語の意味を記入し保存。
+単語を保存したら、単語帳の暗記モードで、単語を覚えるために使用します。
+ランダムで保存されてある単語が全て並びます。
 
-A new Flutter project.
+画像top pageと暗記モードのページ。
 
-## Getting Started
+## URL
+
+app store
+https://t.co/UQngFA7LmZ
+google play store
+https://t.co/lFdnBuD43n
+
+## 使用技術
+- Flutter
+- Dart
+- firebase
+- firestore
+- firebase_auth
+- riverpod
+- freezed
+
+## 機能一覧
 
 This project is a starting point for a Flutter application.
 
