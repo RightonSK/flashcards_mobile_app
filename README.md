@@ -10,6 +10,7 @@
 
 app store
 https://t.co/UQngFA7LmZ
+
 google play store
 https://t.co/lFdnBuD43n
 
@@ -23,6 +24,18 @@ https://t.co/lFdnBuD43n
 - freezed
 
 ## ファイル構成やコードの構成
+- ファイル構成
+  主にdomain, presentation, repository, utilsに分けている。
+  - repository
+    repositoryのファイル群の役割は、プレゼンテーション層から渡されたデータを加工しデータベースに渡す。
+    また、データベースから渡されたデータを加工し、プレゼンテーション層に引き渡す。
+  - presentation
+    描写に関わる層
+  - domain
+    
+    
+- コードの構成
+  MVVM
 
 ## 機能一覧
 
