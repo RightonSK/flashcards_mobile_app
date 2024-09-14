@@ -1,4 +1,4 @@
-# flashcards_mobile_app
+# flashcard | 単語カードアプリ
 
 A new Flutter project.
 
