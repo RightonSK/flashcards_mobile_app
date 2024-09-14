@@ -22,6 +22,8 @@ https://t.co/lFdnBuD43n
 - riverpod
 - freezed
 
+## ファイル構成やコードの構成
+
 ## 機能一覧
 
 This project is a starting point for a Flutter application.
