@@ -14,6 +14,15 @@ https://t.co/UQngFA7LmZ
 google play store
 https://t.co/lFdnBuD43n
 
+## 画面一覧
+1. トップページ
+2. 単語カード作成ページ
+3. 単語カードページ
+4. 単語作成ページ
+5. 暗記モード
+
+
+
 ## 使用技術
 - Flutter
 - Dart
