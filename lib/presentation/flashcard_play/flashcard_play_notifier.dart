@@ -88,4 +88,11 @@ class FlashcardPlayNotifier extends StateNotifier<FlashcardPlayState> {
       state = state.copyWith(currentPageNumber: currentPageNumber);
     }
   }
+
+  ///
+  /// stateのtextSizeOptionの値を変更
+  ///
+  void changeFontSizeOfCard(TextSizeOption newTextSize) {
+    state = state.copyWith(textSizeOption: newTextSize);
+  }
 }

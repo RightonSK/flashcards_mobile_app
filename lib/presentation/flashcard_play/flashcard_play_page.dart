@@ -39,6 +39,53 @@ class FlashcardPlayPage extends HookConsumerWidget {
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
         ),
+        actions: [
+          PopupMenuButton<TextSizeOption>(
+            icon: const Icon(Icons.format_size),
+            //padding: EdgeInsets.only(right: 50),
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: TextSizeOption.extraLarge,
+                child: Text('特大'),
+              ),
+              const PopupMenuItem(
+                value: TextSizeOption.large,
+                child: Text('大')
+              ),
+              const PopupMenuItem(
+                  value: TextSizeOption.medium,
+                  child: Text('中')
+              ),
+              const PopupMenuItem(
+                  value: TextSizeOption.small,
+                  child: Text('小')
+              ),
+            ],
+            onSelected: (value) async {
+              switch (value) {
+                case TextSizeOption.extraLarge:
+                  flashcardPlayNotifier.changeFontSizeOfCard(TextSizeOption.extraLarge);
+                  print(TextSizeOption.extraLarge.size);
+                  break;
+                case TextSizeOption.large:
+                  flashcardPlayNotifier.changeFontSizeOfCard(TextSizeOption.large);
+                  print(TextSizeOption.large.size);
+                  break;
+                case TextSizeOption.medium:
+                  flashcardPlayNotifier.changeFontSizeOfCard(TextSizeOption.medium);
+                  print(TextSizeOption.medium.size);
+                  break;
+                case TextSizeOption.small:
+                  flashcardPlayNotifier.changeFontSizeOfCard(TextSizeOption.small);
+                  print(TextSizeOption.small.size);
+                  break;
+                default:
+                  print('not expected value');
+                  break;
+              }
+            },
+          ),
+        ],
       ),
       body: _FlashcardPlayPageBody(
         flashcard: flashcard,
@@ -108,8 +155,8 @@ class _FlashcardPlayPageBody extends HookConsumerWidget {
                                             .wordIdToIsFlipped[word.id]
                                         ? word.description
                                         : word.title,
-                                    style: const TextStyle(
-                                      fontSize: 20.0,
+                                    style: TextStyle(
+                                      fontSize: flashcardPlayState.textSizeOption.size,
                                     ),
                                   ),
                                 ),

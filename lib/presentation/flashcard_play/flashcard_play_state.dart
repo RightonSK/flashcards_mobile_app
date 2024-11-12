@@ -12,5 +12,25 @@ class FlashcardPlayState with _$FlashcardPlayState {
     @Default(<Word>[]) List<Word> words,
     @Default(<String, bool>{}) wordIdToIsFlipped,
     @Default(1) int currentPageNumber,
+    @Default(TextSizeOption.medium) TextSizeOption textSizeOption,
   }) = _FlashcardPlayState;
+}
+
+enum TextSizeOption {
+  small, medium, large, extraLarge;
+
+  double get size {
+    switch (this) {
+      case TextSizeOption.small:
+        return 16.0;
+      case TextSizeOption.medium:
+        return 20.0;
+      case TextSizeOption.large:
+        return 24.0;
+      case TextSizeOption.extraLarge:
+        return 28.0;
+      default:
+        return 20.0;
+    }
+  }
 }

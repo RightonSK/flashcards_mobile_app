@@ -20,6 +20,7 @@ mixin _$FlashcardPlayState {
   List<Word> get words => throw _privateConstructorUsedError;
   dynamic get wordIdToIsFlipped => throw _privateConstructorUsedError;
   int get currentPageNumber => throw _privateConstructorUsedError;
+  TextSizeOption get textSizeOption => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FlashcardPlayStateCopyWith<FlashcardPlayState> get copyWith =>
@@ -36,7 +37,8 @@ abstract class $FlashcardPlayStateCopyWith<$Res> {
       {Flashcard? flashcard,
       List<Word> words,
       dynamic wordIdToIsFlipped,
-      int currentPageNumber});
+      int currentPageNumber,
+      TextSizeOption textSizeOption});
 }
 
 /// @nodoc
@@ -56,6 +58,7 @@ class _$FlashcardPlayStateCopyWithImpl<$Res, $Val extends FlashcardPlayState>
     Object? words = null,
     Object? wordIdToIsFlipped = freezed,
     Object? currentPageNumber = null,
+    Object? textSizeOption = null,
   }) {
     return _then(_value.copyWith(
       flashcard: freezed == flashcard
@@ -74,6 +77,10 @@ class _$FlashcardPlayStateCopyWithImpl<$Res, $Val extends FlashcardPlayState>
           ? _value.currentPageNumber
           : currentPageNumber // ignore: cast_nullable_to_non_nullable
               as int,
+      textSizeOption: null == textSizeOption
+          ? _value.textSizeOption
+          : textSizeOption // ignore: cast_nullable_to_non_nullable
+              as TextSizeOption,
     ) as $Val);
   }
 }
@@ -90,7 +97,8 @@ abstract class _$$_FlashcardPlayStateCopyWith<$Res>
       {Flashcard? flashcard,
       List<Word> words,
       dynamic wordIdToIsFlipped,
-      int currentPageNumber});
+      int currentPageNumber,
+      TextSizeOption textSizeOption});
 }
 
 /// @nodoc
@@ -108,6 +116,7 @@ class __$$_FlashcardPlayStateCopyWithImpl<$Res>
     Object? words = null,
     Object? wordIdToIsFlipped = freezed,
     Object? currentPageNumber = null,
+    Object? textSizeOption = null,
   }) {
     return _then(_$_FlashcardPlayState(
       flashcard: freezed == flashcard
@@ -125,6 +134,10 @@ class __$$_FlashcardPlayStateCopyWithImpl<$Res>
           ? _value.currentPageNumber
           : currentPageNumber // ignore: cast_nullable_to_non_nullable
               as int,
+      textSizeOption: null == textSizeOption
+          ? _value.textSizeOption
+          : textSizeOption // ignore: cast_nullable_to_non_nullable
+              as TextSizeOption,
     ));
   }
 }
@@ -136,7 +149,8 @@ class _$_FlashcardPlayState extends _FlashcardPlayState {
       {this.flashcard,
       final List<Word> words = const <Word>[],
       this.wordIdToIsFlipped = const <String, bool>{},
-      this.currentPageNumber = 1})
+      this.currentPageNumber = 1,
+      this.textSizeOption = TextSizeOption.medium})
       : _words = words,
         super._();
 
@@ -157,10 +171,13 @@ class _$_FlashcardPlayState extends _FlashcardPlayState {
   @override
   @JsonKey()
   final int currentPageNumber;
+  @override
+  @JsonKey()
+  final TextSizeOption textSizeOption;
 
   @override
   String toString() {
-    return 'FlashcardPlayState(flashcard: $flashcard, words: $words, wordIdToIsFlipped: $wordIdToIsFlipped, currentPageNumber: $currentPageNumber)';
+    return 'FlashcardPlayState(flashcard: $flashcard, words: $words, wordIdToIsFlipped: $wordIdToIsFlipped, currentPageNumber: $currentPageNumber, textSizeOption: $textSizeOption)';
   }
 
   @override
@@ -174,7 +191,9 @@ class _$_FlashcardPlayState extends _FlashcardPlayState {
             const DeepCollectionEquality()
                 .equals(other.wordIdToIsFlipped, wordIdToIsFlipped) &&
             (identical(other.currentPageNumber, currentPageNumber) ||
-                other.currentPageNumber == currentPageNumber));
+                other.currentPageNumber == currentPageNumber) &&
+            (identical(other.textSizeOption, textSizeOption) ||
+                other.textSizeOption == textSizeOption));
   }
 
   @override
@@ -183,7 +202,8 @@ class _$_FlashcardPlayState extends _FlashcardPlayState {
       flashcard,
       const DeepCollectionEquality().hash(_words),
       const DeepCollectionEquality().hash(wordIdToIsFlipped),
-      currentPageNumber);
+      currentPageNumber,
+      textSizeOption);
 
   @JsonKey(ignore: true)
   @override
@@ -198,7 +218,8 @@ abstract class _FlashcardPlayState extends FlashcardPlayState {
       {final Flashcard? flashcard,
       final List<Word> words,
       final dynamic wordIdToIsFlipped,
-      final int currentPageNumber}) = _$_FlashcardPlayState;
+      final int currentPageNumber,
+      final TextSizeOption textSizeOption}) = _$_FlashcardPlayState;
   const _FlashcardPlayState._() : super._();
 
   @override
@@ -209,6 +230,8 @@ abstract class _FlashcardPlayState extends FlashcardPlayState {
   dynamic get wordIdToIsFlipped;
   @override
   int get currentPageNumber;
+  @override
+  TextSizeOption get textSizeOption;
   @override
   @JsonKey(ignore: true)
   _$$_FlashcardPlayStateCopyWith<_$_FlashcardPlayState> get copyWith =>
