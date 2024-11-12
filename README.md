@@ -21,6 +21,10 @@ https://t.co/lFdnBuD43n
 4. 単語作成ページ
 5. 暗記モード
 
+![image](screenshots/top-page.png)
+
+![image](assets/flashcard-app-icon-ios.png)
+
 
 
 ## 使用技術
