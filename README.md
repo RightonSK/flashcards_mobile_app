@@ -21,10 +21,9 @@ https://t.co/lFdnBuD43n
 4. 単語作成ページ
 5. 暗記モード
 
-![image](screenshots/top-page.png)
-
-![image](assets/flashcard-app-icon-ios.png)
-
+|トップページ|単語カード追加ページ|単語カードページ|単語追加ページ|暗記モード|
+|---|---|---|---|---|
+|![image](https://github.com/RightonSK/flashcards_mobile_app/blob/images/top-page.png)|![](https://github.com/RightonSK/flashcards_mobile_app/blob/images/flashcard-add-page.png)|![](https://github.com/RightonSK/flashcards_mobile_app/blob/images/flashcard-page.png)|![](https://github.com/RightonSK/flashcards_mobile_app/blob/images/word-add-page.png)|![](https://github.com/RightonSK/flashcards_mobile_app/blob/images/flashcard-mode-page.png)|
 
 
 ## 使用技術
