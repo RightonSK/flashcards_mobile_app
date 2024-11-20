@@ -12,7 +12,7 @@ https://t.co/UQngFA7LmZ
 google play store
 https://t.co/lFdnBuD43n
 
-## 画面一覧
+## 主な画面一覧
 
 |トップページ|単語カード追加ページ|単語カードページ|単語追加ページ|暗記モード|
 |---|---|---|---|---|
@@ -28,19 +28,28 @@ https://t.co/lFdnBuD43n
 - riverpod
 - freezed
 
-## ファイル構成やコードの構成
-- ファイル構成
-  主にdomain, presentation, repository, utilsに分けている。
-  - repository
-    repositoryのファイル群の役割は、プレゼンテーション層から渡されたデータを加工しデータベースに渡す。
-    また、データベースから渡されたデータを加工し、プレゼンテーション層に引き渡す。
-  - presentation
-    描写に関わる層
-  - domain
+## ディレクトリ構成やコードの設計手法
+- ディレクトリ構成とその役割
+
+  domain, presentation, repository, utilsに分けている。
+  
+  - repository:
+    データの受け渡しを担う層。
+    プレゼンテーション層から渡されたデータを加工しデータベースに渡す。また、データベースから渡されたデータを加工し、プレゼンテーション層に引き渡す。
+  - presentation:
+    描写に関わる層。
+  - domain:
+    データモデルを保管。
+  - utils:
+    共通の処理やアプリ全体で使われる便利な主にヘルパー関数を提供。
     
-    
-- コードの構成
-  MVVM
+- コードの設計手法
+  
+  MVVM(Model-View-ViewModel)
+  
+  管理しやすく、理解しやすく読みやすくするためにMVVMを採用。
+  
+  MVVMを簡潔に実装するためにRiverpodを採用。
 
 ## 機能一覧
 - アカウントの登録削除、ログインログアウト機能
